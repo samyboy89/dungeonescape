@@ -16,6 +16,7 @@ import dungeonescape.level.Ground;
 import dungeonescape.level.Level;
 import dungeonescape.level.Misc;
 import dungeonescape.level.Moveable;
+import dungeonescape.level.PickUpItems;
 import dungeonescape.level.TopLayer;
 
 public class Map {
@@ -34,6 +35,7 @@ public class Map {
 	private TopLayer topLayer;
 	private Player player;
 	private Door door;
+	private PickUpItems pickUpItems;
 
 	// REMEMBER POSITION //
 	private ArrayList<Moveable> moveables;
@@ -115,6 +117,7 @@ public class Map {
 		this.moveable = getMoveableToUse(level);
 		this.misc = new Misc(level);
 		this.door = new Door(level);
+		this.pickUpItems = new PickUpItems(level);
 		this.topLayer = new TopLayer(level);
 		this.miniMap = new MiniMap(this, camera, ground, collision, collisionMisc, misc, moveable);
 		this.camera.setCamera();
@@ -149,6 +152,7 @@ public class Map {
 		printLevel(moveable);
 		printCharacter(player);
 		printLevel(topLayer);
+		printLevel(pickUpItems);
 		miniMap.printMiniMap();
 		if (!overlayText.isDoneShowing()) {
 			overlayText.printLablesAgain();
