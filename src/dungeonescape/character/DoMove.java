@@ -42,7 +42,7 @@ public class DoMove {
 		Integer next_next_x = playToPos[0] + direction.dx();
 		Integer next_next_y = playToPos[1] + direction.dy();
 
-		if (next_y >= collision.getList().size() || next_x >= collision.getList().get(0).size() || next_x < 0 || next_y < 0) {
+		if (next_y >= collision.getList().size() || next_x >= collision.getList().get(0).size() || next_x <= 0 || next_y <= 0) {
 		} else {
 			if (collision.isNotCollision(next_x, next_y)
 					&& collisionmisc.isNotCollision(next_x, next_y)) {
@@ -78,11 +78,14 @@ public class DoMove {
 		Integer next_y = playToPos[1];
 		Integer next_next_x = playToPos[0] + direction.dx();
 		Integer next_next_y = playToPos[1] + direction.dy();
-		if (next_y >= collision.getList().size() || next_x >= collision.getList().get(0).size() || next_x < 0 || next_y < 0) {
+		if (next_y >= collision.getList().size() || next_x >= collision.getList().get(0).size() || next_x <= 0 || next_y <= 0) {
 		 return CELL_OUT_OF_BOUNDARIES;
 		} else {
+//			System.out.println("next_x=" + next_x);
+//			System.out.println("next_y=" + next_y);
 			if (collision.isNotCollision(next_x, next_y)
 					&& collisionmisc.isNotCollision(next_x, next_y)) {
+//				System.out.println("moveable.isMoveable(next_x, next_y)=" + moveable.isMoveable(next_x, next_y));
 				if (moveable.isMoveable(next_x, next_y)) {
 					if (next_next_y >= collision.getList().size() || next_next_x >= collision.getList().get(0).size() || next_next_x < 0 || next_next_y < 0) {
 						return CELL_COLLISION;

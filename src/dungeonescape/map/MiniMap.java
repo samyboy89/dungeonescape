@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import acm.graphics.GImage;
 import acm.graphics.GRect;
+import dungeonescape.ai.NPC;
 import dungeonescape.helper.PlayerImg;
 import dungeonescape.level.Collision;
 import dungeonescape.level.CollisionMisc;
@@ -93,6 +94,9 @@ public class MiniMap {
 			}
 		}
 		image = map.getPlayer().getCharacterView(PlayerImg.PLAYER_MAP_SIZE_SMALL,
+				measure);
+		map.add(image);
+		image = map.test.getCharacterView(PlayerImg.PLAYER_MAP_SIZE_SMALL,
 				measure);
 		map.add(image);
 		drawCurrentCameraView(measure);

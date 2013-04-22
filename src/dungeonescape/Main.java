@@ -35,7 +35,6 @@ public class Main extends GraphicsProgram {
 		this.game = new Game(player, map);
 		addKeyListeners();
 		super.run();
-		// NPC test = new NPC(NPC_const.BALLROG);
 	}
 
 	@Override
@@ -66,6 +65,9 @@ public class Main extends GraphicsProgram {
 				break;
 			case KeyEvent.VK_W:
 				player.changeGender();
+				break;
+			case KeyEvent.VK_O:
+				//map.getNPC().moveCloserToPlayer();
 				break;
 			case KeyEvent.VK_T:
 				AePlayWave aw = new AePlayWave("sounds/0001_world.wav");

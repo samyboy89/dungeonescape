@@ -26,7 +26,9 @@ public abstract class CharacterFunctions implements Character {
 	public int lastMoveCounter = 2;
 	private boolean hasMoved = true;
 
-	public CharacterFunctions() {		
+	public CharacterFunctions() {
+		setInventory(new Inventory());
+		setStats(new Stats(this, getInventory()));
 	}
 	
 	public void move(Direction direction) {
@@ -44,16 +46,16 @@ public abstract class CharacterFunctions implements Character {
 		return this.charcterX;
 	}
 
-	public void setCharacterX(int playerX) {
-		this.charcterX = playerX;
+	public void setCharacterX(int charcterX) {
+		this.charcterX = charcterX;
 	}
 
 	public int getCharacterY() {
 		return this.characterY;
 	}
 
-	public void setCharacterY(int playerY) {
-		this.characterY = playerY;
+	public void setCharacterY(int charcterY) {
+		this.characterY = charcterY;
 	}
 
 	public void addToCounter() {
@@ -193,6 +195,10 @@ public abstract class CharacterFunctions implements Character {
 
 	public void setLastDirection(Direction direction) {
 		this.lastmove = direction;
+	}
+	
+	public Direction getLastDirection() {
+		return lastmove;
 	}
 
 	public boolean hasMoved() {

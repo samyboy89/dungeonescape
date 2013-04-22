@@ -1,13 +1,19 @@
 package dungeonescape.map;
 
 import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import acm.graphics.GImage;
 import acm.graphics.GObject;
 import dungeonescape.Main;
+import dungeonescape.ai.NPC;
 import dungeonescape.character.Player;
 import dungeonescape.helper.Levels;
+import dungeonescape.helper.NPC_const;
 import dungeonescape.helper.PlayerImg;
 import dungeonescape.level.Collision;
 import dungeonescape.level.CollisionMisc;
@@ -27,20 +33,18 @@ public class Map {
 
 	// LEVELS //
 	private Ground ground;
-	private Collision collision;
-	private CollisionMisc collisionMisc;
+	public Collision collision;
+	public CollisionMisc collisionMisc;
 	private Misc misc;
-	private Moveable moveable;
+	public Moveable moveable;
 	private TopLayer topLayer;
 	private Player player;
 	private Door door;
+	NPC test;
 
 	// REMEMBER POSITION //
 	private ArrayList<Moveable> moveables;
 
-	// PLAYER GRAPHIC //
-	private GObject player_graphic;
-	
 	// OVERLAY TEXT
 	public OverlayText overlayText;
 	
@@ -81,6 +85,10 @@ public class Map {
 		printMap();
 	}
 
+	public NPC getNPC() {
+		return test;
+	}
+	
 	public int getLevelCode() {
 		return location;
 	}
@@ -120,6 +128,26 @@ public class Map {
 		this.camera.setCamera();
 		this.player.setPlayer(camera, collision, collisionMisc, moveable, door, location);
 		this.location = new_location;
+		test = new NPC(NPC_const.BALLROG, this);
+
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			
+			@Override
+			public void run() {
+				getNPC().moveCloserToPlayer();
+				
+				KeyEvent ke = new KeyEvent( Main.main.getComponent(0), KeyEvent.KEY_PRESSED,   
+	                    0,                          // When timeStamp  
+	                    0,                          // Modifier  
+	                    KeyEvent.VK_UNDEFINED,      // Key Code  
+	                    KeyEvent.CHAR_UNDEFINED );  // Key Char  
+
+				Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent( ke );
+				
+			}
+		}, 500, 500);
+
 	}
 
 	private void printLevel(Level level) {
@@ -148,6 +176,7 @@ public class Map {
 		printLevel(misc);
 		printLevel(moveable);
 		printCharacter(player);
+		printCharacter(test);
 		printLevel(topLayer);
 		miniMap.printMiniMap();
 		if (!overlayText.isDoneShowing()) {
@@ -155,9 +184,8 @@ public class Map {
 		}
 	}
 
-	public void printCharacter(Player player) {
-		player_graphic = player.getCharacterView(PlayerImg.PLAYER_MAP_SIZE_LARGE, 0);
-		add(player_graphic);
+	public void printCharacter(dungeonescape.player.Character player) {
+		add(player.getCharacterView(PlayerImg.PLAYER_MAP_SIZE_LARGE, 0));
 	}
 
 	private Moveable getMoveableToUse(int level) {
