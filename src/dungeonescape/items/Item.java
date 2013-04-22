@@ -8,6 +8,10 @@ public interface Item {
 	public String getName();
 
 	public void setName(String name);
+	
+	public int getType();
+
+	public void setType(int type);
 
 	public int getValue();
 
@@ -24,6 +28,10 @@ public interface Item {
 	public int getHealing();
 
 	public void setHealing(int healing);
+
+	public int getRequired();
+	
+	public void setRequired(int required);
 
 	public GObject getView();
 
