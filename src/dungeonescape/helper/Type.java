@@ -1,6 +1,14 @@
 package dungeonescape.helper;
 
+import dungeonescape.items.Item;
+
+
 public final class Type {
+
+	public static final int POTION = 9999;
+	public static final void potion_heal_50 (Item normal) {
+		normal.setHealing(50);
+	}
 	
 	public static final int SHIELD_COMMON = 0;
 	public static final int SHIELD_LIGHT = 1;
