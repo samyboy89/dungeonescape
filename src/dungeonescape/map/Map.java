@@ -22,8 +22,8 @@ public class Map {
 
 	// CAMERA //
 	public Camera camera;
-	private int location = Levels.ROOM1;
-	private int new_location = Levels.ROOM1;
+	private int location = Levels.ROOMA;
+	private int new_location = Levels.ROOMA;
 
 	// LEVELS //
 	private Ground ground;
