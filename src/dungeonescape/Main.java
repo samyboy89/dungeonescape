@@ -5,10 +5,12 @@ import java.awt.event.KeyEvent;
 import javax.jws.Oneway;
 
 import acm.program.GraphicsProgram;
+import dungeonescape.ai.NPC;
 import dungeonescape.character.Direction;
 import dungeonescape.character.Player;
 import dungeonescape.helper.AePlayWave;
 import dungeonescape.helper.Game;
+import dungeonescape.helper.NPC_const;
 import dungeonescape.map.Map;
 
 @SuppressWarnings("serial")
@@ -31,10 +33,11 @@ public class Main extends GraphicsProgram {
 	@Oneway
 	@Override
 	public void run() {
-		this.map = new Map(player);
-		this.game = new Game(player, map);
-		addKeyListeners();
-		super.run();
+//		this.map = new Map(player);
+//		this.game = new Game(player, map);
+//		addKeyListeners();
+//		super.run();
+		NPC test = new NPC(NPC_const.BALLROG);
 	}
 
 	@Override
