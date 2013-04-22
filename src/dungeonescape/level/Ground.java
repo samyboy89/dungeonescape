@@ -1,7 +1,6 @@
 package dungeonescape.level;
 
 import dungeonescape.helper.Tile;
-import dungeonescape.helper.TileDecider;
 
 public class Ground extends LevelFunctions {
 
@@ -24,7 +23,7 @@ public class Ground extends LevelFunctions {
 	
 	@Override
 	public String isOfLevelType(int code) {
-		return TileDecider.isGround(code);
+		return isLevel(code, Tile.ground, Tile.GROUND_IMG_PATH);
 	}
 
 	public int getSizeX() {

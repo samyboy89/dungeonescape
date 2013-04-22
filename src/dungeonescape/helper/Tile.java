@@ -1,5 +1,8 @@
 package dungeonescape.helper;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public final class Tile {
 
 	public static final int PRINT_SIZE_SMALL = 0;
@@ -23,246 +26,47 @@ public final class Tile {
 	public static final String TOPLAYER_TXT = "levels/toplayer.txt";
 
 	public static final String GROUND_IMG_PATH = "ground/";
-	public static final int GROUND_STONE_BROKEN = 2004;
-	public static final int GROUND_STONE = 2003;
-	public static final int GROUND_DARK = 2001;
-	public static final int GROUND_LAVA = 2002;
-
-	public static final String OBJECTS_IMG_PATH = "objects/";
-	public static final int OBJECTS_ARMOR_STATUE = 5001;
-	public static final int OBJECTS_ARMOR_STATUE_UPPER = 5002;
-	public static final int OBJECTS_ARMOR_STATUE_LOWER = 5003;
-	public static final int OBJECTS_CHEST_CLOSED = 5004;
-	public static final int OBJECTS_CHEST_OPEN = 5005;
-	public static final int OBJECTS_BOX = 5006;
-	public static final int OBJECTS_DIAMOND_SHARP = 5007;
-	public static final int OBJECTS_DIAMOND_SHARP_TOP = 5008;
-	public static final int OBJECTS_GRID_WHITE_UPPER = 5009;
-	public static final int OBJECTS_GRID_WHITE_LOWER = 5010;
-	public static final int OBJECTS_GRID_BLACK_UPPER = 5011;
-	public static final int OBJECTS_GRID_BLACK_LOWER = 5012;
-	public static final int OBJECTS_SPEARS_IN_BOX_UPPER = 5013;
-	public static final int OBJECTS_SPEARS_IN_BOX_LOWER = 5014;
-	public static final int OBJECTS_STONE_FIRE1 = 5015;
-	public static final int OBJECTS_STONE_FIRE2 = 5016;
-	public static final int OBJECTS_STONE_FIRE3 = 5017;
-	public static final int OBJECTS_CHEST_SIDE_UPPER = 5018;
-	public static final int OBJECTS_CHEST_SIDE_LOWER = 5019;
-	public static final int OBJECTS_BUNKBED_TOPLEFT = 5020;
-	public static final int OBJECTS_BUNKBED_TOPRIGHT = 5021;
-	public static final int OBJECTS_BUNKBED_BOTTOMLEFT = 5022;
-	public static final int OBJECTS_BUNKBED_BOTTOMRIGHT = 5023;
-	public static final int OBJECTS_BOX_EMPTY = 5024;
-	public static final int OBJECTS_BOX_SWORDS = 5025;
-	public static final int OBJECTS_SHELF_HELMET_LEFT = 5026;
-	public static final int OBJECTS_SHELF_HELMET_RIGHT = 5027;
-	public static final int OBJECTS_SHELF_ARMOR_LEFT = 5028;
-	public static final int OBJECTS_SHELF_ARMOR_RIGHT = 5029;
-	public static final int OBJECTS_FIREPLACE_UPPER = 5030;
-	public static final int OBJECTS_FIREPLACE_MIDDLE = 5031;
-	public static final int OBJECTS_FIREPLACE_LOWER = 5032;
-	public static final int OBJECTS_ALTER_TOPLEFT = 5033;
-	public static final int OBJECTS_ALTER_TOPMIDDLE = 5034;
-	public static final int OBJECTS_ALTER_TOPRIGHT = 5035;
-	public static final int OBJECTS_ALTER_BOTTOMLEFT = 5036;
-	public static final int OBJECTS_ALTER_BOTTOMMIDDLE = 5037;
-	public static final int OBJECTS_ALTER_BOTTOMRIGHT = 5038;
-	public static final int OBJECTS_CROSS_ON_STICK_TOP = 5039;
-	public static final int OBJECTS_CANDLE_ON_STICK_TOP = 5040;
-	public static final int OBJECTS_STICK_BOTTOM = 5041;
-	public static final int OBJECTS_PILLAR_STATUE_TOP = 5042;
-	public static final int OBJECTS_PILLAR_TOP = 5043;
-	public static final int OBJECTS_PILLAR_BOTTOM = 5044;
-
+	public static final String COLLISION_IMG_PATH = "collision/";
+	public static final String COLLISIONMISC_IMG_PATH = "collisionmisc/";
 	public static final String MISC_IMG_PATH = "misc/";
-	public static final int MISC_SWORDS = 4004;
-	public static final int MISC_BOWS = 4003;
-	public static final int MISC_SHIELD = 4005;
-	public static final int MISC_BED_FLOOR_LOWER = 4002;
-	public static final int MISC_BED_FLOOR_UPPER = 4001;
-	public static final int MISC_DAVID_STAR = 4006;
-	public static final int MISC_CIRCLE_RUG = 4007;
-	public static final int MISC_WALL_CRACK = 4008;
-	public static final int MISC_LONG_FLAG_UPPER = 4009;
-	public static final int MISC_LONG_FLAG_LOWER = 4010;
-	public static final int MISC_RED_FLAG = 4011;
-	public static final int MISC_BED_FLOOR_PILLOW = 4012;
-	public static final int MISC_DOCUMENTS = 4013;
-	public static final int MISC_MAP = 4014;
-	public static final int MISC_AXE = 4015;
-	public static final int MISC_ROUND_SHIELD = 4016;
-	public static final int MISC_ROPES = 4017;
-	public static final int MISC_ROPE = 4018;
-	public static final int MISC_SAND_SACKS = 4019;
-	public static final int MISC_STONE_TABLET = 4020;
-	public static final int MISC_SCYTHES = 4021;
+	public static final String MOVEABLE_IMG_PATH = "moveable/";
+	public static final String TOPLAYER_IMG_PATH = "toplayer/";
+	
 
-	public static final String WALL_IMG_PATH = "wall/";
-	public static final int WALL_STONE = 6029;
-	public static final int WALL_STONE_CRACK = 6030;
-	public static final int WALL_CAVE_BOTTOM = 6002;
-	public static final int WALL_CAVE_BOTTOM_DARK = 6001;
-	public static final int WALL_CAVE_TOP = 6012;
-	public static final int WALL_CAVE_MIDDLE = 6011;
-	public static final int WALL_CAVE_BOTTOM_CRACK = 6003;
-	public static final int WALL_CAVE_DOOR_RIGHT = 6008;
-	public static final int WALL_CAVE_DOOR_LEFT = 6006;
-	public static final int WALL_CAVE_DOOR_RIGHT_UPPER = 6007;
-	public static final int WALL_CAVE_DOOR_LEFT_UPPER = 6005;
-	public static final int WALL_CAVE_DOOR_BOTTOM = 6004;
-	public static final int WALL_CAVE_DOOR_LOWER = 6010;
-	public static final int WALL_CAVE_DOOR_UPPER = 6009;
-	public static final int WALL_STONE_BLOCK_LOWER = 6028;
-	public static final int WALL_STONE_BLOCK_UPPER = 6027;
-	public static final int WALL_LAVA_UPPER = 6018;
-	public static final int WALL_LAVA_LOW = 6019;
-	public static final int WALL_LAVA_LOWER = 6020;
-	public static final int WALL_LAVA_LOWEST = 6021;
-	public static final int WALL_LAVA_RIGHT_UPPER = 6022;
-	public static final int WALL_LAVA_RIGHT_MIDDLE = 6023;
-	public static final int WALL_LAVA_RIGHT_LOW = 6024;
-	public static final int WALL_LAVA_RIGHT_LOWER = 6025;
-	public static final int WALL_LAVA_RIGHT_LOWEST = 6026;
-	public static final int WALL_LAVA_LEFT_UPPER = 6013;
-	public static final int WALL_LAVA_LEFT_MIDDLE = 6014;
-	public static final int WALL_LAVA_LEFT_LOW = 6015;
-	public static final int WALL_LAVA_LEFT_LOWER = 6016;
-	public static final int WALL_LAVA_LEFT_LOWEST = 6017;
+	public final static Integer[] ground_list = { 2001, 2002, 2003, 2004, 3001, 7001, 7002,
+			7014, 7015, 7016, 7017, 7018, 7019, 7020, 7021, 7022, 7023, 7024,
+			7025, 7026, 7027, 7028, 7029, 7030, 7031, 7032, 7033, 7034, 7035,
+			7036, 7037, 7038, 7039, 7040, 7041, 7055, 7056, 7057 };
+	public final static Integer[] collision_list = { 6001, 6002, 6003, 6005, 6007, 6009, 6011,
+			6012, 6013, 6014, 6015, 6016, 6017, 6018, 6019, 6020, 6021, 6022,
+			6023, 6024, 6025, 6026, 6029, 6030, 7052, 7053, 7054, 7055, 7056,
+			7057, 7003, 7004, 7005, 7006, 7007, 7008, 7009, 7010, 7011, 7012,
+			7013, 7048, 7049, 7050, 7051 };
+	public final static Integer[] collisionmisc_list = { 3003, 3006, 3009, 3012, 3013, 3014,
+			3015, 3016, 3017, 3018, 3019, 3020, 3021, 3022, 3023, 3024, 3025,
+			3026, 3027, 3028, 3029, 3030, 3031, 3032, 3033, 3034, 3035, 3036,
+			3037, 3038, 3039, 3040, 3041, 3042, 3043, 3044, 3045, 3046, 3047,
+			3048, 3049, 3050, 3051, 3052, 3053, 3056, 3057, 3059, 3062, 3063,
+			3064, 3065, 3066, 3067, 3068, 3069, 3070, 3071, 3072, 3073, 5002,
+			5004, 5005, 5007, 5008, 5013, 5014, 5015, 5016, 5017, 5018,
+			5019, 5020, 5021, 5022, 5023, 5030, 5031, 5032, 5033, 5034, 5035,
+			5036, 5037, 5038, 5039, 5040, 5041, 5042, 5043, 5044, 6027, 6028 };
+	public final static Integer[] misc_list = { 3004, 3005, 3007, 3008, 3010, 3011, 3054,
+			3055, 3058, 3060, 3061, 4001, 4002, 4003, 4004, 4005, 4006, 4007,
+			4008, 4009, 4010, 4011, 4012, 4013, 4014, 4015, 4016, 4017, 4018,
+			4019, 4020, 4021, 5009, 5010, 5011, 5012, 5026, 5027, 5028, 5029,
+			7058, 7059, 7042, 7043, 7044, 7045, 7046, 7047, 6004, 6006,
+			6008, 6010, 6027, 6028, 5003 };
+	public final static Integer[] moveable_list = { 5006, 5024, 5025 };
+	public final static Integer[] toplayer_list = { 5002, 5013, 5042, 5043, 6027 };
 
-	public static final String INTERIOR_IMG_PATH = "interior/";
-	public static final int INTERIOR_TRAP_DOOR = 3001;
-	public static final int INTERIOR_TRAP_DOOR_UP = 3002;
-	public static final int INTERIOR_TRAP_DOOR_WOOD_UPPER = 3003;
-	public static final int INTERIOR_TRAP_DOOR_WOOD_MIDDLE = 3004;
-	public static final int INTERIOR_TRAP_DOOR_WOOD_LOWER = 3005;
-	public static final int INTERIOR_TRAP_DOOR_GOLDEN_UPPER = 3006;
-	public static final int INTERIOR_TRAP_DOOR_GOLDEN_MIDDLE = 3007;
-	public static final int INTERIOR_TRAP_DOOR_GOLDEN_LOWER = 3008;
-	public static final int INTERIOR_TRAP_DOOR_SILVER_UPPER = 3009;
-	public static final int INTERIOR_TRAP_DOOR_SILVER_MIDDLE = 3010;
-	public static final int INTERIOR_TRAP_DOOR_SILVER_LOWER = 3011;
-	public static final int INTERIOR_CURTAIN_RED_UPPER = 3012;
-	public static final int INTERIOR_CURTAIN_RED_LOWER = 3013;
-	public static final int INTERIOR_CLOSET_UPPER = 3014;
-	public static final int INTERIOR_CLOSET_LOWER= 3015;
-	public static final int INTERIOR_BOOKSHELF_UPPER = 3016;
-	public static final int INTERIOR_BOOKSHELF_LOWER = 3017;
-	public static final int INTERIOR_CUPBOARD_UPPER = 3018;
-	public static final int INTERIOR_CUPBOARD_LOWER = 3019;
-	public static final int INTERIOR_CLOSET1_UPPER = 3020;
-	public static final int INTERIOR_CLOSET1_LOWER = 3021;
-	public static final int INTERIOR_CLOSET2_UPPER = 3022;
-	public static final int INTERIOR_CLOSET2_LOWER = 3023;
-	public static final int INTERIOR_CLOSET2_UPPER_SHADOW = 3024;
-	public static final int INTERIOR_BOOKSHELF1_UPPER_FLOWER = 3025;
-	public static final int INTERIOR_BOOKSHELF1_UPPER = 3026;
-	public static final int INTERIOR_BOOKSHELF1_LOWER = 3027;
-	public static final int INTERIOR_CUPBOARD1_UPPER_THINGS = 3028;
-	public static final int INTERIOR_CUPBOARD1_LOWER = 3029;
-	public static final int INTERIOR_BED1_UPPER = 3030;
-	public static final int INTERIOR_BED1_MIDDLE = 3031;
-	public static final int INTERIOR_BED1_LOWER = 3032;
-	public static final int INTERIOR_BED2_UPPER = 3033;
-	public static final int INTERIOR_BED2_MIDDLE = 3034;
-	public static final int INTERIOR_BED2_LOWER = 3035;
-	public static final int INTERIOR_BED3_UPPER = 3036;
-	public static final int INTERIOR_BED3_MIDDLE = 3037;
-	public static final int INTERIOR_BED3_LOWER = 3038;
-	public static final int INTERIOR_BED4_UPPER = 3039;
-	public static final int INTERIOR_BED4_MIDDLE = 3040;
-	public static final int INTERIOR_BED4_LOWER = 3041;
-	public static final int INTERIOR_CLOSET_SIDEWAYS_UPPER = 3042;
-	public static final int INTERIOR_CLOSET_SIDEWAYS_MIDDLE = 3043;
-	public static final int INTERIOR_CLOSET_SIDEWAYS_LOWER = 3044;
-	public static final int INTERIOR_SLEEPING_BAGS = 3045;
-	public static final int INTERIOR_CUPBOARD2_UPPER = 3046;
-	public static final int INTERIOR_CUPBOARD2_LOWER = 3047;
-	public static final int INTERIOR_TABLE_SMALL = 3048;
-	public static final int INTERIOR_CHAIR_RED_FRONT = 3049;
-	public static final int INTERIOR_CHAIR_RED_BACK = 3050;
-	public static final int INTERIOR_CHAIR_RED_RIGHT = 3051;
-	public static final int INTERIOR_CHAIR_RED_LEFT = 3052;
-	public static final int INTERIOR_CHAIR_WHITE_UPPER = 3053;
-	public static final int INTERIOR_CHAIR_WHITE_LOWER = 3054;
-	public static final int INTERIOR_PILLOW = 3055;
-	public static final int INTERIOR_PILLOWS = 3056;
-	public static final int INTERIOR_TABLE_SMALL1 = 3057;
-	public static final int INTERIOR_STOL = 3058;
-	public static final int INTERIOR_TABLE_SMALL_WATER = 3059;
-	public static final int INTERIOR_SHELF_BOOKS = 3060;
-	public static final int INTERIOR_SHELF_BOTTLES = 3061;
-	public static final int INTERIOR_CHAIR_RED_RSIDEWAYS_UPPER = 3062;
-	public static final int INTERIOR_CHAIR_RED_RSIDEWAYS_MIDDLE = 3063;
-	public static final int INTERIOR_CHAIR_RED_RSIDEWAYS_LOWER = 3064;
-	public static final int INTERIOR_CHAIR_RED_LSIDEWAYS_UPPER = 3065;
-	public static final int INTERIOR_CHAIR_RED_LSIDEWAYS_MIDDLE = 3066;
-	public static final int INTERIOR_CHAIR_RED_LSIDEWAYS_LOWER = 3067;
-	public static final int INTERIOR_BENCH_RSIDEWAYS_UPPER = 3068;
-	public static final int INTERIOR_BENCH_RSIDEWAYS_MIDDLE = 3069;
-	public static final int INTERIOR_BENCH_RSIDEWAYS_LOWER = 3070;
-	public static final int INTERIOR_BENCH_LEFT = 3071;
-	public static final int INTERIOR_BENCH_MIDDLE = 3072;
-	public static final int INTERIOR_BENCH_RIGHT = 3073;
+	public final static ArrayList<Integer> ground = new ArrayList<Integer>(Arrays.asList(ground_list));
+	public final static ArrayList<Integer> collision = new ArrayList<Integer>(Arrays.asList(collision_list));
+	public final static ArrayList<Integer> collisionmisc = new ArrayList<Integer>(Arrays.asList(collisionmisc_list));
+	public final static ArrayList<Integer> misc = new ArrayList<Integer>(Arrays.asList(misc_list));
+	public final static ArrayList<Integer> moveable = new ArrayList<Integer>(Arrays.asList(moveable_list));
+	public final static ArrayList<Integer> toplayer = new ArrayList<Integer>(Arrays.asList(toplayer_list));
+	
 
-	public static final String OUTDOORS_IMG_PATH = "outdoors/";
-	public static final int OUTDOORS_GRASS = 7001;
-	public static final int OUTDOORS_GRASS1 = 7002;
-	public static final int OUTDOORS_FENCE_ALONE = 7003;
-	public static final int OUTDOORS_FENCE_CROSS = 7004;
-	public static final int OUTDOORS_FENCE_TOP_LEFT = 7005;
-	public static final int OUTDOORS_FENCE_TOP_RIGHT = 7006;
-	public static final int OUTDOORS_FENCE_BOTTOM_LEFT = 7007;
-	public static final int OUTDOORS_FENCE_BOTTOM_RIGHT = 7008;
-	public static final int OUTDOORS_FENCE_HORIZONTAL = 7009;
-	public static final int OUTDOORS_FENCE_VERTICAL = 7010;
-	public static final int OUTDOORS_FENCE_CROSS_LEFT = 7011;
-	public static final int OUTDOORS_FENCE_CROSS_RIGHT = 7012;
-	public static final int OUTDOORS_FENCE_END = 7013;
-	public static final int OUTDOORS_FENCE_CROSS_NORTH = 7048;
-	public static final int OUTDOORS_FENCE_CROSS_SOUTH = 7049;
-	public static final int OUTDOORS_FENCE_TOP_LEFT1 = 7050;
-	public static final int OUTDOORS_FENCE_TOP_RIGHT1 = 7051;
-	public static final int OUTDOORS_COBBLESTONE = 7014;
-	public static final int OUTDOORS_COBBLESTONE_TOP_LEFT = 7015;
-	public static final int OUTDOORS_COBBLESTONE_MIDDLE_LEFT = 7016;
-	public static final int OUTDOORS_COBBLESTONE_BOTTOM_LEFT = 7017;
-	public static final int OUTDOORS_COBBLESTONE_BOTTOM_MIDDLE = 7018;
-	public static final int OUTDOORS_COBBLESTONE_BOTTOM_RIGHT = 7019;
-	public static final int OUTDOORS_COBBLESTONE_MIDDLE_RIGHT = 7020;
-	public static final int OUTDOORS_COBBLESTONE_TOP_RIGHT = 7021;
-	public static final int OUTDOORS_COBBLESTONE_TOP_MIDDLE = 7022;
-	public static final int OUTDOORS_COBBLESTONE_INSIDE_TOP_LEFT = 7032;
-	public static final int OUTDOORS_COBBLESTONE_INSIDE_TOP_RIGHT = 7033;
-	public static final int OUTDOORS_COBBLESTONE_INSIDE_BOTTOM_LEFT = 7034;
-	public static final int OUTDOORS_COBBLESTONE_INSIDE_BOTTOM_RIGHT = 7035;
-	public static final int OUTDOORS_STONE_PLATEAU = 7023;
-	public static final int OUTDOORS_STONE_PLATEAU_TOP_LEFT = 7024;
-	public static final int OUTDOORS_STONE_PLATEAU_MIDDLE_LEFT = 7025;
-	public static final int OUTDOORS_STONE_PLATEAU_BOTTOM_LEFT = 7026;
-	public static final int OUTDOORS_STONE_PLATEAU_BOTTOM_MIDDLE = 7027;
-	public static final int OUTDOORS_STONE_PLATEAU_BOTTOM_RIGHT = 7028;
-	public static final int OUTDOORS_STONE_PLATEAU_MIDDLE_RIGHT = 7029;
-	public static final int OUTDOORS_STONE_PLATEAU_TOP_RIGHT = 7030;
-	public static final int OUTDOORS_STONE_PLATEAU_TOP_MIDDLE = 7031;
-	public static final int OUTDOORS_STONE_PLATEAU_INSIDE_TOP_LEFT = 7036;
-	public static final int OUTDOORS_STONE_PLATEAU_INSIDE_TOP_RIGHT = 7037;
-	public static final int OUTDOORS_STONE_PLATEAU_INSIDE_BOTTOM_LEFT = 7038;
-	public static final int OUTDOORS_STONE_PLATEAU_INSIDE_BOTTOM_RIGHT = 7039;
-	public static final int OUTDOORS_STONE_PLATEAU_STAIR_NORTH = 7040;
-	public static final int OUTDOORS_STONE_PLATEAU_STAIR_NORTH_END = 7041;
-	public static final int OUTDOORS_STONE_PLATEAU_STAIR_WEST = 7042;
-	public static final int OUTDOORS_STONE_PLATEAU_STAIR_WEST_MIDDLE = 7043;
-	public static final int OUTDOORS_STONE_PLATEAU_STAIR_WEST_END = 7058;
-	public static final int OUTDOORS_STONE_PLATEAU_STAIR_SOUTH = 7044;
-	public static final int OUTDOORS_STONE_PLATEAU_STAIR_SOUTH_END = 7045;
-	public static final int OUTDOORS_STONE_PLATEAU_STAIR_EAST = 7046;
-	public static final int OUTDOORS_STONE_PLATEAU_STAIR_EAST_MIDDLE = 7047;
-	public static final int OUTDOORS_STONE_PLATEAU_STAIR_EAST_END = 7059;
-	public static final int OUTDOORS_STONE_PLATEAU_WALL_TOP_LEFT = 7052;
-	public static final int OUTDOORS_STONE_PLATEAU_WALL_TOP_MIDDLE = 7053;
-	public static final int OUTDOORS_STONE_PLATEAU_WALL_TOP_RIGHT = 7054;
-	public static final int OUTDOORS_STONE_PLATEAU_WALL_BOTTOM_LEFT = 7055;
-	public static final int OUTDOORS_STONE_PLATEAU_WALL_BOTTOM_MIDDLE = 7056;
-	public static final int OUTDOORS_STONE_PLATEAU_WALL_BOTTOM_RIGHT = 7057;
 	
 }

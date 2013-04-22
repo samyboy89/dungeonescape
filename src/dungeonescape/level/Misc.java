@@ -1,7 +1,6 @@
 package dungeonescape.level;
 
 import dungeonescape.helper.Tile;
-import dungeonescape.helper.TileDecider;
 
 public class Misc extends LevelFunctions {
 
@@ -15,7 +14,7 @@ public class Misc extends LevelFunctions {
 
 	@Override
 	public String isOfLevelType(int code) {
-		return TileDecider.isMisc(code);
+		return isLevel(code, Tile.misc, Tile.MISC_IMG_PATH);
 	}
 	
 	@Override

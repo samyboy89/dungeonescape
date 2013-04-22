@@ -29,6 +29,8 @@ public interface Level {
 	public String isOfLevelType(int code);
 	
 	public String getFileLocation();
+
+	public String isLevel(Integer code, ArrayList<Integer> list, String file);
 	
 	public String toString();
 	

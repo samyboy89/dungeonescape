@@ -11,17 +11,13 @@ public class Player extends CharacterFunctions {
 
 	public Player() {
 		super();
-		setInventory(new Inventory());
-		setStats(new Stats(this, getInventory()));
 	}
 
 	public Player(Camera camera, Collision collision,
 			CollisionMisc collisionmisc, Moveable moveable, Door door,
 			Integer location) {
-		setInventory(new Inventory());
 		setCamera(camera);
 		setMove(new DoMove(this, collision, collisionmisc, moveable));
-		setStats(new Stats(this, getInventory()));
 		this.setPlayer(camera, collision, collisionmisc, moveable, door,
 				location);
 		
@@ -30,10 +26,8 @@ public class Player extends CharacterFunctions {
 	public void setPlayer(Camera camera, Collision collision,
 			CollisionMisc collisionmisc, Moveable moveable, Door door,
 			Integer location) {
-		setInventory(new Inventory());
 		setCamera(camera);
 		setMove(new DoMove(this, collision, collisionmisc, moveable));
-		setStats(new Stats(this, getInventory()));
 		int[] playersNewPosition = getPlayersNewPosition(door, location);
 		setCharacterX(playersNewPosition[0]);
 		setCharacterY(playersNewPosition[1]);

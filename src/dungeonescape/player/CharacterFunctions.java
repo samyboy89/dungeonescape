@@ -26,9 +26,11 @@ public abstract class CharacterFunctions implements Character {
 	public int lastMoveCounter = 2;
 	private boolean hasMoved = true;
 
-	public CharacterFunctions() {		
+	public CharacterFunctions() {
+		setInventory(new Inventory());
+		setStats(new Stats(this, getInventory()));
 	}
-	
+
 	public void move(Direction direction) {
 		setMoved(true);
 		if (lastmove.equals(direction)) {
@@ -63,17 +65,17 @@ public abstract class CharacterFunctions implements Character {
 	public GImage getCharacterView(int size, double minimap) {
 		switch (lastmove) {
 		case EAST:
-			return getCharacterImageState((getCharacterState() + PlayerImg.EAST),
-					size, minimap);
+			return getCharacterImageState(
+					(getCharacterState() + PlayerImg.EAST), size, minimap);
 		case NORTH:
-			return getCharacterImageState((getCharacterState() + PlayerImg.NORTH),
-					size, minimap);
+			return getCharacterImageState(
+					(getCharacterState() + PlayerImg.NORTH), size, minimap);
 		case SOUTH:
-			return getCharacterImageState((getCharacterState() + PlayerImg.SOUTH),
-					size, minimap);
+			return getCharacterImageState(
+					(getCharacterState() + PlayerImg.SOUTH), size, minimap);
 		case WEST:
-			return getCharacterImageState((getCharacterState() + PlayerImg.WEST),
-					size, minimap);
+			return getCharacterImageState(
+					(getCharacterState() + PlayerImg.WEST), size, minimap);
 		default:
 			return getCharacterImageState(getCharacterState(), size, minimap);
 		}
@@ -96,9 +98,11 @@ public abstract class CharacterFunctions implements Character {
 				image = new GImage(
 						PlayerImg.IMG_LOCATION + (code + lastMoveCounter)
 								+ PlayerImg.IMG_EXTENTION,
-						Camera.IMG_SIZE * (getCharacterX() - camera.getOffsetX())
+						Camera.IMG_SIZE
+								* (getCharacterX() - camera.getOffsetX())
 								* Camera.IMG_SCALE,
-						(Camera.IMG_SIZE * (getCharacterY() - camera.getOffsetY()) * Camera.IMG_SCALE)
+						(Camera.IMG_SIZE
+								* (getCharacterY() - camera.getOffsetY()) * Camera.IMG_SCALE)
 								- ((Camera.IMG_SIZE / 2) * Camera.IMG_SCALE));
 			} else {
 				image = new GImage(PlayerImg.IMG_LOCATION
@@ -210,15 +214,15 @@ public abstract class CharacterFunctions implements Character {
 	public void addExperience(int exp) {
 		stats.addExperience(exp);
 	}
-	
+
 	public String getName() {
 		return stats.getName();
 	}
-	
+
 	public void setName(String name) {
 		stats.setName(name);
 	}
-	
+
 	public int getDamage() {
 		return stats.getDamage();
 	}
@@ -226,7 +230,7 @@ public abstract class CharacterFunctions implements Character {
 	public void setDamage(int dmg) {
 		stats.setDamage(dmg);
 	}
-	
+
 	public int getGold() {
 		return stats.getGold();
 	}
@@ -234,7 +238,7 @@ public abstract class CharacterFunctions implements Character {
 	public void setGold(int gold) {
 		stats.setGold(gold);
 	}
-	
+
 	public int getHealth() {
 		return stats.getHealth();
 	}
@@ -242,7 +246,7 @@ public abstract class CharacterFunctions implements Character {
 	public void setHealth(int health) {
 		stats.setHealth(health);
 	}
-	
+
 	public int getProtection() {
 		return stats.getProtection();
 	}
@@ -250,7 +254,7 @@ public abstract class CharacterFunctions implements Character {
 	public void setProtection(int protecion) {
 		stats.setProtection(protecion);
 	}
-	
+
 	public int getLevel() {
 		return stats.getLevel();
 	}
@@ -258,7 +262,7 @@ public abstract class CharacterFunctions implements Character {
 	public void setLevel(int level) {
 		stats.setLevel(level);
 	}
-	
+
 	public DoMove getMove() {
 		return move;
 	}
@@ -266,7 +270,7 @@ public abstract class CharacterFunctions implements Character {
 	public void setMove(DoMove move) {
 		this.move = move;
 	}
-	
+
 	public Stats getStats() {
 		return stats;
 	}
@@ -282,7 +286,7 @@ public abstract class CharacterFunctions implements Character {
 	public void setCamera(Camera camera) {
 		this.camera = camera;
 	}
-	
+
 	public Inventory getInventory() {
 		return this.inventory;
 	}

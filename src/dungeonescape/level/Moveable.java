@@ -1,7 +1,6 @@
 package dungeonescape.level;
 
 import dungeonescape.helper.Tile;
-import dungeonescape.helper.TileDecider;
 
 public class Moveable extends LevelFunctions {
 	
@@ -26,14 +25,8 @@ public class Moveable extends LevelFunctions {
 
 	public boolean isMoveable(int dx, int dy) {
 		int code = this.getCell(dx, dy);
-		switch (code) {
-		case Tile.OBJECTS_BOX_EMPTY:
-		case Tile.OBJECTS_BOX_SWORDS:
-		case Tile.OBJECTS_BOX:
-			return true;
-		default:
-			return false;
-		}
+		String moveable = isOfLevelType(code);
+		return moveable.equals("") ? false : true;
 	}
 	
 	public boolean hasMoved() {
@@ -46,7 +39,7 @@ public class Moveable extends LevelFunctions {
 	
 	@Override
 	public String isOfLevelType(int code) {
-		return TileDecider.isMoveable(code);
+		return isLevel(code, Tile.moveable, Tile.MOVEABLE_IMG_PATH);
 	}
 
 	@Override

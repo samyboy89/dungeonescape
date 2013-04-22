@@ -1,7 +1,6 @@
 package dungeonescape.level;
 
 import dungeonescape.helper.Tile;
-import dungeonescape.helper.TileDecider;
 
 public class TopLayer extends LevelFunctions {
 
@@ -15,7 +14,7 @@ public class TopLayer extends LevelFunctions {
 	
 	@Override
 	public String isOfLevelType(int code) {
-		return TileDecider.isTopLayer(code);
+		return isLevel(code, Tile.toplayer, Tile.TOPLAYER_IMG_PATH);
 	}
 	
 	@Override

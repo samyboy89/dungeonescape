@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 import acm.graphics.GImage;
 import dungeonescape.helper.Tile;
-import dungeonescape.helper.TileDecider;
 import dungeonescape.map.Camera;
 
 abstract class LevelFunctions implements Level {
@@ -41,9 +40,14 @@ abstract class LevelFunctions implements Level {
 	}
 
 	public boolean isNotCollision(int dx, int dy) {
-		return TileDecider.isNotCollision(this.getCell(dx, dy));
+		int code = this.getCell(dx, dy);
+		String collision_folder = isLevel(code, Tile.collision, Tile.COLLISION_IMG_PATH);
+		String collisionmisc_folder = isLevel(code, Tile.collisionmisc, Tile.COLLISIONMISC_IMG_PATH);
+		if (!collision_folder.equals("") || !collisionmisc_folder.equals(""))
+			return false;
+		return true;
 	}
-
+	
 	@Override
 	public ArrayList<ArrayList<Integer>> getList() {
 		return this.list;
@@ -157,4 +161,10 @@ abstract class LevelFunctions implements Level {
 		return "";
 	}
 
+	@Override
+	public String isLevel(Integer code, ArrayList<Integer> list, String file) {
+		if (list.contains(code))
+				return file + code;
+		return "";
+	}
 }

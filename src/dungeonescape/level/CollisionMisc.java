@@ -1,7 +1,6 @@
 package dungeonescape.level;
 
 import dungeonescape.helper.Tile;
-import dungeonescape.helper.TileDecider;
 
 public class CollisionMisc extends LevelFunctions {
 
@@ -15,7 +14,7 @@ public class CollisionMisc extends LevelFunctions {
 	
 	@Override
 	public String isOfLevelType(int code) {
-		return TileDecider.isCollisionMisc(code);
+		return isLevel(code, Tile.collisionmisc, Tile.COLLISIONMISC_IMG_PATH);
 	}
 	
 	@Override
