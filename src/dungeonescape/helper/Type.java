@@ -7,35 +7,35 @@ public final class Type {
 	public static final int POTION = 9999;
 
 	public static final void potion_heal_50(Item common) {
-		normal.setType(POTION);
-		normal.setName("HealingPotion common");
-		normal.setHealing(50);
-		normal.setRequired(1);
-		normal.setValue(10);
+		common.setType(POTION);
+		common.setName("Healing Potion common");
+		common.setHealing(50);
+		common.setRequired(1);
+		common.setValue(10);
 	}
 	
 	public static final void potion_heal_100(Item rare) {
-		normal.setType(POTION);
-		normal.setName("HealingPotion rare");
-		normal.setHealing(100);
-		normal.setRequired(3);
-		normal.setValue(35);
+		rare.setType(POTION);
+		rare.setName("Healing Potion rare");
+		rare.setHealing(100);
+		rare.setRequired(3);
+		rare.setValue(35);
 	}
 	
 	public static final void potion_heal_150(Item epic) {
-		normal.setType(POTION);
-		normal.setName("HealingPotion epic");
-		normal.setHealing(150);
-		normal.setRequired(5);
-		normal.setValue(75);
+		epic.setType(POTION);
+		epic.setName("Healing Potion epic");
+		epic.setHealing(150);
+		epic.setRequired(5);
+		epic.setValue(75);
 	}
 	
 	public static final void potion_heal_200(Item legendary) {
-		normal.setType(POTION);
-		normal.setName("HealingPotion legendary");
-		normal.setHealing(200);
-		normal.setRequired(8);
-		normal.setValue(100);
+		legendary.setType(POTION);
+		legendary.setName("HealingPotion legendary");
+		legendary.setHealing(200);
+		legendary.setRequired(8);
+		legendary.setValue(100);
 	}
 
 	public static final int SHIELD = 9899;
