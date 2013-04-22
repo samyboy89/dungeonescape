@@ -156,7 +156,7 @@ public class Map {
 	}
 
 	public void printCharacter(Player player) {
-		player_graphic = player.getPlayerView(PlayerImg.PLAYER_MAP_SIZE_LARGE, 0);
+		player_graphic = player.getCharacterView(PlayerImg.PLAYER_MAP_SIZE_LARGE, 0);
 		add(player_graphic);
 	}
 
@@ -171,7 +171,7 @@ public class Map {
 	}
 
 	public void moveToNextRoom() {
-		int code = door.getCell(player.getPlayerX(), player.getPlayerY());
+		int code = door.getCell(player.getCharacterX(), player.getCharacterY());
 		if (door.isDoor(code)) {
 			setLevelCode(code);
 		}

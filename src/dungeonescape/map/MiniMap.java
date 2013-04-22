@@ -92,7 +92,7 @@ public class MiniMap {
 					map.add(image);
 			}
 		}
-		image = map.getPlayer().getPlayerView(PlayerImg.PLAYER_MAP_SIZE_SMALL,
+		image = map.getPlayer().getCharacterView(PlayerImg.PLAYER_MAP_SIZE_SMALL,
 				measure);
 		map.add(image);
 		drawCurrentCameraView(measure);

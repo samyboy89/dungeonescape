@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import dungeonescape.character.Direction;
-import dungeonescape.items.Item;
 import dungeonescape.helper.NPC_const;
+import dungeonescape.items.Item;
+import dungeonescape.player.CharacterFunctions;
 
-public class NPC {
+public class NPC extends CharacterFunctions {
 	private String Name;
 	
 	private int life;
@@ -81,26 +82,12 @@ public class NPC {
 		
 	}
 	
-	public void move(Direction direction) {
-		if (lastmove.equals(direction)) {
-			lastMoveCounter++;
-		} else {
-			lastMoveCounter = 1;
-		}
-		this.lastmove = direction;
-		this.move.move(direction);
-	}
-	
-	public void moveCloser() {
-		if (canMove()) {
-			move(Direction.SOUTH);
-		}
-	}
 	
 	private boolean canMove(Direction direction) {
-		if (!willHitPlayer(Direction direction)) {
+		if (!willHitPlayer(direction)) {
 				
 		}
+		return false;
 	}
 	
 	private boolean willHitPlayer(Direction direction) {

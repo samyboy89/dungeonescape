@@ -20,8 +20,8 @@ public class Game {
 	}
 
 	public void saveGame() {
-		prefs.putInt(PrefKey.PLAYER_X, player.getPlayerX());
-		prefs.putInt(PrefKey.PLAYER_Y, player.getPlayerY());
+		prefs.putInt(PrefKey.PLAYER_X, player.getCharacterX());
+		prefs.putInt(PrefKey.PLAYER_Y, player.getCharacterY());
 		prefs.putInt(PrefKey.PLAYER_GENDER, player.getGender());
 		prefs.putInt(PrefKey.PLAYER_STATE, player.getCharacterState());
 		prefs.putInt(PrefKey.PLAYER_DIRECTION_X, player.getDirectionX());
@@ -31,10 +31,10 @@ public class Game {
 	}
 
 	public void loadGame() {
-		player.setPlayerX(prefs.getInt(PrefKey.PLAYER_X, 4));
-		player.setPlayerY(prefs.getInt(PrefKey.PLAYER_Y, 4));
+		player.setCharacterX(prefs.getInt(PrefKey.PLAYER_X, 4));
+		player.setCharacterY(prefs.getInt(PrefKey.PLAYER_Y, 4));
 		player.setGender(prefs.getInt(PrefKey.PLAYER_GENDER, 0));
-		player.setCharacterState(prefs.getInt(PrefKey.PLAYER_STATE, 0));
+		player.setCounterState(prefs.getInt(PrefKey.PLAYER_STATE, 0));
 		player.setLastMovedState(prefs
 				.getInt(PrefKey.PLAYER_DIRECTION_STATE, 0));
 		player.setLastDirection(getDirection(

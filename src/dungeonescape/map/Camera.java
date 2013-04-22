@@ -40,13 +40,13 @@ public class Camera {
 	
 	
 	private void calculateCurrentScreen() {
-		offsetX = (windowX <= mapX ? (map.getPlayer().getPlayerX()) - (windowX / 2) : 0);
+		offsetX = (windowX <= mapX ? (map.getPlayer().getCharacterX()) - (windowX / 2) : 0);
 		if (offsetX <= MIN_X_OFFSET) {
 			offsetX = MIN_X_OFFSET;
 		} else if (offsetX >= getMaxOffsetX()) {
 			offsetX = getMaxOffsetX();
 		}
-		offsetY = (windowY <= mapY ? (map.getPlayer().getPlayerY()) - (windowY / 2) : 0);
+		offsetY = (windowY <= mapY ? (map.getPlayer().getCharacterY()) - (windowY / 2) : 0);
 		if (offsetY <= MIN_Y_OFFSET) {
 			offsetY = MIN_Y_OFFSET;
 		} else if (offsetY >= getMaxOffsetY()) {
