@@ -1,17 +1,23 @@
 package dungeonescape;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 import javax.jws.Oneway;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 
+import acm.graphics.GCanvas;
 import acm.program.GraphicsProgram;
 import dungeonescape.ai.NPC;
 import dungeonescape.character.Direction;
 import dungeonescape.character.Player;
 import dungeonescape.combat.Combat;
+import dungeonescape.components.JProgressBarColoredCustom;
 import dungeonescape.helper.AePlayWave;
 import dungeonescape.helper.Game;
 import dungeonescape.helper.NPC_const;
+import dungeonescape.map.Camera;
 import dungeonescape.map.Map;
 
 @SuppressWarnings("serial")
@@ -21,6 +27,7 @@ public class Main extends GraphicsProgram {
 	private Game game;
 	public Player player;
 	public Map map;
+	Combat combat;
 
 	private int key_state = KEY_MAP;
 	public static final int KEY_MAP = 0;
@@ -40,8 +47,10 @@ public class Main extends GraphicsProgram {
 		this.map = new Map(player);
 		this.game = new Game(player, map);
 		addKeyListeners();
-		Combat combat = new Combat(player, map, new NPC(NPC_const.BALLROG));
+		combat = new Combat(player, map, new NPC(NPC_const.BALLROG));
 		super.run();
+
+		setSize(getWidth()+400, getHeight());
 		// NPC test = new NPC(NPC_const.BALLROG);
 	}
 
@@ -99,10 +108,10 @@ public class Main extends GraphicsProgram {
 			case KEY_COMBAT:
 				switch (key) {
 				case KeyEvent.VK_UP:
-					
+					combat.updatePlayerHealth(+10);
 					break;
 				case KeyEvent.VK_DOWN:
-					
+					combat.updatePlayerHealth(-10);
 					break;
 				case KeyEvent.VK_LEFT:
 					

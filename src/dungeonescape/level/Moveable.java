@@ -26,7 +26,7 @@ public class Moveable extends LevelFunctions {
 	public boolean isMoveable(int dx, int dy) {
 		int code = this.getCell(dx, dy);
 		String moveable = isOfLevelType(code);
-		return moveable.equals("") ? false : true;
+		return !moveable.equals("");
 	}
 	
 	public boolean hasMoved() {

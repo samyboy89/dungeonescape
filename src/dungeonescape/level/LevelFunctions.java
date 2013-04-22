@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import acm.graphics.GImage;
+import dungeonescape.Main;
 import dungeonescape.helper.Tile;
 import dungeonescape.map.Camera;
 
@@ -109,14 +110,14 @@ abstract class LevelFunctions implements Level {
 		return level_size;
 	}
 
-	public String[] parseStoredValue(final CharSequence val) {
+	public static String[] parseStoredValue(final CharSequence val) {
 		if ((val == null) || "".equals(val)) {
 			return null;
 		}
 		return ((String) val).split(":");
 	}
 
-	public String[] parseStoredLevelSize(final CharSequence val) {
+	public static String[] parseStoredLevelSize(final CharSequence val) {
 		if ((val == null) || "".equals(val)) {
 			return null;
 		}
@@ -143,7 +144,7 @@ abstract class LevelFunctions implements Level {
 				GImage image = null;
 				if (size == Tile.PRINT_SIZE_SMALL) {
 					image = new GImage(imagefile + Tile.IMG_EXTENTION,
-							(j * minimap) + 20, (i * minimap) + 20);
+							(j * minimap) + 896 + 20, (i * minimap) + 20);
 					image.scale(minimap / Camera.IMG_SIZE, minimap
 							/ Camera.IMG_SIZE);
 				} else {
