@@ -21,4 +21,10 @@ public class PickUpItems extends LevelFunctions {
 	public String getFileLocation() {
 		return Tile.PICKUPITEMS_TXT;
 	}
+
+	public boolean isItem(int code) {
+		if (Tile.items.contains(code))
+			return true;
+		return false;
+	}
 }

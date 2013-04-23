@@ -1,12 +1,14 @@
 package dungeonescape.player;
 
+import java.util.ArrayList;
+
 import acm.graphics.GImage;
 import dungeonescape.character.Direction;
 import dungeonescape.character.DoMove;
 import dungeonescape.character.Inventory;
 import dungeonescape.character.Stats;
-import dungeonescape.helper.Game;
 import dungeonescape.helper.PlayerImg;
+import dungeonescape.items.Item;
 import dungeonescape.map.Camera;
 
 public abstract class CharacterFunctions implements Character {
@@ -26,8 +28,18 @@ public abstract class CharacterFunctions implements Character {
 	private int charcterX = 4, characterY = 4;
 	public int lastMoveCounter = 2;
 	private boolean hasMoved = true;
+	
+	public static final int CHANGE_EXPERIENCE = 0;
+	public static final int CHANGE_GENDER = 1;
+	public static final int CHANGE_IMAGE_STATE = 2;
+	public static final int CHANGE_LEVEL = 3;
+	public static final int CHANGE_INVENTORY = 4;
+	public static final int CHANGE_HEALTH = 5;
+	
+	private ArrayList<PlayerStatsChangedListener> playerStatsChangedListeners;
 
 	public CharacterFunctions() {
+		playerStatsChangedListeners = new ArrayList<CharacterFunctions.PlayerStatsChangedListener>();
 		setInventory(new Inventory());
 		setStats(new Stats(this, getInventory()));
 	}
@@ -89,7 +101,7 @@ public abstract class CharacterFunctions implements Character {
 		if (size == PlayerImg.PLAYER_MAP_SIZE_SMALL) {
 			image = new GImage(PlayerImg.IMG_LOCATION
 					+ (code + lastMoveCounter) + PlayerImg.IMG_EXTENTION,
-					(charcterX * minimap) + Game.MenuSizeAway, ((characterY * minimap) + 8));
+					(charcterX * minimap), ((characterY * minimap) - 4));
 			image.scale(minimap / Camera.IMG_SIZE, minimap / Camera.IMG_SIZE);
 		} else {
 			if (camera.getOffsetX() <= Camera.MIN_X_OFFSET
@@ -163,6 +175,24 @@ public abstract class CharacterFunctions implements Character {
 	public void changeGender() {
 		gender = (gender == MALE ? FEMALE : MALE);
 	}
+	
+	public double getAttack() {
+		double attack = 0;
+		for (Item i : inventory.getItemsList()) {
+			if(i.isActive())
+				attack += i.getDPS();
+		}
+		return getDamage() + attack;
+	}
+	
+	public double getDefence() {
+		double protection = 0;
+		for (Item i : inventory.getItemsList()) {
+			if (i.isActive())
+				protection += i.getProtection();
+		}
+		return getProtection() + protection;
+	}
 
 	public int getGender() {
 		return this.gender;
@@ -214,6 +244,7 @@ public abstract class CharacterFunctions implements Character {
 
 	public void addExperience(int exp) {
 		stats.addExperience(exp);
+		firePlayerChange(CHANGE_EXPERIENCE);
 	}
 
 	public String getName() {
@@ -294,5 +325,24 @@ public abstract class CharacterFunctions implements Character {
 
 	public void setInventory(Inventory inventory) {
 		this.inventory = inventory;
+	}
+	
+	public double[] getLevelProgress() {
+		return stats.getLevelProgress();
+	}
+	
+	public void setPlayerStatsChangedListener(PlayerStatsChangedListener l) {
+		if (!playerStatsChangedListeners.contains(l))
+			playerStatsChangedListeners.add(l);
+	}
+	
+	private void firePlayerChange(int change) {
+		for (PlayerStatsChangedListener l : playerStatsChangedListeners) {
+			l.change(change);
+		}
+	}
+	
+	public static interface PlayerStatsChangedListener {
+		void change(int change);
 	}
 }

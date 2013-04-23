@@ -92,7 +92,7 @@ public class DoMove {
 							&& !moveable.isMoveable(next_next_x, next_next_y)) {
 						return CELL_MOVEABLE;
 					}
-				} else if (playToPos.equals(new Integer[] { Main.main.player.getCharacterX(), Main.main.player.getCharacterY()})) {
+				} else if (playToPos[0] == Main.main.player.getCharacterX() && playToPos[1] ==  Main.main.player.getCharacterY()) {
 					return CELL_PLAYER;
 				} else {
 					return CELL_EMPTY;

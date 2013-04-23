@@ -6,7 +6,6 @@ import java.util.Timer;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
-import dungeonescape.Main;
 import dungeonescape.helper.Levels;
 
 public class OverlayText {
@@ -14,7 +13,7 @@ public class OverlayText {
 	private Map map;
 	private boolean doneShowing = false;
 	private GObject o;
-	
+
 	public java.util.Timer timer;
 
 	private int SECONDS = 1000;
@@ -39,18 +38,19 @@ public class OverlayText {
 		GLabel l = new GLabel(level);
 		l.setColor(Color.WHITE);
 		l.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
-		l.setLocation((map.camera.getWindowX() * Camera.IMG_SIZE * Camera.IMG_SCALE)
-				- (l.getWidth()) - 60, 60);
+		l.setLocation(896 - (l.getWidth()) - 60, 60);
 		o = l;
-		Main.main.add(o);
-		timer = new Timer();
-		timer.schedule(new java.util.TimerTask() {
-			@Override
-			public void run() {
-				doneShowing = true;
-				Main.main.remove(o);
-			}
-		}, 3 * SECONDS);
+		if (map != null) {
+			map.add(o);
+			timer = new Timer();
+			timer.schedule(new java.util.TimerTask() {
+				@Override
+				public void run() {
+					doneShowing = true;
+					map.gcanvas.remove(o);
+				}
+			}, 3 * SECONDS);
+		}
 	}
 
 	public void printLablesAgain() {
@@ -58,10 +58,11 @@ public class OverlayText {
 		GLabel l = new GLabel(level);
 		l.setColor(Color.WHITE);
 		l.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
-		l.setLocation((map.camera.getWindowX() * Camera.IMG_SIZE * Camera.IMG_SCALE)
-				- (l.getWidth()) - 60, 60);
+		l.setLocation(
+				(map.camera.getWindowX() * Camera.IMG_SIZE * Camera.IMG_SCALE)
+						- (l.getWidth()) - 60, 60);
 		o = l;
-		Main.main.add(o);
+		map.add(o);
 	}
 
 	private String getLevelFromCharacter(int code) {

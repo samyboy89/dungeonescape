@@ -2,8 +2,10 @@ package dungeonescape.character;
 
 public class Stats {
 
-	private dungeonescape.player.Character player;
+	private dungeonescape.player.Character character;
 	private Inventory inventory;
+	private Experience exp;
+	
 	private String name;
 	private int gold;
 	private int experience;
@@ -13,8 +15,9 @@ public class Stats {
 	private int protection;
 
 	public Stats(dungeonescape.player.Character character, Inventory inventory) {
-		this.player = player;
+		this.character = character;
 		this.inventory = inventory;
+		this.exp = new Experience(character);;
 	}
 
 	public void setName(String name) {
@@ -34,19 +37,19 @@ public class Stats {
 	}
 
 	public int getExperience() {
-		return experience;
+		return exp.getExperience();
 	}
 
 	public void addExperience(int experience) {
-		this.experience = experience;
+		this.exp.addExp(experience);
 	}
 
 	public int getLevel() {
-		return level;
+		return exp.getCurrentLevel();
 	}
 
 	public void setLevel(int level) {
-		this.level = level;
+		this.exp.setLevel(level);
 	}
 
 	public int getHealth() {
@@ -72,5 +75,8 @@ public class Stats {
 	public void setProtection(int protection) {
 		this.protection = protection;
 	}
-
+	
+	public double[] getLevelProgress() {
+		return exp.getLevelProgress();
+	}
 }

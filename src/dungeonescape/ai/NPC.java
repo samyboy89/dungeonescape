@@ -1,11 +1,15 @@
 package dungeonescape.ai;
 
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import acm.graphics.GImage;
 import dungeonescape.Main;
@@ -15,7 +19,6 @@ import dungeonescape.ai.model.Graph;
 import dungeonescape.ai.model.Vertex;
 import dungeonescape.character.Direction;
 import dungeonescape.character.DoMove;
-import dungeonescape.helper.Game;
 import dungeonescape.helper.NPC_const;
 import dungeonescape.helper.PlayerImg;
 import dungeonescape.map.Camera;
@@ -87,7 +90,7 @@ public class NPC extends CharacterFunctions {
 	}
 
 	public void moveCloserToPlayer() {
-		if (Main.getState() == Main.MAP) {
+		if (Main.main.getState() == Main.MAP) {
 			createGraphFromMap();
 
 			Graph graph = new Graph(nodes, edges);
@@ -98,18 +101,39 @@ public class NPC extends CharacterFunctions {
 					.getCharacterY()) * map.getMapX())
 					+ Main.main.player.getCharacterX()));
 
-			if (path.size() > 1) {
+			if (path.size() >= 1) {
 				String[] next_move = path.get(1).toString().split("x");
 
 				Direction next_move_direction = Direction.getDirection(
 						(Integer.parseInt(next_move[0]) - (getCharacterX())),
 						(Integer.parseInt(next_move[1]) - (getCharacterY())));
 
-				if (getMove().canMove(
-						next_move_direction,
-						new Integer[] { Integer.parseInt(next_move[0]),
-								Integer.parseInt(next_move[1]) }) == DoMove.CELL_PLAYER) {
-					// Fight
+				if (getMove().canMove(next_move_direction,
+						new Integer[] { getCharacterX(), getCharacterY() }) == DoMove.CELL_PLAYER) {
+					move(next_move_direction);
+					map.timer.cancel();
+					map.timer = null;
+					Timer timer = new Timer();
+					timer.schedule(new TimerTask() {
+
+						@Override
+						public void run() {
+							try {
+								Main.main.setCombat(true);
+								Main.main.npc = NPC.this;
+								KeyEvent ke = new KeyEvent(Main.main
+										.getComponent(0), KeyEvent.KEY_PRESSED,
+										0, // When timeStamp
+										0, // Modifier
+										KeyEvent.VK_UNDEFINED, // Key Code
+										KeyEvent.CHAR_UNDEFINED); // Key Char
+								Toolkit.getDefaultToolkit()
+										.getSystemEventQueue().postEvent(ke);
+							} catch (NullPointerException e) {
+							}
+							this.cancel();
+						}
+					}, 10);
 				} else {
 					move(next_move_direction);
 				}
@@ -163,8 +187,8 @@ public class NPC extends CharacterFunctions {
 		if (size == PlayerImg.PLAYER_MAP_SIZE_SMALL) {
 			image = new GImage(PlayerImg.IMG_LOCATION
 					+ (code + lastMoveCounter) + PlayerImg.IMG_EXTENTION,
-					(getCharacterX() * minimap) + Game.MenuSizeAway,
-					((getCharacterY() * minimap) + 15));
+					(getCharacterX() * minimap),
+					((getCharacterY() * minimap) - 4));
 			image.scale(minimap / Camera.IMG_SIZE, minimap / Camera.IMG_SIZE);
 		} else {
 			image = new GImage(PlayerImg.IMG_LOCATION
@@ -219,7 +243,7 @@ public class NPC extends CharacterFunctions {
 		image.scale(Camera.IMG_SCALE);
 		return image;
 	}
-	
+
 	// Getters and setters
 	public int getID() {
 		return ID;

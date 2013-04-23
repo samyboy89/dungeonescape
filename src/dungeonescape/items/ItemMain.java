@@ -14,6 +14,7 @@ public abstract class ItemMain implements Item {
 	private int required;
 	private GObject view;
 	private Action action;
+	private boolean isActive;
 	
 	public String getName() {
 		return this.name;
@@ -89,6 +90,14 @@ public abstract class ItemMain implements Item {
 	
 	public void doAction() {
 		
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 

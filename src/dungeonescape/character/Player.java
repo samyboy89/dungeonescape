@@ -1,34 +1,30 @@
 package dungeonescape.character;
 
-import dungeonescape.level.Collision;
-import dungeonescape.level.CollisionMisc;
+import dungeonescape.helper.Type;
 import dungeonescape.level.Door;
-import dungeonescape.level.Moveable;
-import dungeonescape.map.Camera;
+import dungeonescape.map.Map;
 import dungeonescape.player.CharacterFunctions;
 
 public class Player extends CharacterFunctions {
 
 	public Player() {
 		super();
+		setHealth(80);
+		setDamage(30);
+		getInventory().addItem(Type.hands_legendary());
 	}
 
-	public Player(Camera camera, Collision collision,
-			CollisionMisc collisionmisc, Moveable moveable, Door door,
-			Integer location) {
-		setCamera(camera);
-		setMove(new DoMove(this, collision, collisionmisc, moveable));
-		this.setPlayer(camera, collision, collisionmisc, moveable, door,
-				location);
-		
+	public Player(Map map) {
+		setCamera(map.camera);
+		setMove(new DoMove(this, map.collision, map.collisionMisc, map.moveable));
+		this.setPlayer(map);
+
 	}
 
-	public void setPlayer(Camera camera, Collision collision,
-			CollisionMisc collisionmisc, Moveable moveable, Door door,
-			Integer location) {
-		setCamera(camera);
-		setMove(new DoMove(this, collision, collisionmisc, moveable));
-		int[] playersNewPosition = getPlayersNewPosition(door, location);
+	public void setPlayer(Map map) {
+		setCamera(map.camera);
+		setMove(new DoMove(this, map.collision, map.collisionMisc, map.moveable));
+		int[] playersNewPosition = getPlayersNewPosition(map.door, map.location);
 		setCharacterX(playersNewPosition[0]);
 		setCharacterY(playersNewPosition[1]);
 
@@ -48,4 +44,5 @@ public class Player extends CharacterFunctions {
 		}
 		return new int[] { getCharacterX(), getCharacterY() };
 	}
+	
 }

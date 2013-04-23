@@ -1,10 +1,18 @@
 package dungeonescape;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.jws.Oneway;
+import javax.swing.JFrame;
 
 import acm.program.GraphicsProgram;
 import dungeonescape.ai.NPC;
@@ -13,8 +21,8 @@ import dungeonescape.character.Player;
 import dungeonescape.combat.Combat;
 import dungeonescape.helper.AePlayWave;
 import dungeonescape.helper.Game;
-import dungeonescape.helper.NPC_const;
 import dungeonescape.map.Map;
+import dungeonescape.menu.RightMenu;
 
 @SuppressWarnings("serial")
 public class Main extends GraphicsProgram {
@@ -22,42 +30,50 @@ public class Main extends GraphicsProgram {
 	public static Main main;
 	private Game game;
 	public Player player;
+	public NPC npc;
 	public Map map;
-	Combat combat;
+	public Combat combat;
+	public RightMenu menu;
 
 	public static final int MAP = 0;
 	public static final int COMBAT = 1;
 	public static final int MENU = 2;
 	private static int state = MAP;
+
+	private boolean isCombat = false;
 	
+	private AePlayWave aw;
+
 	@Override
 	public void init() {
+		initWindow();
+		setBackground(Color.BLACK);
 		main = this;
 		this.player = new Player();
 		super.init();
 	}
+	
+	
 
 	@Oneway
 	@Override
 	public void run() {
 		this.map = new Map(player);
+		this.menu = new RightMenu(map);
 		this.game = new Game(player, map);
 		addKeyListeners();
-		combat = new Combat(player, map, new NPC(NPC_const.BALLROG, map));
 		super.run();
-	
+
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
-			
+
 			@Override
 			public void run() {
 				if (!getGCanvas().hasFocus())
 					getGCanvas().requestFocus();
-				
+
 			}
 		}, 500, 500);
-		setSize(getWidth()+400, getHeight());
-		// NPC test = new NPC(NPC_const.BALLROG);
 	}
 
 	@Override
@@ -92,12 +108,13 @@ public class Main extends GraphicsProgram {
 					player.changeGender();
 					break;
 				case KeyEvent.VK_T:
-					AePlayWave aw = new AePlayWave("sounds/0001_world.wav");
+					aw = new AePlayWave("sounds/0001_world.wav");
 					aw.start();
 					break;
 				case KeyEvent.VK_Q:
 					// destroy();
 					// exit();
+					player.addExperience(10);
 					break;
 				case KeyEvent.VK_Y:
 					game.clearSavedGame();
@@ -109,50 +126,36 @@ public class Main extends GraphicsProgram {
 					game.loadGame();
 					break;
 				}
-				map.redrawViews();
+				if (isCombat) {
+					startCombat();
+				} else {
+					map.redrawViews();
+				}
 				break;
 			case COMBAT:
-				switch (key) {
-				case KeyEvent.VK_UP:
-					combat.updatePlayerHealth(+10);
-					break;
-				case KeyEvent.VK_DOWN:
-					combat.updatePlayerHealth(-10);
-					break;
-				case KeyEvent.VK_LEFT:
-					
-					break;
-				case KeyEvent.VK_RIGHT:
-					combat.moveForwardAndBackGObject();
-					break;
-				case KeyEvent.VK_SPACE:
-					combat.scaleUnScaleGObject();
-					break;
-				case KeyEvent.VK_Q:
-					setState(MAP);
-					map.redrawViews();
-					break;
-				}
+				if (combat != null)
+					combat.onKey(key);
 				break;
 			case MENU:
 				switch (key) {
 				case KeyEvent.VK_UP:
-					
+
 					break;
 				case KeyEvent.VK_DOWN:
-					
+
 					break;
 				case KeyEvent.VK_LEFT:
-					
+
 					break;
 				case KeyEvent.VK_RIGHT:
-					
+
 					break;
 				case KeyEvent.VK_SPACE:
-					
+
 					break;
 				case KeyEvent.VK_Q:
 					setState(MAP);
+					setCombat(false);
 					map.redrawViews();
 					break;
 				}
@@ -164,13 +167,58 @@ public class Main extends GraphicsProgram {
 		}
 
 	}
-	
-	public static int getState() {
+
+	public void startCombat() {
+		combat = new Combat(player, map, npc);
+	}
+
+	public int getState() {
 		return state;
 	}
 
-	public static void setState(int key_state) {
+	public void setState(int key_state) {
 		state = key_state;
 	}
 
+	public int isCombat() {
+		return state;
+	}
+
+	public void setCombat(boolean iscombat) {
+		isCombat = iscombat;
+	}
+
+	private void initWindow() {
+		GraphicsEnvironment ge = GraphicsEnvironment
+				.getLocalGraphicsEnvironment();
+		GraphicsDevice[] gs = ge.getScreenDevices();
+		Window window = new Window();
+		gs[0].setFullScreenWindow(window);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		getGCanvas().setSize(screenSize);
+		int x = screenSize.width;
+		int y = screenSize.height;
+		getGCanvas().setLocation(((x / 2) - 648), ((y / 2) - 320));
+		window.setBackground(Color.black);
+		window.add(getGCanvas());
+	}
+	
+	public class Window extends JFrame {
+		Window() {
+			super();
+			this.setLocation(0, 0);
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			this.setSize(screenSize);
+			this.setResizable(false);
+			this.setUndecorated(true);
+			this.setAlwaysOnTop(true);
+			this.setVisible(true);
+			addWindowListener(new WindowAdapter() {
+			    public void windowClosing(WindowEvent e) {
+			    	if (aw.isAlive())
+			    		aw.stop();
+			    }
+			});
+		}
+	}
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import acm.graphics.GCanvas;
 import acm.graphics.GImage;
 import acm.graphics.GObject;
 import dungeonescape.Main;
@@ -27,9 +28,12 @@ import dungeonescape.level.TopLayer;
 
 public class Map {
 
+	public static final int INIT_MAP = 0;
+	public static final int PRINT_RIGHT_SIDE = 1;
+
 	// CAMERA //
 	public Camera camera;
-	private int location = Levels.ROOMA;
+	public int location = Levels.ROOMA;
 	private int new_location = Levels.ROOMA;
 
 	// LEVELS //
@@ -46,7 +50,10 @@ public class Map {
 	public Player player;
 	public NPC test;
 	public ArrayList<NPC> npcs;
-
+	
+	//GCANVAS
+	public GCanvas gcanvas = new GCanvas();
+	
 	// REMEMBER POSITION //
 	private ArrayList<Moveable> moveables;
 	private ArrayList<PickUpItems> pickUpItems;
@@ -57,23 +64,22 @@ public class Map {
 	// OVERLAY TEXT
 	public OverlayText overlayText;
 
-	// MINI MAP
-	MiniMap miniMap;
-	double measure;
-	
 	// CHANGED ROOM LISTENER
-	private ArrayList<RoomChangeListener> roomChangeListeners;
-	
+	private ArrayList<MapChangeListener> mapChangeListeners;
+
 	// TIMER
-	Timer timer;
+	public Timer timer;
 
 	public Map(Player player) {
+		this.gcanvas.setSize(896, 640);
+		Main.main.getGCanvas().add(gcanvas);
+		
 		this.player = player;
 		this.camera = new Camera(this);
-		
-		this.roomChangeListeners = new ArrayList<Map.RoomChangeListener>();
+
+		this.mapChangeListeners = new ArrayList<Map.MapChangeListener>();
 		this.npcs = new ArrayList<NPC>();
-		
+
 		this.moveables = new ArrayList<Moveable>();
 		this.pickUpItems = new ArrayList<PickUpItems>();
 		this.overlayText = new OverlayText(this);
@@ -86,15 +92,10 @@ public class Map {
 	}
 
 	public void add(GObject object) {
-		Main.main.add(object);
+		gcanvas.add(object);
 	}
-
-	public void remove(GObject object) {
-		Main.main.remove(object);
-	}
-
 	public void removeAll() {
-		Main.main.removeAll();
+		gcanvas.removeAll();
 	}
 
 	public Player getPlayer() {
@@ -129,7 +130,6 @@ public class Map {
 	public void printMap() {
 		overlayText.printLables();
 		initializeNewLevels(this.new_location);
-		fireRoomChangeListener(this.new_location);
 		redrawViews();
 	}
 
@@ -142,11 +142,9 @@ public class Map {
 		this.door = new Door(level);
 		this.pickUpItem = getPickUpItemsToUse(level);
 		this.topLayer = new TopLayer(level);
-		this.miniMap = new MiniMap(this, camera, ground, collision,
-				collisionMisc, misc, moveable, topLayer, pickUpItem);
 		this.camera.setCamera();
-		this.player.setPlayer(camera, collision, collisionMisc, moveable, door,
-				location);
+		fireMapChangeListener(INIT_MAP);
+		this.player.setPlayer(this);
 		addNewNPCs();
 		this.location = new_location;
 		startTimerForLevel();
@@ -156,7 +154,8 @@ public class Map {
 		this.test = new NPC(NPC_const.BALLROG, this);
 		if (npcs.size() > 0) {
 			for (NPC npc : npcs) {
-				if (npc.getRoom() == new_location && npc.getID() != test.getID()) {
+				if (npc.getRoom() == new_location
+						&& npc.getID() != test.getID()) {
 					npcs.add(test);
 				}
 			}
@@ -173,23 +172,25 @@ public class Map {
 
 			@Override
 			public void run() {
-				for (NPC npc : npcs) {
-					if (npc.getRoom() == new_location)
-						npc.moveCloserToPlayer();
+				try {
+					for (NPC npc : npcs) {
+						if (npc.getRoom() == new_location)
+							npc.moveCloserToPlayer();
+					}
+					KeyEvent ke = new KeyEvent(Main.main.getComponent(0),
+							KeyEvent.KEY_PRESSED, 0, // When timeStamp
+							0, // Modifier
+							KeyEvent.VK_UNDEFINED, // Key Code
+							KeyEvent.CHAR_UNDEFINED); // Key Char
+					Toolkit.getDefaultToolkit().getSystemEventQueue()
+							.postEvent(ke);
+				} catch (NullPointerException e) {
 				}
-
-				KeyEvent ke = new KeyEvent(Main.main.getComponent(0),
-						KeyEvent.KEY_PRESSED, 0, // When timeStamp
-						0, // Modifier
-						KeyEvent.VK_UNDEFINED, // Key Code
-						KeyEvent.CHAR_UNDEFINED); // Key Char
-
-				Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(ke);
 
 			}
 		}, 500, 500);
 	}
-	
+
 	private void printLevel(Level level) {
 		GImage image = null;
 		int position_x = 0;
@@ -208,24 +209,25 @@ public class Map {
 	}
 
 	public void redrawViews() {
-		removeAll();
-		Main.main.setBackground(Color.BLACK);
-		camera.getCamera();
-		printLevel(ground);
-		printLevel(collision);
-		printLevel(collisionMisc);
-		printLevel(misc);
-		printLevel(moveable);
-		printLevel(pickUpItem);
-		printCharacter(player);
-		for (NPC npc : npcs) {
-			if (npc.getRoom() == this.location)
-				printCharacter(npc);
-		}
-		printLevel(topLayer);
-		miniMap.printMiniMap();
-		if (!overlayText.isDoneShowing()) {
-			overlayText.printLablesAgain();
+		if (Main.main.getState() == Main.MAP) {
+			removeAll();
+			camera.getCamera();
+			printLevel(ground);
+			printLevel(collision);
+			printLevel(collisionMisc);
+			printLevel(misc);
+			printLevel(moveable);
+			printLevel(pickUpItem);
+			printCharacter(player);
+			for (NPC npc : npcs) {
+				if (npc.getRoom() == this.location)
+					printCharacter(npc);
+			}
+			printLevel(topLayer);
+			fireMapChangeListener(PRINT_RIGHT_SIDE);
+			if (!overlayText.isDoneShowing()) {
+				overlayText.printLablesAgain();
+			}
 		}
 	}
 
@@ -262,25 +264,34 @@ public class Map {
 	public void moveToNextRoom() {
 		int code = door.getCell(player.getCharacterX(), player.getCharacterY());
 		if (door.isDoor(code)) {
-			timer.cancel();
-			timer = null;
+			if (timer != null) {
+				timer.cancel();
+				timer = null;
+			}
 			setLevelCode(code);
 		}
 	}
 	
-	private void fireRoomChangeListener(int level) {
-		for (RoomChangeListener l : roomChangeListeners) {
-			l.onChanged(level);
+	public boolean isItem() {
+		int code = door.getCell(player.getCharacterX(), player.getCharacterY());
+		if (pickUpItem.isItem(code))
+			return true;
+		return false;
+	}
+
+	private void fireMapChangeListener(int state) {
+		for (MapChangeListener l : mapChangeListeners) {
+			l.onChanged(state);
 		}
 	}
-	
-	public void setRoomChangeListener(RoomChangeListener l) {
-		if (!roomChangeListeners.contains(l)) {
-			roomChangeListeners.add(l);
+
+	public void setMapChangeListener(MapChangeListener l) {
+		if (!mapChangeListeners.contains(l)) {
+			mapChangeListeners.add(l);
 		}
 	}
-	
-	public static interface RoomChangeListener {
-		void onChanged(int level);
+
+	public static interface MapChangeListener {
+		void onChanged(int state);
 	}
 }

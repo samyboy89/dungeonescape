@@ -2,7 +2,7 @@ package dungeonescape.components;
 
 import java.awt.Color;
 
-public class JProgressBarColoredCustom extends JProgressBarColored {
+public class JProgressBarColoredPlayer extends JProgressBarColored {
 
 	private static final long serialVersionUID = 4630010912604045235L;
 
@@ -11,14 +11,14 @@ public class JProgressBarColoredCustom extends JProgressBarColored {
 	private Color middleColor = new Color(228, 121, 34);
 	private Color endColor = new Color(204, 0, 0);
 
-	public JProgressBarColoredCustom(int maximumValue, int initialValue) {
+	public JProgressBarColoredPlayer(int maximumValue, int initialValue) {
 		super(maximumValue, initialValue);
 	}
 
 	@Override
 	public void setValue(double newValue) {
 		super.setValue(newValue);
-
+		setBackground(Color.white);
 		if (getPercentage() <= 100 && getPercentage() >= 60) {
 			setForeground(startColor);
 		} else if (getPercentage() >= 35 && getPercentage() < 60) {

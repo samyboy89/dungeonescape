@@ -9,7 +9,6 @@ import dungeonescape.map.Map;
 
 public class Game {
 
-	public static final double MenuSizeAway = 896 + 20;
 	private Preferences prefs;
 	private Player player;
 	private Map map;

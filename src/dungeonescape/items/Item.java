@@ -43,5 +43,7 @@ public interface Item {
 	
 	public void doAction();
 
+	public boolean isActive();
+
 
 }
