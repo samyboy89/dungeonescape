@@ -4,6 +4,7 @@ public final class PlayerImg {
 
 	public static final int PLAYER_MAP_SIZE_SMALL = 0;
 	public static final int PLAYER_MAP_SIZE_LARGE = 1;
+	public static final String IMG_COMBAT_LOCATION = "combat_back/";
 	public static final String IMG_LOCATION = "player/";
 	public static final String IMG_EXTENTION = ".png";
 

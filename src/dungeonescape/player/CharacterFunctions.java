@@ -5,6 +5,7 @@ import dungeonescape.character.Direction;
 import dungeonescape.character.DoMove;
 import dungeonescape.character.Inventory;
 import dungeonescape.character.Stats;
+import dungeonescape.helper.Game;
 import dungeonescape.helper.PlayerImg;
 import dungeonescape.map.Camera;
 
@@ -88,7 +89,7 @@ public abstract class CharacterFunctions implements Character {
 		if (size == PlayerImg.PLAYER_MAP_SIZE_SMALL) {
 			image = new GImage(PlayerImg.IMG_LOCATION
 					+ (code + lastMoveCounter) + PlayerImg.IMG_EXTENTION,
-					(charcterX * minimap) + 20, ((characterY * minimap) + 15));
+					(charcterX * minimap) + Game.MenuSizeAway, ((characterY * minimap) + 8));
 			image.scale(minimap / Camera.IMG_SIZE, minimap / Camera.IMG_SIZE);
 		} else {
 			if (camera.getOffsetX() <= Camera.MIN_X_OFFSET

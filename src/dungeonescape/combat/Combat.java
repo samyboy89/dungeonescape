@@ -3,28 +3,42 @@ package dungeonescape.combat;
 import java.awt.Color;
 import java.awt.Font;
 
+import acm.graphics.GCanvas;
+import acm.graphics.GDimension;
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import acm.graphics.GPoint;
 import dungeonescape.Main;
 import dungeonescape.ai.NPC;
 import dungeonescape.character.Player;
 import dungeonescape.components.JProgressBarColoredCustom;
+import dungeonescape.helper.PlayerImg;
 import dungeonescape.map.Camera;
 import dungeonescape.map.Map;
 
 public class Combat {
 
+	private GCanvas mainCanvas;
 	private NPC npc;
 	private Player player;
 	private Map map;
+	private Animations animations;
+	
+	
 	JProgressBarColoredCustom playerHealth = new JProgressBarColoredCustom(100,
 			100);
 	JProgressBarColoredCustom npcHealth = new JProgressBarColoredCustom(100,
 			100);
 
+	// NPC
+	private GImage npc_char;
+	private GDimension npc_size;
+	private GPoint npc_location;
+
 	public Combat(Player player, Map map, NPC npc) {
-		Main.main.setKeyState(Main.KEY_COMBAT);
+		Main.setState(Main.COMBAT);
+		this.animations = new Animations(map);
 		this.player = player;
 		this.map = map;
 		this.npc = npc;
@@ -32,15 +46,11 @@ public class Combat {
 	}
 
 	private void add(GObject gobject) {
-		Main.main.add(gobject);
+		mainCanvas.add(gobject);
 	}
 
-	private void remove(GObject gobject) {
-		Main.main.remove(gobject);
-	}
-
-	private void removeAll() {
-		Main.main.removeAll();
+	public void remove() {
+		Main.main.remove(mainCanvas);
 	}
 
 	private Camera getCamera() {
@@ -48,17 +58,20 @@ public class Combat {
 	}
 
 	private void printViews() {
-		removeAll();
-		Main.main.setBackground(Color.WHITE);
-
+		// removeAll();
+		mainCanvas = new GCanvas();
+		mainCanvas.setSize(896, 640);
 		add(getCombatBackground());
-		add(getPlayerView());
-		add(getNPCView());
+		add(getPlayerPortrait());
+		add(getNPCPortrait());
 		printCancelButton();
 		printFightButton();
 		initializeHealthBars();
 		printPlayerStats();
 		printNPCStats();
+		printPlayerImage();
+		printNPCImage();
+		Main.main.getGCanvas().add(mainCanvas);
 	}
 
 	private void initializeHealthBars() {
@@ -66,7 +79,7 @@ public class Combat {
 		playerHealth.setLocation(50, (getCamera().getWindowY()
 				* Camera.IMG_SIZE * Camera.IMG_SCALE) - 60);
 		playerHealth.setSize(98, 20);
-		Main.main.getGCanvas().add(playerHealth);
+		mainCanvas.add(playerHealth);
 
 		npcHealth.setValue(80);
 		npcHealth
@@ -74,14 +87,14 @@ public class Combat {
 						(getCamera().getWindowX() * Camera.IMG_SIZE * Camera.IMG_SCALE) - 150,
 						150);
 		npcHealth.setSize(98, 20);
-		Main.main.getGCanvas().add(npcHealth);
+		mainCanvas.add(npcHealth);
 	}
 
 	private GObject getCombatBackground() {
 		return new GImage("combat_back/0599.png");
 	}
 
-	private GObject getPlayerView() {
+	private GObject getPlayerPortrait() {
 		GObject player_view = player.getCombatView();
 		player_view
 				.setLocation(
@@ -90,25 +103,24 @@ public class Combat {
 		return player_view;
 	}
 
-	private GObject getNPCView() {
-		// GObject player_view = npc.getCombatView();
-		GImage npc_view = new GImage("combat_back/0598.png");
-		npc_view.scale(Camera.IMG_SCALE);
+	private GObject getNPCPortrait() {
+		GObject npc_view = npc.getCombatView();
 		npc_view.setLocation(
 				(getCamera().getWindowX() * Camera.IMG_SIZE * Camera.IMG_SCALE) - 150,
 				50);
 		return npc_view;
 	}
-	
+
 	private void printPlayerStats() {
 		GLabel label = new GLabel("Lvl.: " + player.getLevel());
 		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 10));
 		label.setColor(Color.white);
-		label.setLocation(50, (getCamera().getWindowY()
-				* Camera.IMG_SIZE * Camera.IMG_SCALE) - 165);
+		label.setLocation(
+				50,
+				(getCamera().getWindowY() * Camera.IMG_SIZE * Camera.IMG_SCALE) - 165);
 		add(label);
 	}
-	
+
 	private void printNPCStats() {
 		GLabel label = new GLabel("Lvl.: " + npc.getLevel());
 		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 10));
@@ -153,6 +165,29 @@ public class Combat {
 		add(label);
 	}
 
+	private void printPlayerImage() {
+		GImage player_view = player.getCharacterImageState(
+				(player.getCharacterState() + PlayerImg.EAST),
+				PlayerImg.PLAYER_MAP_SIZE_LARGE, 0);
+		player_view.scale(1.5);
+		player_view.setLocation(150, ((getCamera().getWindowY()
+				* Camera.IMG_SIZE * Camera.IMG_SCALE)) / 3);
+		add(player_view);
+	}
+
+	private void printNPCImage() {
+		npc_char = npc.getCharacterImageState(
+				(npc.getCharacterState() + PlayerImg.WEST),
+				PlayerImg.PLAYER_MAP_SIZE_LARGE, 0);
+		npc_char.scale(2);
+		npc_char.setLocation(
+				(getCamera().getWindowX() * Camera.IMG_SIZE * Camera.IMG_SCALE) - 300,
+				(getCamera().getWindowY() * Camera.IMG_SIZE * Camera.IMG_SCALE) / 3);
+		npc_size = npc_char.getSize();
+		npc_location = npc_char.getLocation();
+		add(npc_char);
+	}
+
 	public void updatePlayerHealth(double progress) {
 		playerHealth.setValue(playerHealth.getValue() + progress);
 	}
@@ -161,4 +196,12 @@ public class Combat {
 		npcHealth.setValue(npcHealth.getValue() + progress);
 	}
 
+	public void scaleUnScaleGObject() {
+		animations.scaleUpScaleDown(npc_char, npc_location, npc_size);
+	}
+	
+	public void moveForwardAndBackGObject() {
+		animations.moveForwardAndBack(npc_char, npc_location, npc_size, Animations.LEFT);
+	}
+		
 }

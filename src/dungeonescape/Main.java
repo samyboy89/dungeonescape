@@ -1,23 +1,19 @@
 package dungeonescape;
 
-import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.jws.Oneway;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 
-import acm.graphics.GCanvas;
 import acm.program.GraphicsProgram;
 import dungeonescape.ai.NPC;
 import dungeonescape.character.Direction;
 import dungeonescape.character.Player;
 import dungeonescape.combat.Combat;
-import dungeonescape.components.JProgressBarColoredCustom;
 import dungeonescape.helper.AePlayWave;
 import dungeonescape.helper.Game;
 import dungeonescape.helper.NPC_const;
-import dungeonescape.map.Camera;
 import dungeonescape.map.Map;
 
 @SuppressWarnings("serial")
@@ -29,10 +25,10 @@ public class Main extends GraphicsProgram {
 	public Map map;
 	Combat combat;
 
-	private int key_state = KEY_MAP;
-	public static final int KEY_MAP = 0;
-	public static final int KEY_COMBAT = 1;
-	public static final int KEY_MENU = 2;
+	public static final int MAP = 0;
+	public static final int COMBAT = 1;
+	public static final int MENU = 2;
+	private static int state = MAP;
 	
 	@Override
 	public void init() {
@@ -47,9 +43,19 @@ public class Main extends GraphicsProgram {
 		this.map = new Map(player);
 		this.game = new Game(player, map);
 		addKeyListeners();
-		combat = new Combat(player, map, new NPC(NPC_const.BALLROG));
+		combat = new Combat(player, map, new NPC(NPC_const.BALLROG, map));
 		super.run();
-
+	
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			
+			@Override
+			public void run() {
+				if (!getGCanvas().hasFocus())
+					getGCanvas().requestFocus();
+				
+			}
+		}, 500, 500);
 		setSize(getWidth()+400, getHeight());
 		// NPC test = new NPC(NPC_const.BALLROG);
 	}
@@ -58,8 +64,8 @@ public class Main extends GraphicsProgram {
 	public void keyPressed(KeyEvent event) {
 		try {
 			int key = event.getKeyCode();
-			switch (key_state) {
-			case KEY_MAP:
+			switch (state) {
+			case MAP:
 				switch (key) {
 				case KeyEvent.VK_UP:
 					map.getPlayer().move(Direction.NORTH);
@@ -105,7 +111,7 @@ public class Main extends GraphicsProgram {
 				}
 				map.redrawViews();
 				break;
-			case KEY_COMBAT:
+			case COMBAT:
 				switch (key) {
 				case KeyEvent.VK_UP:
 					combat.updatePlayerHealth(+10);
@@ -117,18 +123,18 @@ public class Main extends GraphicsProgram {
 					
 					break;
 				case KeyEvent.VK_RIGHT:
-					
+					combat.moveForwardAndBackGObject();
 					break;
 				case KeyEvent.VK_SPACE:
-					
+					combat.scaleUnScaleGObject();
 					break;
 				case KeyEvent.VK_Q:
-					setKeyState(KEY_MAP);
+					setState(MAP);
 					map.redrawViews();
 					break;
 				}
 				break;
-			case KEY_MENU:
+			case MENU:
 				switch (key) {
 				case KeyEvent.VK_UP:
 					
@@ -146,7 +152,7 @@ public class Main extends GraphicsProgram {
 					
 					break;
 				case KeyEvent.VK_Q:
-					setKeyState(KEY_MAP);
+					setState(MAP);
 					map.redrawViews();
 					break;
 				}
@@ -159,12 +165,12 @@ public class Main extends GraphicsProgram {
 
 	}
 	
-	public int getKeyState() {
-		return key_state;
+	public static int getState() {
+		return state;
 	}
 
-	public void setKeyState(int key_state) {
-		this.key_state = key_state;
+	public static void setState(int key_state) {
+		state = key_state;
 	}
 
 }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import acm.graphics.GImage;
-import dungeonescape.Main;
+import dungeonescape.helper.Game;
 import dungeonescape.helper.Tile;
 import dungeonescape.map.Camera;
 
@@ -144,7 +144,7 @@ abstract class LevelFunctions implements Level {
 				GImage image = null;
 				if (size == Tile.PRINT_SIZE_SMALL) {
 					image = new GImage(imagefile + Tile.IMG_EXTENTION,
-							(j * minimap) + 896 + 20, (i * minimap) + 20);
+							(j * minimap) + Game.MenuSizeAway, (i * minimap) + 20);
 					image.scale(minimap / Camera.IMG_SIZE, minimap
 							/ Camera.IMG_SIZE);
 				} else {
