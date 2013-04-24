@@ -68,6 +68,7 @@ public final class Tile {
 			9959, 9958, 9957, 9949, 9948, 9939, 9938, 9937, 9936, 9929, 9928,
 			9927, 9926, 9919, 9918, 9917 };
 	public final static Integer[] chest_list = { 5004, 5005 };
+	public final static Integer[] open_chest_list = { 5004 };
 	public final static Integer[] moveable_list = { 5006, 5024, 5025 };
 	public final static Integer[] toplayer_list = { 5002, 5013, 5042, 5043,
 			6027 };
@@ -88,4 +89,6 @@ public final class Tile {
 			Arrays.asList(items_list));
 	public final static ArrayList<Integer> chests = new ArrayList<Integer>(
 			Arrays.asList(chest_list));
+	public final static ArrayList<Integer> open_chests = new ArrayList<Integer>(
+			Arrays.asList(open_chest_list));
 }

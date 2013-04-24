@@ -27,7 +27,7 @@ public class NPC extends CharacterFunctions {
 	private int ID;
 	private int room;
 	private int TYPE_ID;
-	
+	private int max_health;
 
 	private Map map;
 
@@ -211,7 +211,7 @@ public class NPC extends CharacterFunctions {
 
 		} else if (key.equals("LIFE")) {
 			setHealth(Integer.parseInt(value));
-
+			setMaxHealth(Integer.parseInt(value));
 		} else if (key.equals("DAMAGE")) {
 			setDamage(Integer.parseInt(value));
 
@@ -284,6 +284,12 @@ public class NPC extends CharacterFunctions {
 		TYPE_ID = tYPE_ID;
 	}
 
+	public int getMaxHealth() {
+		return max_health;
+	}
 	
+	public void setMaxHealth(int max_health) {
+		this.max_health = max_health;
+	}
 
 }

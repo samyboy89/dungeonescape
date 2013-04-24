@@ -1,21 +1,18 @@
 package dungeonescape.menu;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 import acm.graphics.GCanvas;
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
-import acm.graphics.GRect;
 import dungeonescape.Main;
 import dungeonescape.character.CharacterFunctions;
-import dungeonescape.character.Player;
 import dungeonescape.character.CharacterFunctions.PlayerStatsChangedListener;
+import dungeonescape.character.Player;
 import dungeonescape.components.JProgressBarColoredExperience;
 import dungeonescape.components.JProgressBarColoredPlayer;
 import dungeonescape.helper.Window;
-import dungeonescape.items.Item;
 import dungeonescape.map.Map;
 import dungeonescape.map.Map.MapChangeListener;
 import dungeonescape.map.MiniMap;
@@ -33,6 +30,10 @@ public class RightMenu {
 	JProgressBarColoredPlayer health;
 	GLabel health_label;
 
+	GLabel attack;
+	GLabel defence;
+	GCanvas hearts;
+	
 	public GCanvas gcanvas;
 
 	// MINI MAP
@@ -113,13 +114,37 @@ public class RightMenu {
 		player_view.setLocation(20, 290);
 		gcanvas.add(player_view);
 		
-		GLabel xp_label = new GLabel("TRYM");
-		xp_label.setFont(Main.main.font.deriveFont(16f));
-		xp_label.setColor(Color.white);
-		xp_label.setLocation(25, 380);
-		gcanvas.add(xp_label);
+		GLabel name = new GLabel(player.getName().toUpperCase());
+		name.setFont(Main.main.font.deriveFont(14f));
+		name.setColor(Color.white);
+		name.setLocation(25, 380);
+		gcanvas.add(name);
 
-
+		attack = new GLabel("Attack: " + player.getDamage() + " ( "
+				+ (player.getAttack() - player.getDamage()) + "+ ) ");
+		attack.setFont(Main.main.font.deriveFont(10f));
+		attack.setColor(Color.white);
+		attack.setLocation(150, 355);
+		gcanvas.add(attack);
+		
+		defence = new GLabel("Protection: " + player.getProtection());
+		defence.setFont(Main.main.font.deriveFont(10f));
+		defence.setColor(Color.white);
+		defence.setLocation(150, 370);
+		gcanvas.add(defence);
+		
+		hearts = new GCanvas();
+		hearts.setBackground(Color.BLACK);
+		hearts.setSize(18*player.getLife(), 15);
+		hearts.setLocation(320, 355);
+		for (int i = 0; i < player.getLife(); i++) {
+			GImage heart = new GImage("player/heart.png");
+			heart.setSize(16, 16);
+			heart.setLocation(i*18, 0);
+			hearts.add(heart);
+		}
+		gcanvas.add(hearts);
+		
 		this.player
 				.setPlayerStatsChangedListener(new PlayerStatsChangedListener() {
 
@@ -132,16 +157,24 @@ public class RightMenu {
 						case CharacterFunctions.CHANGE_LEVEL:
 							updateLevel();
 							updateHealth();
+							updateAttack();
+							updateProtection();
 							break;
 						case CharacterFunctions.CHANGE_HEALTH:
 							updateHealth();
 							break;
 						case CharacterFunctions.CHANGE_INVENTORY:
 							grid.updateInventoryGrid();
+							updateAttack();
+							updateProtection();
+							break;
+						case CharacterFunctions.CHANGE_LIFE:
+							updateLife();
 							break;
 						}
 					}
 				});
+		
 		grid.printPlayerInventory();
 	}
 
@@ -160,6 +193,26 @@ public class RightMenu {
 	private void updateLevel() {
 		player.setHealth(player.getMaxHealth());
 		lvl_label.setLabel("Lvl.: " + player.getLevel());
+	}
+	
+	private void updateAttack() {
+		attack.setLabel("Attack: " + player.getDamage() + " ( "
+				+ (player.getAttack() - player.getDamage()) + "+ ) ");
+	}
+
+	
+	private void updateProtection() {
+		defence.setLabel("Protection: " + player.getDefence());
+	}
+	
+	private void updateLife() {
+		hearts.removeAll();
+		for (int i = 0; i < player.getLife(); i++) {
+			GImage heart = new GImage("player/heart.png");
+			heart.setSize(16, 16);
+			heart.setLocation(i*18, 0);
+			hearts.add(heart);
+		}
 	}
 
 

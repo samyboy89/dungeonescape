@@ -36,6 +36,7 @@ public abstract class CharacterFunctions implements Character {
 	public static final int CHANGE_LEVEL = 3;
 	public static final int CHANGE_INVENTORY = 4;
 	public static final int CHANGE_HEALTH = 5;
+	public static final int CHANGE_LIFE = 6;
 
 	private ArrayList<PlayerStatsChangedListener> playerStatsChangedListeners;
 
@@ -214,6 +215,16 @@ public abstract class CharacterFunctions implements Character {
 		return getProtection() + protection;
 	}
 
+	public int getLife() {
+		return stats.getLife();
+	}
+
+	public void setLife(int life) {
+		this.stats.setLife(life);
+		setHealth(getMaxHealth());
+		firePlayerChange(CHANGE_LIFE);
+	}
+	
 	public int getGender() {
 		return this.gender;
 	}

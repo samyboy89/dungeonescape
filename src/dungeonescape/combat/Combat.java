@@ -21,6 +21,7 @@ import dungeonescape.combat.Animations.AnimationDeleteListener;
 import dungeonescape.combat.Animations.AnimationDoneListener;
 import dungeonescape.components.JProgressBarColoredNPC;
 import dungeonescape.components.JProgressBarColoredPlayer;
+import dungeonescape.helper.Levels;
 import dungeonescape.helper.PlayerImg;
 import dungeonescape.helper.Tile;
 import dungeonescape.helper.Type;
@@ -105,7 +106,10 @@ public class Combat {
 							gcanvas.add(potionButtonCanvas);
 						} else {
 							state = FIGHT_OVER;
-							// DEAD - LOOSE LIFE
+							if (Combat.this.player.getLife() > 1)
+									playerLooseLife();
+							else
+								printGameOver();
 						}
 						break;
 					case NPCS_TURN:
@@ -154,13 +158,7 @@ public class Combat {
 			break;
 		case KeyEvent.VK_SPACE:
 			if (canQuit) {
-				Main.main.setState(Main.MAP);
-				Main.main.setCombat(false);
-				Main.main.getGCanvas().add(map.gcanvas);
-				Main.main.getGCanvas().remove(gcanvas);
-				map.startTimerForLevel();
-				map.redrawViews();
-				Main.main.combat = null;
+				quitCombat();
 			}
 			break;
 		case KeyEvent.VK_Q:
@@ -236,7 +234,28 @@ public class Combat {
 		playerHealth.setMaximumValue(player.getMaxHealth());
 		player.addExperience(npc.getExperience());
 		player.setGold(player.getGold() + npc.getGold());
+	}	
+
+	private void playerLooseLife() {
+		player.setLife(player.getLife()-1);
+		int code = map.getLevelCode();
+		if (code != Levels.ROOMa)
+			map.setLevelCode(map.getLevelCode()-1);
+		else
+			map.setLevelCode(Levels.ROOMA);
+		quitCombat();
 	}
+	
+	private void quitCombat() {
+		Main.main.setState(Main.MAP);
+		Main.main.setCombat(false);
+		Main.main.getGCanvas().add(map.gcanvas);
+		Main.main.getGCanvas().remove(gcanvas);
+		map.startTimerForLevel();
+		map.redrawViews();
+		Main.main.combat = null;
+	}
+
 
 	// ******** //
 	// GRAPHICS //
@@ -273,9 +292,9 @@ public class Combat {
 		playerHealth.setSize(98, 20);
 		gcanvas.add(playerHealth);
 
-		npcHealth = new JProgressBarColoredNPC(npc.getHealth(), npc.getHealth());
+		npcHealth = new JProgressBarColoredNPC(npc.getMaxHealth(), npc.getHealth());
 		npcHealth.setValue(npc.getHealth());
-		npcHealth.setMaximumValue(npc.getHealth());
+		npcHealth.setMaximumValue(npc.getMaxHealth());
 		npcHealth
 				.setLocation(
 						(getCamera().getWindowX() * Camera.IMG_SIZE * Camera.IMG_SCALE) - 150,
@@ -491,7 +510,6 @@ public class Combat {
 	}
 
 	public void printLootGraphics() {
-
 		afterFightLoot();
 
 		loot_gcanvas = new GCanvas();
@@ -580,6 +598,15 @@ public class Combat {
 			player.getInventory().addItem(item);
 		
 		return itemCanvas;
+	}
+	
+	private void printGameOver() {
+		GLabel gameover = new GLabel("GAME OVER");
+		gameover.setFont(Main.main.font.deriveFont(140f));
+		gameover.setLocation((Window.GAME_X / 2) - (gameover.getWidth() / 2) ,
+				(Window.WINDOW_Y / 2) - (gameover.getHeight() / 2));
+		gcanvas.add(gameover);
+		Main.main.setState(-1);
 	}
 
 }

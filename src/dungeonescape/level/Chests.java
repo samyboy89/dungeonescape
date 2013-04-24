@@ -36,7 +36,7 @@ public class Chests extends LevelFunctions {
 	}
 
 	public boolean isChest(int code) {
-		if (Tile.chests.contains(code))
+		if (Tile.open_chests.contains(code))
 			return true;
 		return false;
 	}

@@ -8,8 +8,10 @@ public class Player extends CharacterFunctions {
 	
 	public Player() {
 		super();
+		setName("Dragonborn");
+		setLife(3);
 		setHealth(135);
-		setDamage(40);
+		setDamage(33);
 		getInventory().addItem(Type.hands_legendary());
 	}
 

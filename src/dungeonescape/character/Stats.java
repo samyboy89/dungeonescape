@@ -13,6 +13,7 @@ public class Stats {
 	private int health;
 	private int damage;
 	private int protection;
+	private int life;
 
 	public Stats(dungeonescape.character.Character character, Inventory inventory) {
 		this.character = character;
@@ -60,6 +61,14 @@ public class Stats {
 		this.health = health;
 	}
 
+	public int getLife() {
+		return this.life;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
+	}
+	
 	public int getDamage() {
 		return damage;
 	}

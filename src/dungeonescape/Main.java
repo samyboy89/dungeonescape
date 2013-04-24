@@ -106,7 +106,7 @@ public class Main extends GraphicsProgram {
 					map.getPlayer().move(Direction.EAST);
 					break;
 				case KeyEvent.VK_R:
-					map.restartCurrentLevel();
+					// map.restartCurrentLevel();
 					break;
 				case KeyEvent.VK_SPACE:
 					map.moveToNextRoom();
@@ -114,10 +114,10 @@ public class Main extends GraphicsProgram {
 					map.isChest();
 					break;
 				case KeyEvent.VK_E:
-					player.addToCounter();
+					// player.addToCounter();
 					break;
 				case KeyEvent.VK_W:
-					player.changeGender();
+					// player.changeGender();
 					break;
 				case KeyEvent.VK_O:
 					// map.npcs.get(0).moveCloserToPlayer();
@@ -129,16 +129,16 @@ public class Main extends GraphicsProgram {
 				case KeyEvent.VK_Q:
 					// destroy();
 					// exit();
-					player.addExperience(5999);
+					// player.addExperience(5999);
 					break;
 				case KeyEvent.VK_Y:
-					game.clearSavedGame();
+					// game.clearSavedGame();
 					break;
 				case KeyEvent.VK_S:
-					game.saveGame();
+					// game.saveGame();
 					break;
 				case KeyEvent.VK_L:
-					game.loadGame();
+					// game.loadGame();
 					break;
 				case KeyEvent.VK_SHIFT:
 					menu.grid.deleteIfCan();

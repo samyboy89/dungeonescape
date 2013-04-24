@@ -96,4 +96,8 @@ public interface Character {
 	public void setInventory(Inventory inventory);
 	
 	public void firePlayerChange(int change);
+	
+	public int getLife();
+	
+	public void setLife(int life);
 }

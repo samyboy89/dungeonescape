@@ -68,9 +68,6 @@ public class OverlayText {
 	}
 	
 	public void printLevelRequirements(int required) {
-		if (timer != null)
-			timer.cancel();
-		doneShowing = false;
 		String level = "Required Lvl.: " + required;
 		GLabel l = new GLabel(level);
 		l.setColor(Color.WHITE);
@@ -79,14 +76,6 @@ public class OverlayText {
 		final GObject o = l;
 		if (map != null) {
 			map.add(o);
-			timer = new Timer();
-			timer.schedule(new java.util.TimerTask() {
-				@Override
-				public void run() {
-					doneShowing = true;
-					map.gcanvas.remove(o);
-				}
-			}, 3 * SECONDS);
 		}
 	}
 
