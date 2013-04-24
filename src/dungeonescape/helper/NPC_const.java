@@ -5,12 +5,6 @@ public final class NPC_const {
 	public static final String NPC_PATH = "npc/";
 	public static final String COMBAT_VIEW_PATH = "combat_back/";
 
-	public static final int FROGMAN = 7001;
-	public static final int HORSEHEAD = 7002;
-	public static final int MANFLESH = 7003;
-	public static final int HELLBIRD = 7004;
-	public static final int HELLBIRD_2 = 7005;
-	
-	
-	public final static Integer[] npc_list = { FROGMAN, HORSEHEAD, MANFLESH, HELLBIRD, HELLBIRD_2 };
+
+	public final static Integer[] npc_list = { 7001, 7002, 7003, 7004, 7005, 7006, 7007, 7008, 7009, 7010, 7011, 7012, 7013, 7014, 7015, 7016, 7017, 7018, 7019, 7020, 7021, 7022};
 }

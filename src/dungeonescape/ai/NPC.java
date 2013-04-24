@@ -57,6 +57,9 @@ public class NPC extends CharacterFunctions {
 		nodes = new ArrayList<Vertex>();
 		edges = new ArrayList<Edge>();
 
+//		int mapy = map.getMapY() > 30;
+//		int mapx = map.getMapX()
+		
 		// Konverter hvert punkt p� kartet til noder
 
 		for (int y = 0; y < map.getMapY(); y++) {
@@ -106,7 +109,7 @@ public class NPC extends CharacterFunctions {
 					.getCharacterY()) * map.getMapX())
 					+ Main.main.player.getCharacterX()));
 			
-			if (path.size() >= 1) {
+			if (path.size() >= 1 && path.size() <= 12) {
 				String[] next_move = path.get(1).toString().split("x");
 
 				Direction next_move_direction = Direction.getDirection(
