@@ -1,6 +1,7 @@
 package dungeonescape.level;
 
 import dungeonescape.Main;
+import dungeonescape.character.CharacterFunctions;
 import dungeonescape.helper.Levels;
 import dungeonescape.helper.Tile;
 import dungeonescape.helper.Type;
@@ -24,32 +25,39 @@ public class Door extends LevelFunctions {
 	public boolean isDoor(int room) {
 		if (room == Levels.ROOME) {
 			// F¿rste pulje med n¿kler
-			if (Main.main.player.getInventory().getKeysList().size() == 3) {
+			if (Main.main.player.getInventory().getKeysList().size() == 3 || Main.main.player.getKeyRounds() >= 1) {
 				Main.main.player.getInventory().clearKeyList();
+				Main.main.player.setKeyRounds(1);
+				Main.main.player.firePlayerChange(CharacterFunctions.CHANGE_KEY);
 				return true;
 			} else {
 				// Gi beskjed
-				
+				Main.main.map.overlayText.printKeyRequirements();
 				return false;
 			}
 			
 			
 		} else if (room == Levels.ROOM1) {
 			// Andre pulje med n¿kler
-			if (Main.main.player.getInventory().getKeysList().size() == 3) {
+			if (Main.main.player.getInventory().getKeysList().size() == 3 || Main.main.player.getKeyRounds() >= 2) {
 				Main.main.player.getInventory().clearKeyList();
+				Main.main.player.setKeyRounds(2);
+				Main.main.player.firePlayerChange(CharacterFunctions.CHANGE_KEY);
 				return true;
 			} else {
 				// Gi beskjed
+				Main.main.map.overlayText.printKeyRequirements();
 				return false;
 			}
 		} else if (room == Levels.ROOM2) {
 			// Siste pulje med n¿kler
 			if (Main.main.player.getInventory().getKeysList().size() == 3) {
-				Main.main.player.getInventory().clearKeyList();
+				// Vunnet
+				Main.main.map.printVictory();
 				return true;
 			} else {
 				// Gi beskjed
+				Main.main.map.overlayText.printKeyRequirements();
 				return false;
 			}
 		}
