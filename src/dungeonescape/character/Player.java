@@ -10,7 +10,7 @@ public class Player extends CharacterFunctions {
 	public Player() {
 		super();
 		setHealth(80);
-		setDamage(300);
+		setDamage(10000);
 		getInventory().addItem(Type.hands_legendary());
 	}
 

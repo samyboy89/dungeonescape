@@ -160,7 +160,7 @@ public class Map {
 		}
 	}
 
-	private void startTimerForLevel() {
+	public void startTimerForLevel() {
 		if (timer != null)
 			timer.cancel();
 		timer = new Timer();

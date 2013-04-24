@@ -156,6 +156,7 @@ public class Combat {
 				Main.main.setCombat(false);
 				Main.main.getGCanvas().add(map.gcanvas);
 				Main.main.getGCanvas().remove(gcanvas);
+				map.startTimerForLevel();
 				map.redrawViews();
 				Main.main.combat = null;
 			}
