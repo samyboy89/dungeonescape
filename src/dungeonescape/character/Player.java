@@ -13,7 +13,7 @@ public class Player extends CharacterFunctions {
 		setHealth(135);
 		setDamage(33);
 		// getInventory().addKey(Type.key_epic());
-		getInventory().addItem(Type.hands_legendary());
+		// getInventory().addItem(Type.hands_legendary());
 	}
 
 	public Player(Map map) {
