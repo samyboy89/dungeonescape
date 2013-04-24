@@ -41,7 +41,7 @@ public class Main extends GraphicsProgram {
 	public static final int COMBAT = 1;
 	public static final int MENU = 2;
 	public static final int GAMEMENU = 3;
-	private static int state = GAMEMENU;
+	private static int state = MAP;
 
 	private boolean isCombat = false;
 
@@ -62,7 +62,7 @@ public class Main extends GraphicsProgram {
 		this.map = new Map(player);
 		this.menu = new RightMenu(map);
 		this.game = new Game(player, map);
-		this.gameMenu = new GameMenu(map);
+		// this.gameMenu = new GameMenu(map);
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 
@@ -73,7 +73,7 @@ public class Main extends GraphicsProgram {
 
 			}
 		}, 500, 500);
-		getGCanvas().add(gameMenu.gcanvas);
+		getGCanvas().add(map.gcanvas);
 		addKeyListeners();
 		super.run();
 	}
@@ -108,6 +108,9 @@ public class Main extends GraphicsProgram {
 					break;
 				case KeyEvent.VK_W:
 					player.changeGender();
+					break;
+				case KeyEvent.VK_O:
+					//map.npcs.get(0).moveCloserToPlayer();
 					break;
 				case KeyEvent.VK_T:
 					aw = new AePlayWave("sounds/0001_world.wav");

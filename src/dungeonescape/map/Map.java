@@ -12,6 +12,7 @@ import acm.graphics.GImage;
 import acm.graphics.GObject;
 import dungeonescape.Main;
 import dungeonescape.ai.NPC;
+import dungeonescape.ai.NPCS;
 import dungeonescape.character.Player;
 import dungeonescape.helper.Levels;
 import dungeonescape.helper.NPC_const;
@@ -50,7 +51,7 @@ public class Map {
 	// CHARACTERS
 	public Player player;
 	public NPC test;
-	public ArrayList<NPC> npcs;
+	public NPCS npcs;
 
 	// GCANVAS
 	public GCanvas gcanvas = new GCanvas();
@@ -78,7 +79,7 @@ public class Map {
 		this.camera = new Camera(this);
 
 		this.mapChangeListeners = new ArrayList<Map.MapChangeListener>();
-		this.npcs = new ArrayList<NPC>();
+		this.npcs = new NPCS();
 
 		this.moveables = new ArrayList<Moveable>();
 		this.pickUpItems = new ArrayList<PickUpItems>();
@@ -131,7 +132,6 @@ public class Map {
 	public void printMap() {
 		overlayText.printLables();
 		initializeNewLevels(this.new_location);
-		redrawViews();
 	}
 
 	private void initializeNewLevels(int level) {
@@ -149,19 +149,14 @@ public class Map {
 		addNewNPCs();
 		this.location = new_location;
 		startTimerForLevel();
+		redrawViews();
 	}
 
 	private void addNewNPCs() {
-		this.test = new NPC(NPC_const.BALLROG, this);
-		if (npcs.size() > 0) {
-			for (NPC npc : npcs) {
-				if (npc.getRoom() == new_location
-						&& npc.getID() != test.getID()) {
-					npcs.add(test);
-				}
+		for (NPC npc : npcs.getNpcs()) {
+			if (npc.getRoom() == new_location && npc.isAlive()) {
+				npc.initNPC(this);
 			}
-		} else {
-			npcs.add(test);
 		}
 	}
 
@@ -174,8 +169,8 @@ public class Map {
 			@Override
 			public void run() {
 				try {
-					for (NPC npc : npcs) {
-						if (npc.getRoom() == new_location)
+					for (NPC npc : npcs.getNpcs()) {
+						if (npc.getRoom() == new_location && npc.isAlive())
 							npc.moveCloserToPlayer();
 					}
 					KeyEvent ke = new KeyEvent(Main.main.getComponent(0),
@@ -220,8 +215,8 @@ public class Map {
 			printLevel(moveable);
 			printLevel(pickUpItem);
 			printCharacter(player);
-			for (NPC npc : npcs) {
-				if (npc.getRoom() == this.location)
+			for (NPC npc : npcs.getNpcs()) {
+				if (npc.getRoom() == this.location  && npc.isAlive())
 					printCharacter(npc);
 			}
 			printLevel(topLayer);

@@ -28,6 +28,9 @@ import dungeonescape.player.CharacterFunctions;
 public class NPC extends CharacterFunctions {
 	private int ID;
 	private int room;
+	private int TYPE_ID;
+	
+
 	private Map map;
 
 	// Dijkstras-algoritme
@@ -35,24 +38,26 @@ public class NPC extends CharacterFunctions {
 	private List<Edge> edges;
 	private LinkedList<Vertex> path;
 
-	// Konstruktï¿½r
-	public NPC(int NPC_ID, Map map) {
+	// Konstrukt¿r
+	public NPC(int NPC_ID) {
 		super();
-		this.map = map;
-
 		setID(NPC_ID);
 		getNPCValuesAndKeysFromFile(NPC_ID);
 
+	}
+
+	public void initNPC(Map map) {
+		this.map = map;
 		setCamera(map.camera);
 		setMove(new DoMove(this, map.collision, map.collisionMisc, map.moveable));
 	}
-
+	
 	private void createGraphFromMap() {
 
 		nodes = new ArrayList<Vertex>();
 		edges = new ArrayList<Edge>();
 
-		// Konverter hvert punkt pï¿½ kartet til noder
+		// Konverter hvert punkt pŒ kartet til noder
 
 		for (int y = 0; y < map.getMapY(); y++) {
 			for (int x = 0; x < map.getMapX(); x++) {
@@ -100,7 +105,7 @@ public class NPC extends CharacterFunctions {
 			path = dijkstra.getPath(nodes.get(((Main.main.player
 					.getCharacterY()) * map.getMapX())
 					+ Main.main.player.getCharacterX()));
-
+			
 			if (path.size() >= 1) {
 				String[] next_move = path.get(1).toString().split("x");
 
@@ -227,21 +232,37 @@ public class NPC extends CharacterFunctions {
 
 		} else if (key.equals("LOCATION_Y")) {
 			setCharacterY(Integer.parseInt(value));
+		
+		} else if (key.equals("EXP")) {
+			addExperience(Integer.parseInt(value));
+		
+		} else if (key.equals("GOLD")) {
+			setGold(Integer.parseInt(value));
+			
+		} else if (key.equals("TYPE_ID")) {
+			setTYPE_ID(Integer.parseInt(value));
+			
 		}
 
 	}
 
 	@Override
 	public int getCharacterState() {
-		// return getID();
-		return 1500;
+		return getTYPE_ID();
 	}
 
 	public GImage getCombatView() {
-		GImage image = new GImage(PlayerImg.IMG_COMBAT_LOCATION + "0598"
+		GImage image = new GImage(PlayerImg.IMG_COMBAT_LOCATION + getTYPE_ID()
 				+ PlayerImg.IMG_EXTENTION);
 		image.scale(Camera.IMG_SCALE);
 		return image;
+	}
+	
+	public boolean isAlive() {
+		if (getHealth() > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	// Getters and setters
@@ -260,5 +281,15 @@ public class NPC extends CharacterFunctions {
 	public void setRoom(int room) {
 		this.room = room;
 	}
+	
+	public int getTYPE_ID() {
+		return TYPE_ID;
+	}
+
+	public void setTYPE_ID(int tYPE_ID) {
+		TYPE_ID = tYPE_ID;
+	}
+
+	
 
 }

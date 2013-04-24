@@ -128,8 +128,8 @@ public class MiniMap {
 		image = map.getPlayer().getCharacterView(
 				PlayerImg.PLAYER_MAP_SIZE_SMALL, measure);
 		add(image);
-		for (NPC npc : map.npcs) {
-			if (npc.getRoom() == map.getLevelCode()) {
+		for (NPC npc : map.npcs.getNpcs()) {
+			if (npc.getRoom() == map.getLevelCode() && npc.isAlive()) {
 				image = npc.getCharacterView(PlayerImg.PLAYER_MAP_SIZE_SMALL,
 						measure);
 				add(image);
