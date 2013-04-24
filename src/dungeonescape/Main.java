@@ -2,12 +2,14 @@ package dungeonescape;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,15 +43,20 @@ public class Main extends GraphicsProgram {
 	public static final int COMBAT = 1;
 	public static final int MENU = 2;
 	public static final int GAMEMENU = 3;
-	private static int state = MAP;
+	private static int state = GAMEMENU;
 
 	private boolean isCombat = false;
 
 	private AePlayWave aw;
+	
+	// FONT
+	public Font font;
+	private static final Font SERIF_FONT = new Font("serif", Font.PLAIN, 24);
 
 	@Override
 	public void init() {
 		// initWindow();
+		font = getFont("gamemenu/visitor.ttf");
 		setBackground(Color.BLACK);
 		main = this;
 		this.player = new Player();
@@ -119,7 +126,7 @@ public class Main extends GraphicsProgram {
 				case KeyEvent.VK_Q:
 					// destroy();
 					// exit();
-					player.addExperience(10);
+					player.addExperience(5999);
 					break;
 				case KeyEvent.VK_Y:
 					game.clearSavedGame();
@@ -230,4 +237,30 @@ public class Main extends GraphicsProgram {
 			});
 		}
 	}
+
+	public void fireHack() {
+		KeyEvent ke = new KeyEvent(Main.main.getComponent(0),
+				KeyEvent.KEY_PRESSED, 0,
+				0,
+				KeyEvent.VK_UNDEFINED,
+				KeyEvent.CHAR_UNDEFINED);
+		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(ke);
+	}
+
+	private static Font getFont(String name) {
+	    Font font = null;
+	    if (name == null) {
+	        return SERIF_FONT;
+	    }
+	    try {
+	        File fontFile = new File(name);
+	        font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+	        GraphicsEnvironment ge = GraphicsEnvironment
+	                .getLocalGraphicsEnvironment();
+	        ge.registerFont(font);
+	    } catch (Exception ex) {
+	    }
+	    return font;
+	}
+	
 }

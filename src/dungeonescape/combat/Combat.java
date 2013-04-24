@@ -1,10 +1,10 @@
 package dungeonescape.combat;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 import acm.graphics.GCanvas;
 import acm.graphics.GDimension;
@@ -40,6 +40,8 @@ public class Combat {
 			100);
 	JProgressBarColoredNPC npcHealth = new JProgressBarColoredNPC(100, 100);
 
+	private boolean canQuit = false;
+
 	// PLAYER
 	private GImage player_view;
 	private GDimension player_size;
@@ -55,8 +57,18 @@ public class Combat {
 	public static final int PLAYERS_TURN = 0;
 	public static final int NPCS_TURN = 1;
 	protected static final int ROUND_DONE = 2;
+	protected static final int FIGHT_OVER = 3;
 
 	private static final int NO_BAR_UPDATE = -1;
+
+	// BUTTONS
+	private GCanvas fightButtonCanvas;
+	private GCanvas potionButtonCanvas;
+
+	// LOOT GRAPHICS
+	private int counter = 0;
+	GCanvas loot_gcanvas;
+	ArrayList<GObject> labels = new ArrayList<GObject>();
 	
 	// DEBUG
 	private boolean debug = false;
@@ -88,7 +100,10 @@ public class Combat {
 						updatePlayerHealth(NO_BAR_UPDATE);
 						if (Combat.this.player.getHealth() > 0) {
 							state = ROUND_DONE;
+							gcanvas.add(fightButtonCanvas);
+							gcanvas.add(potionButtonCanvas);
 						} else {
+							state = FIGHT_OVER;
 							// DEAD - LOOSE LIFE
 						}
 						break;
@@ -98,8 +113,9 @@ public class Combat {
 							npcAttack();
 							state = PLAYERS_TURN;
 						} else {
-							// KILLED CREEP _ LOOT AND QUIT VIEW
-							// REMOVE CREEP FROM MAP LIST
+							state = FIGHT_OVER;
+							Combat.this.npc.setHealth(-10);
+							printLootGraphics();
 						}
 						break;
 					}
@@ -107,13 +123,22 @@ public class Combat {
 				case Animations.MOVE:
 
 					break;
+				case Animations.LOOT_PRINT:
+					if (counter < labels.size()) {
+						loot_gcanvas.add(labels.get(counter));
+						animations.lootPrint(labels.get(counter));
+						counter++;
+					} else {
+						canQuit = true;
+					}
+					break;
 				}
 
 			}
 		});
 		Main.main.getGCanvas().remove(Main.main.map.gcanvas);
 		Main.main.getGCanvas().add(gcanvas);
-		printViews();		
+		printViews();
 	}
 
 	// ************ //
@@ -123,25 +148,20 @@ public class Combat {
 	public void onKey(int key) {
 
 		switch (key) {
-		case KeyEvent.VK_UP:
-			updatePlayerHealth(+10);
-			break;
-		case KeyEvent.VK_DOWN:
-			updatePlayerHealth(-10);
-			break;
-		case KeyEvent.VK_LEFT:
-			break;
-		case KeyEvent.VK_RIGHT:
+		case KeyEvent.VK_P:
+			// OPEN POTION CHOICE
 			break;
 		case KeyEvent.VK_SPACE:
+			if (canQuit) {
+				Main.main.setState(Main.MAP);
+				Main.main.setCombat(false);
+				Main.main.getGCanvas().add(map.gcanvas);
+				Main.main.getGCanvas().remove(gcanvas);
+				map.redrawViews();
+				Main.main.combat = null;
+			}
 			break;
 		case KeyEvent.VK_Q:
-			Main.main.setState(Main.MAP);
-			Main.main.setCombat(false);
-			Main.main.getGCanvas().add(map.gcanvas);
-			Main.main.getGCanvas().remove(gcanvas);
-			map.redrawViews();
-			Main.main.combat = null;
 			break;
 		case KeyEvent.VK_F:
 			if (state == ROUND_DONE) {
@@ -207,10 +227,19 @@ public class Combat {
 	// **** //
 	// LOOT //
 	// **** //
+	
+	private void afterFightLoot() {
+		player.addExperience(npc.getExperience());
+		player.setGold(player.getGold() + npc.getGold());
+		Item item = lootNPC();
+		if (item != null)
+			player.getInventory().addItem(item);
+	}
 
-	public void lootNPC() {
+	public Item lootNPC() {
 		int random = RandomGenerator.getInstance().nextInt(0, 4);
-		Item item = npc.getInventory().getItem(random);
+		// Item item = npc.getInventory().getItem(random);
+		return null;
 	}
 
 	// ******** //
@@ -229,7 +258,7 @@ public class Combat {
 		add(getCombatBackground());
 		add(getPlayerPortrait());
 		add(getNPCPortrait());
-		printCancelButton();
+		printPotionButton();
 		printFightButton();
 		initializeHealthBars();
 		printPlayerStats();
@@ -277,7 +306,7 @@ public class Combat {
 
 	private void printPlayerStats() {
 		GLabel label = new GLabel("Lvl.: " + player.getLevel());
-		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 10));
+		label.setFont(Main.main.font.deriveFont(12f));
 		label.setColor(Color.white);
 		label.setLocation(
 				50,
@@ -287,7 +316,7 @@ public class Combat {
 
 	private void printNPCStats() {
 		GLabel label = new GLabel("Lvl.: " + npc.getLevel());
-		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 10));
+		label.setFont(Main.main.font.deriveFont(12f));
 		label.setColor(Color.white);
 		label.setLocation(
 				(getCamera().getWindowX() * Camera.IMG_SIZE * Camera.IMG_SCALE) - 150,
@@ -296,55 +325,87 @@ public class Combat {
 	}
 
 	private void printFightButton() {
+		fightButtonCanvas = new GCanvas();
+		fightButtonCanvas.setSize(250, 60);
+		fightButtonCanvas.setLocation(200, (getCamera().getWindowY()
+				* Camera.IMG_SIZE * Camera.IMG_SCALE) - 155);
 		GImage attack = new GImage("combat_back/0499.png");
 		attack.setSize(250, 60);
-		attack.setLocation(
-				200,
-				(getCamera().getWindowY() * Camera.IMG_SIZE * Camera.IMG_SCALE) - 155);
+		attack.setLocation(0, 0);
 		GLabel label = new GLabel("Fight (F)");
-		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+		label.setFont(Main.main.font.deriveFont(20f));
 		label.setLocation(
 				attack.getX() + (attack.getWidth() / 2)
 						- (label.getWidth() / 2),
 				attack.getY() + (attack.getHeight() / 2)
 						+ (label.getHeight() / 4));
-		add(attack);
-		add(label);
-		attack.addMouseListener( new MouseListener() {
+		fightButtonCanvas.add(attack);
+		fightButtonCanvas.add(label);
+		fightButtonCanvas.addMouseListener(new MouseListener() {
 			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-			
+			public void mouseReleased(MouseEvent arg0) {
+			}
+
 			@Override
-			public void mousePressed(MouseEvent arg0) {}
-			
+			public void mousePressed(MouseEvent arg0) {
+			}
+
 			@Override
-			public void mouseExited(MouseEvent arg0) {}
-			
+			public void mouseExited(MouseEvent arg0) {
+			}
+
 			@Override
-			public void mouseEntered(MouseEvent arg0) {}
-			
+			public void mouseEntered(MouseEvent arg0) {
+			}
+
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				swordAttack();
 			}
 		});
+		gcanvas.add(fightButtonCanvas);
 	}
 
-	private void printCancelButton() {
+	private void printPotionButton() {
+		potionButtonCanvas = new GCanvas();
+		potionButtonCanvas.setSize(250, 60);
+		potionButtonCanvas.setLocation(200, (getCamera().getWindowY()
+				* Camera.IMG_SIZE * Camera.IMG_SCALE) - 90);
 		GImage cancel = new GImage("combat_back/0499.png");
 		cancel.setSize(250, 60);
-		cancel.setLocation(
-				200,
-				(getCamera().getWindowY() * Camera.IMG_SIZE * Camera.IMG_SCALE) - 90);
+		cancel.setLocation(0, 0);
 		GLabel label = new GLabel("Use Potion (P)");
-		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+		label.setFont(Main.main.font.deriveFont(20f));
 		label.setLocation(
 				cancel.getX() + (cancel.getWidth() / 2)
 						- (label.getWidth() / 2),
 				cancel.getY() + (cancel.getHeight() / 2)
 						+ (label.getHeight() / 4));
-		add(cancel);
-		add(label);
+		potionButtonCanvas.add(cancel);
+		potionButtonCanvas.add(label);
+		potionButtonCanvas.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+			}
+
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				// CHOOSE POTION
+			}
+		});
+		gcanvas.add(potionButtonCanvas);
 	}
 
 	private void printPlayerImage() {
@@ -388,6 +449,8 @@ public class Combat {
 	}
 
 	public void swordAttack() {
+		gcanvas.remove(fightButtonCanvas);
+		gcanvas.remove(potionButtonCanvas);
 		GImage image = new GImage(Tile.PICKUPITEMS_IMG_PATH + "9936"
 				+ Tile.IMG_EXTENTION);
 		image.scale(3);
@@ -416,6 +479,57 @@ public class Combat {
 		image.setLocation(250, 300);
 		add(image);
 		animations.npcSlashAttack(image);
+	}
+
+	public void printLootGraphics() {
+
+		afterFightLoot();
+		
+		loot_gcanvas = new GCanvas();
+		loot_gcanvas.setBackground(new Color(255, 255, 255, 80));
+		loot_gcanvas.setSize(Window.GAME_X / 2, Window.WINDOW_Y / 2);
+		loot_gcanvas.setLocation((Window.GAME_X / 4), (Window.WINDOW_Y / 4));
+		this.gcanvas.add(loot_gcanvas);
+
+		GLabel gold = new GLabel("Gold found: " + npc.getGold());
+		gold.setLocation(10, 70);
+		gold.setFont(Main.main.font.deriveFont(20f));
+		
+		GLabel exp = new GLabel("Experience gained: " + npc.getExperience());
+		exp.setLocation(10, 100);
+		exp.setFont(Main.main.font.deriveFont(20f));
+
+		double[] progress = player.getLevelProgress();
+		GLabel to_next_lvl = new GLabel("Level progress: " + (int) progress[0] + " %");
+		to_next_lvl.setLocation(10, 130);
+		to_next_lvl.setFont(Main.main.font.deriveFont(20f));
+
+		GLabel dummy = new GLabel("");
+		
+		labels.add(gold);
+		labels.add(exp);
+		labels.add(to_next_lvl);
+		
+		GCanvas item_card = getItemCard();
+		
+		GLabel space = new GLabel("Press space to continue");
+		space.setFont(Main.main.font.deriveFont(20f));
+		space.setLocation((Window.GAME_X / 4) - ((space.getWidth() / 2) - 30) - (space.getWidth() / 4), loot_gcanvas.getHeight() - 40);
+		labels.add(space);
+		
+		labels.add(dummy);
+		
+		GLabel header = new GLabel("You won!");
+		header.setFont(Main.main.font.deriveFont(40f));
+		header.setLocation((Window.GAME_X / 4) - (header.getWidth() / 2) - 30, 40);
+
+		loot_gcanvas.add(header);
+		animations.lootPrint(header);
+	}
+
+	private GCanvas getItemCard() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

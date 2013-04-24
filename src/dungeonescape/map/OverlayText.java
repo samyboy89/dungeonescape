@@ -6,6 +6,7 @@ import java.util.Timer;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import dungeonescape.Main;
 import dungeonescape.helper.Levels;
 
 public class OverlayText {
@@ -37,7 +38,7 @@ public class OverlayText {
 		String level = getLevelFromCharacter(map.getLevelCode());
 		GLabel l = new GLabel(level);
 		l.setColor(Color.WHITE);
-		l.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
+		l.setFont(Main.main.font.deriveFont(40f));
 		l.setLocation(896 - (l.getWidth()) - 60, 60);
 		o = l;
 		if (map != null) {
@@ -57,7 +58,7 @@ public class OverlayText {
 		String level = getLevelFromCharacter(map.getLevelCode());
 		GLabel l = new GLabel(level);
 		l.setColor(Color.WHITE);
-		l.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
+		l.setFont(Main.main.font.deriveFont(40f));
 		l.setLocation(
 				(map.camera.getWindowX() * Camera.IMG_SIZE * Camera.IMG_SCALE)
 						- (l.getWidth()) - 60, 60);

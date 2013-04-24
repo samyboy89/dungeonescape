@@ -19,7 +19,8 @@ public class Animations {
 	
 	public static final int LEFT = 0;
 	public static final int RIGHT = 1;
-	
+
+	public static final int LOOT_PRINT = 9;
 	public static final int ATTACK = 10;
 	public static final int MOVE = 11;
 	
@@ -141,6 +142,22 @@ public class Animations {
 				}
 			}
 		}, 100, 20);
+	}
+	
+	public void lootPrint(final GObject gobject) {
+		Timer t = new Timer();
+		t.schedule(new TimerTask() {
+			int count = 0;
+			@Override
+			public void run() {
+				count++;
+				gobject.setLocation(gobject.getX()+3, gobject.getY());
+				if (count == 10) {
+					fireAnimationDoneListener(LOOT_PRINT);
+					this.cancel();
+				}
+			}
+		}, 100, 10);
 	}
 	
 	private void fireAnimationDoneListener(int action) {

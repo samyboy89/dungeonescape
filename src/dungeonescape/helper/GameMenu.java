@@ -10,7 +10,6 @@ import acm.graphics.GCanvas;
 import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
-import acm.graphics.GRectangle;
 import dungeonescape.Main;
 import dungeonescape.map.Map;
 
@@ -18,13 +17,22 @@ public class GameMenu {
 
 	private Map map;
 	
+	public final static String IMG_LOCATION = "gamemenu/";
+	public final static String IMG_PNG = ".png";
+
+	public final static String IMG_LOGO = IMG_LOCATION+"logo"+IMG_PNG;
+	public final static String IMG_BUTTON = IMG_LOCATION+"button"+IMG_PNG;
+	
+	
 	public GCanvas gcanvas = new GCanvas();
 	
 	
 	public GameMenu(Map map) {
 		this.map = map;
 		this.gcanvas.setSize(Window.WINDOW_X, Window.WINDOW_Y);
-		this.gcanvas.setBackground(Color.RED);
+		this.gcanvas.setBackground(Color.BLACK);
+		
+		printLogo();
 		printStartGameButton();
 		printGameRulesButton();
 		printQuitGameButton();
@@ -53,14 +61,24 @@ public class GameMenu {
 		gcanvas.add(gobject);
 	}
 	
+	private void printLogo() {
+		GImage logo = new GImage(IMG_LOGO);
+		logo.setSize((Window.WINDOW_X * 2) / 3, 100);
+		logo.setLocation(
+				(Window.WINDOW_X / 2) - (logo.getWidth() / 2),
+				(Window.WINDOW_Y / 2) - (logo.getHeight() / 2) - 130);
+		add(logo);
+		
+	}
+	
 	private void printStartGameButton() {
-		GImage start = new GImage("combat_back/0499.png");
+		GImage start = new GImage(IMG_BUTTON);
 		start.setSize(250, 60);
 		start.setLocation(
 				(Window.WINDOW_X / 2) - (start.getWidth() / 2),
-				(Window.WINDOW_Y / 2) - (start.getHeight() / 2) - 65);
+				(Window.WINDOW_Y / 2) - (start.getHeight() / 2));
 		GLabel label = new GLabel("Start Game (S)");
-		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+		label.setFont(Main.main.font.deriveFont(20f));
 		label.setLocation(
 				start.getX() + (start.getWidth() / 2)
 						- (label.getWidth() / 2),
@@ -89,13 +107,13 @@ public class GameMenu {
 	}
 	
 	private void printGameRulesButton() {
-		GImage rules = new GImage("combat_back/0499.png");
+		GImage rules = new GImage(IMG_BUTTON);
 		rules.setSize(250, 60);
 		rules.setLocation(
 				(Window.WINDOW_X / 2) - (rules.getWidth() / 2),
-				(Window.WINDOW_Y / 2) - (rules.getHeight() / 2));
+				(Window.WINDOW_Y / 2) - (rules.getHeight() / 2) + 65);
 		GLabel label = new GLabel("Game Rules (G)");
-		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+		label.setFont(Main.main.font.deriveFont(20f));
 		label.setLocation(
 				rules.getX() + (rules.getWidth() / 2)
 						- (label.getWidth() / 2),
@@ -122,13 +140,13 @@ public class GameMenu {
 	}
 	
 	private void printQuitGameButton() {
-		GImage quit = new GImage("combat_back/0499.png");
+		GImage quit = new GImage(IMG_BUTTON);
 		quit.setSize(250, 60);
 		quit.setLocation(
 				(Window.WINDOW_X / 2) - (quit.getWidth() / 2),
-				(Window.WINDOW_Y / 2) - (quit.getHeight() / 2) + 65);
+				(Window.WINDOW_Y / 2) - (quit.getHeight() / 2) + 130);
 		GLabel label = new GLabel("Quit Game (Q)");
-		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+		label.setFont(Main.main.font.deriveFont(20f));
 		label.setLocation(
 				quit.getX() + (quit.getWidth() / 2)
 						- (label.getWidth() / 2),

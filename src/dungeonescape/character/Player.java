@@ -6,22 +6,23 @@ import dungeonescape.map.Map;
 import dungeonescape.player.CharacterFunctions;
 
 public class Player extends CharacterFunctions {
-
+	
 	public Player() {
 		super();
 		setHealth(80);
-		setDamage(30);
+		setDamage(300);
 		getInventory().addItem(Type.hands_legendary());
 	}
 
 	public Player(Map map) {
+		setMap(map);
 		setCamera(map.camera);
 		setMove(new DoMove(this, map.collision, map.collisionMisc, map.moveable));
 		this.setPlayer(map);
-
 	}
-
+	
 	public void setPlayer(Map map) {
+		setMap(map);
 		setCamera(map.camera);
 		setMove(new DoMove(this, map.collision, map.collisionMisc, map.moveable));
 		int[] playersNewPosition = getPlayersNewPosition(map.door, map.location);
@@ -44,5 +45,4 @@ public class Player extends CharacterFunctions {
 		}
 		return new int[] { getCharacterX(), getCharacterY() };
 	}
-	
 }

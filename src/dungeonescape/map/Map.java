@@ -173,13 +173,7 @@ public class Map {
 						if (npc.getRoom() == new_location && npc.isAlive())
 							npc.moveCloserToPlayer();
 					}
-					KeyEvent ke = new KeyEvent(Main.main.getComponent(0),
-							KeyEvent.KEY_PRESSED, 0, // When timeStamp
-							0, // Modifier
-							KeyEvent.VK_UNDEFINED, // Key Code
-							KeyEvent.CHAR_UNDEFINED); // Key Char
-					Toolkit.getDefaultToolkit().getSystemEventQueue()
-							.postEvent(ke);
+					Main.main.fireHack();
 				} catch (NullPointerException e) {
 				}
 

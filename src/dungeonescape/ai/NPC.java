@@ -38,7 +38,7 @@ public class NPC extends CharacterFunctions {
 	private List<Edge> edges;
 	private LinkedList<Vertex> path;
 
-	// Konstrukt¿r
+	// Konstruktï¿½r
 	public NPC(int NPC_ID) {
 		super();
 		setID(NPC_ID);
@@ -57,7 +57,7 @@ public class NPC extends CharacterFunctions {
 		nodes = new ArrayList<Vertex>();
 		edges = new ArrayList<Edge>();
 
-		// Konverter hvert punkt pŒ kartet til noder
+		// Konverter hvert punkt pï¿½ kartet til noder
 
 		for (int y = 0; y < map.getMapY(); y++) {
 			for (int x = 0; x < map.getMapX(); x++) {
@@ -126,14 +126,7 @@ public class NPC extends CharacterFunctions {
 							try {
 								Main.main.setCombat(true);
 								Main.main.npc = NPC.this;
-								KeyEvent ke = new KeyEvent(Main.main
-										.getComponent(0), KeyEvent.KEY_PRESSED,
-										0, // When timeStamp
-										0, // Modifier
-										KeyEvent.VK_UNDEFINED, // Key Code
-										KeyEvent.CHAR_UNDEFINED); // Key Char
-								Toolkit.getDefaultToolkit()
-										.getSystemEventQueue().postEvent(ke);
+								Main.main.fireHack();
 							} catch (NullPointerException e) {
 							}
 							this.cancel();
