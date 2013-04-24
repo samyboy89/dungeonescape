@@ -596,6 +596,13 @@ public class Combat {
 
 		if (item != null)
 			player.getInventory().addItem(item);
+		if (npc.hasKey()) {
+			Items items = new Items();
+			for (Item i : items.getKeys()) {
+				if (i.getType() == npc.getKey())
+					player.getInventory().addKey(i);
+			}
+		}
 		
 		return itemCanvas;
 	}

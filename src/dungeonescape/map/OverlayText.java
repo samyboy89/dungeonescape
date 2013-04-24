@@ -78,6 +78,18 @@ public class OverlayText {
 			map.add(o);
 		}
 	}
+	
+	public void printKeyRequirements() {
+		String level = "3 Keys required";
+		GLabel l = new GLabel(level);
+		l.setColor(Color.WHITE);
+		l.setFont(Main.main.font.deriveFont(30f));
+		l.setLocation(896 - (l.getWidth()) - 60, Window.WINDOW_Y - 40);
+		final GObject o = l;
+		if (map != null) {
+			map.add(o);
+		}
+	}
 
 	private String getLevelFromCharacter(int code) {
 		switch (code) {

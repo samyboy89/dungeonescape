@@ -16,6 +16,7 @@ import dungeonescape.character.CharacterFunctions.PlayerStatsChangedListener;
 import dungeonescape.character.Player;
 import dungeonescape.helper.Levels;
 import dungeonescape.helper.PlayerImg;
+import dungeonescape.helper.Type;
 import dungeonescape.helper.Window;
 import dungeonescape.items.Item;
 import dungeonescape.items.Items;
@@ -312,6 +313,20 @@ public class Map {
 
 	private boolean doPickup(int code, int x_change, int y_change) {
 		Items items = new Items();
+		switch (code) {
+		case Type.KEY_EPIC:
+		case Type.KEY_LEGENDARY:
+		case Type.KEY_RARE:
+			for (Item i : items.getKeys()) {
+				if (i.getType() == code) {
+					pickUpItem.removeCell(player.getCharacterX() + x_change,
+							player.getCharacterY() + y_change);
+					redrawViews();
+					player.getInventory().addKey(i);
+					return true;
+				}
+			}
+		}
 		for (Item i : items.getItems()) {
 			if (i.getType() == code) {
 				pickUpItem.removeCell(player.getCharacterX() + x_change,

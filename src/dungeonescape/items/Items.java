@@ -8,6 +8,7 @@ import dungeonescape.helper.Type;
 public class Items {
 
 	private ArrayList<Item> items;
+	private ArrayList<Item> keys;
 
 	public static final int COMMON_ITEM = 0;
 	public static final int RARE_ITEM = 1;
@@ -19,6 +20,7 @@ public class Items {
 	public static final int KEY_LEGENDARY = 2;
 
 	public Items() {
+		keys = new ArrayList<Item>();
 		items = new ArrayList<Item>();
 		items.add(Type.chest_common());
 		items.add(Type.chest_rare());
@@ -49,6 +51,10 @@ public class Items {
 		items.add(Type.sword_epic());
 		items.add(Type.sword_rare());
 		items.add(Type.sword_legendary());
+		
+		keys.add(Type.key_epic());
+		keys.add(Type.key_legendary());
+		keys.add(Type.key_rare());
 	}
 	
 	public Item getKey(int key_type) {
@@ -65,6 +71,10 @@ public class Items {
 	
 	public ArrayList<Item> getItems() {
 		return items;
+	}
+	
+	public ArrayList<Item> getKeys() {
+		return keys;
 	}
 
 	public ArrayList<Item> getItems(int level) {

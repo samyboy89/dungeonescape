@@ -85,5 +85,9 @@ public class Inventory {
 		character.firePlayerChange(CharacterFunctions.CHANGE_KEY);
 	}
 	
+	public void clearKeyList() {
+		keys.clear();
+	}
+	
 	
 }

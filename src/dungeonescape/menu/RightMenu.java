@@ -189,6 +189,9 @@ public class RightMenu {
 						case CharacterFunctions.CHANGE_LIFE:
 							updateLife();
 							break;
+						case CharacterFunctions.CHANGE_KEY:
+							updateKeys();
+							break;
 						}
 					}
 				});
@@ -234,12 +237,14 @@ public class RightMenu {
 	}
 	
 	private void updateKeys() {
-		hearts.removeAll();
-		for (int i = 0; i < player.getLife(); i++) {
-			GImage heart = new GImage("player/heart.png");
-			heart.setSize(16, 16);
-			heart.setLocation(i*18, 0);
-			hearts.add(heart);
+		keys.removeAll();
+		int counter = 0;
+		for (Item i : player.getInventory().getKeysList()) {
+			GImage key = new GImage(Tile.PICKUPITEMS_IMG_PATH + i.getType() + Tile.IMG_EXTENTION);
+			key.setSize(16, 16);
+			key.setLocation(counter*18, 0);
+			keys.add(key);
+			counter ++;
 		}
 	}
 
