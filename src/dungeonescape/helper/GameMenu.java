@@ -54,7 +54,7 @@ public class GameMenu {
 			case KeyEvent.VK_Q:
 				System.exit(0);
 				break;
-			case KeyEvent.VK_R:
+			case KeyEvent.VK_K:
 				printGameRules();
 				break;
 			}
@@ -139,7 +139,7 @@ public class GameMenu {
 		rules.setSize(250, 60);
 		rules.setLocation((Window.WINDOW_X / 2) - (rules.getWidth() / 2),
 				(Window.WINDOW_Y / 2) - (rules.getHeight() / 2) + 65);
-		GLabel label = new GLabel("Game Rules (R)");
+		GLabel label = new GLabel("Key bindings (K)");
 		label.setFont(Main.main.font.deriveFont(20f));
 		label.setLocation(
 				rules.getX() + (rules.getWidth() / 2) - (label.getWidth() / 2),
