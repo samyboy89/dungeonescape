@@ -25,6 +25,7 @@ import dungeonescape.helper.PlayerImg;
 import dungeonescape.helper.Tile;
 import dungeonescape.helper.Window;
 import dungeonescape.items.Item;
+import dungeonescape.items.Items;
 import dungeonescape.map.Camera;
 import dungeonescape.map.Map;
 
@@ -68,7 +69,7 @@ public class Combat {
 	private int counter = 0;
 	GCanvas loot_gcanvas;
 	ArrayList<GObject> labels = new ArrayList<GObject>();
-	
+
 	// DEBUG
 	private boolean debug = false;
 
@@ -215,6 +216,7 @@ public class Combat {
 			playerHealth.setValue(playerHealth.getValue() + progress);
 		else
 			playerHealth.setValue(player.getHealth());
+		playerHealth.setMaximumValue(player.getMaxHealth());
 	}
 
 	public void updateNPCHealth(int progress) {
@@ -222,13 +224,16 @@ public class Combat {
 			npcHealth.setValue(npcHealth.getValue() + progress);
 		else
 			npcHealth.setValue(npc.getHealth());
+		npcHealth.setMaximumValue(npc.getHealth());
 	}
 
 	// **** //
 	// LOOT //
 	// **** //
-	
+
 	private void afterFightLoot() {
+		playerHealth.setValue(player.getHealth());
+		playerHealth.setMaximumValue(player.getMaxHealth());
 		player.addExperience(npc.getExperience());
 		player.setGold(player.getGold() + npc.getGold());
 		Item item = lootNPC();
@@ -268,8 +273,10 @@ public class Combat {
 	}
 
 	private void initializeHealthBars() {
-		playerHealth = new JProgressBarColoredPlayer(player.getMaxHealth(), player.getHealth());
+		playerHealth = new JProgressBarColoredPlayer(player.getMaxHealth(),
+				player.getHealth());
 		playerHealth.setValue(player.getHealth());
+		playerHealth.setMaximumValue(player.getMaxHealth());
 		playerHealth.setLocation(50, (getCamera().getWindowY()
 				* Camera.IMG_SIZE * Camera.IMG_SCALE) - 60);
 		playerHealth.setSize(98, 20);
@@ -277,6 +284,7 @@ public class Combat {
 
 		npcHealth = new JProgressBarColoredNPC(npc.getHealth(), npc.getHealth());
 		npcHealth.setValue(npc.getHealth());
+		npcHealth.setMaximumValue(npc.getHealth());
 		npcHealth
 				.setLocation(
 						(getCamera().getWindowX() * Camera.IMG_SIZE * Camera.IMG_SCALE) - 150,
@@ -486,9 +494,9 @@ public class Combat {
 	public void printLootGraphics() {
 
 		afterFightLoot();
-		
+
 		loot_gcanvas = new GCanvas();
-		loot_gcanvas.setBackground(new Color(255, 255, 255, 80));
+		loot_gcanvas.setBackground(new Color(255, 255, 255));
 		loot_gcanvas.setSize(Window.GAME_X / 2, Window.WINDOW_Y / 2);
 		loot_gcanvas.setLocation((Window.GAME_X / 4), (Window.WINDOW_Y / 4));
 		this.gcanvas.add(loot_gcanvas);
@@ -496,42 +504,80 @@ public class Combat {
 		GLabel gold = new GLabel("Gold found: " + npc.getGold());
 		gold.setLocation(10, 70);
 		gold.setFont(Main.main.font.deriveFont(20f));
-		
+
 		GLabel exp = new GLabel("Experience gained: " + npc.getExperience());
 		exp.setLocation(10, 100);
 		exp.setFont(Main.main.font.deriveFont(20f));
 
 		double[] progress = player.getLevelProgress();
-		GLabel to_next_lvl = new GLabel("Level progress: " + (int) progress[0] + " %");
+		GLabel to_next_lvl = new GLabel("Level progress: " + (int) progress[0]
+				+ " %");
 		to_next_lvl.setLocation(10, 130);
 		to_next_lvl.setFont(Main.main.font.deriveFont(20f));
 
 		GLabel dummy = new GLabel("");
-		
+
 		labels.add(gold);
 		labels.add(exp);
 		labels.add(to_next_lvl);
-		
-		GCanvas item_card = getItemCard();
-		
+
 		GLabel space = new GLabel("Press space to continue");
 		space.setFont(Main.main.font.deriveFont(20f));
-		space.setLocation((Window.GAME_X / 4) - ((space.getWidth() / 2) - 30) - (space.getWidth() / 4), loot_gcanvas.getHeight() - 40);
+		space.setLocation((Window.GAME_X / 4) - ((space.getWidth() / 2) - 30)
+				- (space.getWidth() / 4), loot_gcanvas.getHeight() - 40);
 		labels.add(space);
-		
+
 		labels.add(dummy);
+
+		Items items = new Items();
+		ArrayList<Item> itemsList = items.getItems(player.getLevel());
+		int random = RandomGenerator.getInstance().nextInt(0, itemsList.size()-1);
+		Item item = itemsList.get(random);
+		
+		GCanvas item_graphic = getItemCard(item);
+		item_graphic.setLocation(0, 160);
+		loot_gcanvas.add(item_graphic);
 		
 		GLabel header = new GLabel("You won!");
 		header.setFont(Main.main.font.deriveFont(40f));
-		header.setLocation((Window.GAME_X / 4) - (header.getWidth() / 2) - 30, 40);
-
+		header.setLocation((Window.GAME_X / 4) - (header.getWidth() / 2) - 30,
+				40);
 		loot_gcanvas.add(header);
 		animations.lootPrint(header);
 	}
 
-	private GCanvas getItemCard() {
+	private GCanvas getItemCard(Item item) {
+		GImage image = new GImage(Tile.PICKUPITEMS_IMG_PATH+item.getType()+Tile.IMG_EXTENTION);
+		image.scale(Camera.IMG_SCALE);
+		image.setLocation((Window.GAME_X / 12), 10);
 		
-		return null;
+		GLabel item_name = new GLabel("Item: "+ item.getName());
+		item_name.setFont(Main.main.font.deriveFont(20f));
+		item_name.setColor(Color.WHITE);
+		item_name.setLocation((Window.GAME_X / 6), 30);
+
+		GLabel item_MSS = new GLabel(item.getMSS());
+		item_MSS.setFont(Main.main.font.deriveFont(20f));
+		item_MSS.setColor(Color.WHITE);
+		item_MSS.setLocation((Window.GAME_X / 6), 50);
+		
+
+		GLabel item_STSS = new GLabel(item.getSTSS());
+		item_STSS.setFont(Main.main.font.deriveFont(20f));
+		item_STSS.setColor(Color.WHITE);
+		item_STSS.setLocation((Window.GAME_X / 6), 70);
+			
+
+		GCanvas itemCanvas = new GCanvas();
+		itemCanvas.setSize(Window.GAME_X / 2, (int) image.getHeight() + 20);
+		itemCanvas.setBackground(item.getBackground());
+		
+		itemCanvas.add(image);
+		itemCanvas.add(item_name);
+		itemCanvas.add(item_MSS);
+		itemCanvas.add(item_STSS);
+		
+		return itemCanvas;
 	}
 
 }

@@ -11,6 +11,7 @@ import dungeonescape.character.Player;
 import dungeonescape.components.JProgressBarColoredExperience;
 import dungeonescape.components.JProgressBarColoredPlayer;
 import dungeonescape.helper.Window;
+import dungeonescape.map.Camera;
 import dungeonescape.map.Map;
 import dungeonescape.map.Map.MapChangeListener;
 import dungeonescape.map.MiniMap;
@@ -24,9 +25,11 @@ public class RightMenu {
 
 	JProgressBarColoredExperience exp;
 	GLabel xp_label;
-	
+	GLabel lvl_label;
+
 	JProgressBarColoredPlayer health;
-	
+	GLabel health_label;
+
 	public GCanvas gcanvas;
 
 	// MINI MAP
@@ -55,17 +58,6 @@ public class RightMenu {
 				}
 			}
 		});
-		this.player.setPlayerStatsChangedListener( new PlayerStatsChangedListener() {
-			
-			@Override
-			public void change(int change) {
-				switch (change) {
-				case CharacterFunctions.CHANGE_EXPERIENCE:
-					updateExperience();
-					break;
-				}
-			}
-		});
 		gcanvas.add(miniMap.gcanvas);
 		initializePlayerStats();
 	}
@@ -73,7 +65,7 @@ public class RightMenu {
 	public void add(GObject gobject) {
 		gcanvas.add(gobject);
 	}
-	
+
 	public void printMiniMap() {
 		if (miniMap != null)
 			miniMap.printMiniMap();
@@ -82,30 +74,89 @@ public class RightMenu {
 	private void initializePlayerStats() {
 		exp = new JProgressBarColoredExperience(100, 100);
 		exp.setValue(player.getLevelProgress()[0]);
-		exp.setSize(360, 15);
-		exp.setLocation(20, 310);
+		exp.setSize(240, 15);
+		exp.setLocation(140, 295);
 		gcanvas.add(exp);
 
-		health = new JProgressBarColoredPlayer(100, 100);
+		lvl_label = new GLabel("Lvl.: " + player.getLevel());
+		lvl_label.setFont(Main.main.font.deriveFont(10f));
+		lvl_label.setColor(Color.white);
+		lvl_label.setLocation(Window.MENU_X - 30 - lvl_label.getWidth(), 290);
+		gcanvas.add(lvl_label);
+
+		health = new JProgressBarColoredPlayer(player.getMaxHealth(),
+				player.getHealth());
 		health.setValue(player.getHealth());
-		health.setSize(360, 15);
-		health.setLocation(20, 340);
+		health.setMaximumValue(player.getMaxHealth());
+		health.setSize(240, 15);
+		health.setLocation(140, 325);
 		gcanvas.add(health);
-		
-		xp_label = new GLabel("XP: "+ player.getExperience());
-		xp_label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 10));
+
+		xp_label = new GLabel("XP: " + player.getExperience());
+		xp_label.setFont(Main.main.font.deriveFont(10f));
 		xp_label.setColor(Color.white);
-		xp_label.setLocation(20, 300);
+		xp_label.setLocation(150, 290);
 		gcanvas.add(xp_label);
+
+		health_label = new GLabel("Health: " + player.getHealth() + " / "
+				+ player.getMaxHealth());
+		health_label.setFont(Main.main.font.deriveFont(10f));
+		health_label.setColor(Color.white);
+		health_label.setLocation(150, 320);
+		gcanvas.add(health_label);
+
+		GObject player_view = player.getCombatView();
+		player_view.setLocation(20, 290);
+		gcanvas.add(player_view);
+		
+		GLabel xp_label = new GLabel("TRYM");
+		xp_label.setFont(Main.main.font.deriveFont(16f));
+		xp_label.setColor(Color.white);
+		xp_label.setLocation(25, 380);
+		gcanvas.add(xp_label);
+
+
+		this.player
+				.setPlayerStatsChangedListener(new PlayerStatsChangedListener() {
+
+					@Override
+					public void change(int change) {
+						switch (change) {
+						case CharacterFunctions.CHANGE_EXPERIENCE:
+							updateExperience();
+							break;
+						case CharacterFunctions.CHANGE_LEVEL:
+							updateLevel();
+							updateHealth();
+							break;
+						case CharacterFunctions.CHANGE_HEALTH:
+							updateHealth();
+							break;
+						}
+					}
+				});
 	}
 
 	private void updateExperience() {
-		xp_label.setLabel("XP: "+ player.getExperience());
+		xp_label.setLabel("XP: " + player.getExperience());
 		exp.setValue(player.getLevelProgress()[0]);
 	}
-	
+
+	private void updateHealth() {
+		health_label.setLabel("Health: " + player.getHealth() + " / "
+				+ player.getMaxHealth());
+		health.setValue(player.getHealth());
+		health.setMaximumValue(player.getMaxHealth());
+	}
+
+	private void updateLevel() {
+		player.setHealth(player.getMaxHealth());
+		lvl_label.setLabel("Lvl.: " + player.getLevel());
+		lvl_label.setLocation(Window.MENU_X - 20 - lvl_label.getWidth(), 300);
+	}
+
 	private void printPlayerInventory() {
-		
+
 	}
 
 }

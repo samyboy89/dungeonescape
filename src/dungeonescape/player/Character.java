@@ -98,4 +98,6 @@ public interface Character {
 	public Inventory getInventory();
 
 	public void setInventory(Inventory inventory);
+	
+	public void firePlayerChange(int change);
 }

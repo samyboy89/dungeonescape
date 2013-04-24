@@ -6,7 +6,7 @@ public class ItemCommon extends ItemMain {
 
 	@Override
 	public Color getBackground() {
-		return Color.WHITE;
+		return Color.GRAY;
 	}
 	
 }
