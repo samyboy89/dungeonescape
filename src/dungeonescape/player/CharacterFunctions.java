@@ -296,7 +296,7 @@ public abstract class CharacterFunctions implements Character {
 	}
 
 	public int getMaxHealth() {
-		return 100 + getLevel() * 35;
+		return 100 + (getLevel() * 35);
 	}
 
 	public int getHealth() {
@@ -305,6 +305,7 @@ public abstract class CharacterFunctions implements Character {
 
 	public void setHealth(int health) {
 		stats.setHealth(health);
+		firePlayerChange(CHANGE_HEALTH);
 	}
 
 	public int getProtection() {
@@ -364,7 +365,7 @@ public abstract class CharacterFunctions implements Character {
 			playerStatsChangedListeners.add(l);
 	}
 
-	private void firePlayerChange(int change) {
+	public void firePlayerChange(int change) {
 		for (PlayerStatsChangedListener l : playerStatsChangedListeners) {
 			l.change(change);
 		}

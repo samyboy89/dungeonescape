@@ -1,6 +1,7 @@
 package dungeonescape.items;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import dungeonescape.helper.Type;
 
@@ -85,21 +86,23 @@ public class Items {
 				break;
 			}
 		}
+		Collections.shuffle(it);
 		return it;
 	}
 
 	private int getLevelType(int level) {
 		switch (level) {
+		case 0:
 		case 1:
 		case 2:
-		case 3:
 			return COMMON_ITEM;
+		case 3:
 		case 4:
 		case 5:
-		case 6:
 			return RARE_ITEM;
 		case 7:
 		case 8:
+		case 6:
 			return EPIC_ITEM;
 		case 9:
 		case 10:

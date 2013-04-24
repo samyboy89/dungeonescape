@@ -49,5 +49,9 @@ public interface Item {
 
 	public boolean isActive();
 
+	public String getMSS();
+	
+	public String getSTSS();
+
 
 }
