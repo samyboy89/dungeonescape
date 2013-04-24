@@ -238,6 +238,7 @@ public class NPC extends CharacterFunctions {
 			setTYPE_ID(Integer.parseInt(value));
 			
 		} else if (key.equals("KEY")) {
+			System.out.println(Integer.parseInt(value));
 			setKey(Integer.parseInt(value));
 			
 		}
