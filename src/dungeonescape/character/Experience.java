@@ -1,11 +1,10 @@
 package dungeonescape.character;
 
-import dungeonescape.player.CharacterFunctions;
 
 
 public class Experience {
 
-	private dungeonescape.player.Character character;
+	private dungeonescape.character.Character character;
 	private int player_current_level = 1;
 	private int player_exp = 0;
 
@@ -21,11 +20,11 @@ public class Experience {
 	private final double LEVEL_9 = 300000;
 	//nprivate final double LEVEL_10 = 400000;
 	
-	private final double MAX_LEVEL = 9;
+	private final double MAX_LEVEL = 10;
 	
 	private final double[] LEVELS = { LEVEL_0, LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7, LEVEL_8, LEVEL_9 };
 	
-	public Experience (dungeonescape.player.Character character) {
+	public Experience (dungeonescape.character.Character character) {
 		this.character = character;
 		this.player_current_level = 0;
 	}

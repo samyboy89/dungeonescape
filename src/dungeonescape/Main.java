@@ -45,10 +45,11 @@ public class Main extends GraphicsProgram {
 	public static final int GAMEMENU = 3;
 	private static int state = GAMEMENU;
 
+	private boolean dialogOpen = false;
 	private boolean isCombat = false;
 
 	private AePlayWave aw;
-	
+
 	// FONT
 	public Font font;
 	private static final Font SERIF_FONT = new Font("serif", Font.PLAIN, 24);
@@ -109,6 +110,8 @@ public class Main extends GraphicsProgram {
 					break;
 				case KeyEvent.VK_SPACE:
 					map.moveToNextRoom();
+					map.isItem();
+					map.isChest();
 					break;
 				case KeyEvent.VK_E:
 					player.addToCounter();
@@ -117,7 +120,7 @@ public class Main extends GraphicsProgram {
 					player.changeGender();
 					break;
 				case KeyEvent.VK_O:
-					//map.npcs.get(0).moveCloserToPlayer();
+					// map.npcs.get(0).moveCloserToPlayer();
 					break;
 				case KeyEvent.VK_T:
 					aw = new AePlayWave("sounds/0001_world.wav");
@@ -136,6 +139,9 @@ public class Main extends GraphicsProgram {
 					break;
 				case KeyEvent.VK_L:
 					game.loadGame();
+					break;
+				case KeyEvent.VK_SHIFT:
+					menu.grid.deleteIfCan();
 					break;
 				}
 				if (isCombat) {
@@ -196,12 +202,20 @@ public class Main extends GraphicsProgram {
 		state = key_state;
 	}
 
-	public int isCombat() {
-		return state;
+	public boolean isCombat() {
+		return isCombat;
 	}
 
 	public void setCombat(boolean iscombat) {
 		isCombat = iscombat;
+	}
+
+	public boolean isDialogOpen() {
+		return dialogOpen;
+	}
+
+	public void setDialogOpen(boolean isopen) {
+		dialogOpen = isopen;
 	}
 
 	private void initWindow() {
@@ -240,27 +254,25 @@ public class Main extends GraphicsProgram {
 
 	public void fireHack() {
 		KeyEvent ke = new KeyEvent(Main.main.getComponent(0),
-				KeyEvent.KEY_PRESSED, 0,
-				0,
-				KeyEvent.VK_UNDEFINED,
+				KeyEvent.KEY_PRESSED, 0, 0, KeyEvent.VK_UNDEFINED,
 				KeyEvent.CHAR_UNDEFINED);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(ke);
 	}
 
 	private static Font getFont(String name) {
-	    Font font = null;
-	    if (name == null) {
-	        return SERIF_FONT;
-	    }
-	    try {
-	        File fontFile = new File(name);
-	        font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
-	        GraphicsEnvironment ge = GraphicsEnvironment
-	                .getLocalGraphicsEnvironment();
-	        ge.registerFont(font);
-	    } catch (Exception ex) {
-	    }
-	    return font;
+		Font font = null;
+		if (name == null) {
+			return SERIF_FONT;
+		}
+		try {
+			File fontFile = new File(name);
+			font = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+			GraphicsEnvironment ge = GraphicsEnvironment
+					.getLocalGraphicsEnvironment();
+			ge.registerFont(font);
+		} catch (Exception ex) {
+		}
+		return font;
 	}
-	
+
 }

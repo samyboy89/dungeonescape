@@ -23,6 +23,7 @@ import dungeonescape.components.JProgressBarColoredNPC;
 import dungeonescape.components.JProgressBarColoredPlayer;
 import dungeonescape.helper.PlayerImg;
 import dungeonescape.helper.Tile;
+import dungeonescape.helper.Type;
 import dungeonescape.helper.Window;
 import dungeonescape.items.Item;
 import dungeonescape.items.Items;
@@ -224,7 +225,6 @@ public class Combat {
 			npcHealth.setValue(npcHealth.getValue() + progress);
 		else
 			npcHealth.setValue(npc.getHealth());
-		npcHealth.setMaximumValue(npc.getHealth());
 	}
 
 	// **** //
@@ -236,15 +236,6 @@ public class Combat {
 		playerHealth.setMaximumValue(player.getMaxHealth());
 		player.addExperience(npc.getExperience());
 		player.setGold(player.getGold() + npc.getGold());
-		Item item = lootNPC();
-		if (item != null)
-			player.getInventory().addItem(item);
-	}
-
-	public Item lootNPC() {
-		int random = RandomGenerator.getInstance().nextInt(0, 4);
-		// Item item = npc.getInventory().getItem(random);
-		return null;
 	}
 
 	// ******** //
@@ -370,7 +361,10 @@ public class Combat {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				swordAttack();
+				if (state == ROUND_DONE) {
+					state = NPCS_TURN;
+					playerAttack();
+				}
 			}
 		});
 		gcanvas.add(fightButtonCanvas);
@@ -461,7 +455,12 @@ public class Combat {
 	public void swordAttack() {
 		gcanvas.remove(fightButtonCanvas);
 		gcanvas.remove(potionButtonCanvas);
-		GImage image = new GImage(Tile.PICKUPITEMS_IMG_PATH + "9936"
+		Item item = Type.noAttack();
+		for (Item i : player.getInventory().getItemsList()) {
+			if (i.getParentType() == Type.SWORD && i.isActive())
+				item = i;
+		}
+		GImage image = new GImage(Tile.PICKUPITEMS_IMG_PATH + item.getType()
 				+ Tile.IMG_EXTENTION);
 		image.scale(3);
 		image.setLocation(
@@ -510,8 +509,8 @@ public class Combat {
 		exp.setFont(Main.main.font.deriveFont(20f));
 
 		double[] progress = player.getLevelProgress();
-		GLabel to_next_lvl = new GLabel("Level progress: " + (int) progress[0]
-				+ " %");
+		GLabel to_next_lvl = new GLabel("Lvl.: " + player.getLevel() + " (Progress: " + (int) progress[0]
+				+ " %)");
 		to_next_lvl.setLocation(10, 130);
 		to_next_lvl.setFont(Main.main.font.deriveFont(20f));
 
@@ -576,6 +575,9 @@ public class Combat {
 		itemCanvas.add(item_name);
 		itemCanvas.add(item_MSS);
 		itemCanvas.add(item_STSS);
+
+		if (item != null)
+			player.getInventory().addItem(item);
 		
 		return itemCanvas;
 	}

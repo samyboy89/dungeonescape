@@ -26,6 +26,7 @@ public final class Tile {
 	public static final String DOOR_TXT = "levels/door.txt";
 	public static final String TOPLAYER_TXT = "levels/toplayer.txt";
 	public static final String PICKUPITEMS_TXT = "levels/items.txt";
+	public static final String CHESTS_TXT = "levels/chests.txt";
 
 	public static final String GROUND_IMG_PATH = "ground/";
 	public static final String COLLISION_IMG_PATH = "collision/";
@@ -34,6 +35,7 @@ public final class Tile {
 	public static final String MOVEABLE_IMG_PATH = "moveable/";
 	public static final String TOPLAYER_IMG_PATH = "toplayer/";
 	public static final String PICKUPITEMS_IMG_PATH = "items/";
+	public static final String CHESTS_IMG_PATH = "chests/";
 
 	public final static Integer[] ground_list = { 2001, 2002, 2003, 2004, 3001,
 			7001, 7002, 7014, 7015, 7016, 7017, 7018, 7019, 7020, 7021, 7022,
@@ -65,6 +67,7 @@ public final class Tile {
 			9989, 9988, 9987, 9979, 9978, 9977, 9976, 9969, 9968, 9967, 9966,
 			9959, 9958, 9957, 9949, 9948, 9939, 9938, 9937, 9936, 9929, 9928,
 			9927, 9926, 9919, 9918, 9917 };
+	public final static Integer[] chest_list = { 5004, 5005 };
 	public final static Integer[] moveable_list = { 5006, 5024, 5025 };
 	public final static Integer[] toplayer_list = { 5002, 5013, 5042, 5043,
 			6027 };
@@ -83,4 +86,6 @@ public final class Tile {
 			Arrays.asList(toplayer_list));
 	public final static ArrayList<Integer> items = new ArrayList<Integer>(
 			Arrays.asList(items_list));
+	public final static ArrayList<Integer> chests = new ArrayList<Integer>(
+			Arrays.asList(chest_list));
 }

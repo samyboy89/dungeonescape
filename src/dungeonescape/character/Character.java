@@ -1,10 +1,6 @@
-package dungeonescape.player;
+package dungeonescape.character;
 
 import acm.graphics.GImage;
-import dungeonescape.character.Direction;
-import dungeonescape.character.DoMove;
-import dungeonescape.character.Inventory;
-import dungeonescape.character.Stats;
 import dungeonescape.map.Camera;
 
 public interface Character {

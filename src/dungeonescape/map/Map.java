@@ -1,8 +1,6 @@
 package dungeonescape.map;
 
 import java.awt.Color;
-import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,11 +11,15 @@ import acm.graphics.GObject;
 import dungeonescape.Main;
 import dungeonescape.ai.NPC;
 import dungeonescape.ai.NPCS;
+import dungeonescape.character.CharacterFunctions;
+import dungeonescape.character.CharacterFunctions.PlayerStatsChangedListener;
 import dungeonescape.character.Player;
 import dungeonescape.helper.Levels;
-import dungeonescape.helper.NPC_const;
 import dungeonescape.helper.PlayerImg;
 import dungeonescape.helper.Window;
+import dungeonescape.items.Item;
+import dungeonescape.items.Items;
+import dungeonescape.level.Chests;
 import dungeonescape.level.Collision;
 import dungeonescape.level.CollisionMisc;
 import dungeonescape.level.Door;
@@ -35,8 +37,8 @@ public class Map {
 
 	// CAMERA //
 	public Camera camera;
-	public int location = Levels.ROOME;
-	private int new_location = Levels.ROOME;
+	public int location = Levels.ROOMA;
+	private int new_location = Levels.ROOMA;
 
 	// LEVELS //
 	public Ground ground;
@@ -47,6 +49,7 @@ public class Map {
 	public TopLayer topLayer;
 	public Door door;
 	public PickUpItems pickUpItem;
+	public Chests chest;
 
 	// CHARACTERS
 	public Player player;
@@ -59,6 +62,7 @@ public class Map {
 	// REMEMBER POSITION //
 	private ArrayList<Moveable> moveables;
 	private ArrayList<PickUpItems> pickUpItems;
+	private ArrayList<Chests> chests;
 
 	// PLAYER GRAPHIC //
 	private GObject player_graphic;
@@ -83,12 +87,24 @@ public class Map {
 
 		this.moveables = new ArrayList<Moveable>();
 		this.pickUpItems = new ArrayList<PickUpItems>();
+		this.chests = new ArrayList<Chests>();
 		this.overlayText = new OverlayText(this);
 
+		player.setPlayerStatsChangedListener(new PlayerStatsChangedListener() {
+
+			@Override
+			public void change(int change) {
+				if (change == CharacterFunctions.CHANGE_IMAGE_STATE) {
+					redrawViews();
+				}
+			}
+		});
+
 		Main.main.setBackground(Color.BLACK);
-		Main.main.setSize((camera.getWindowX() * Camera.IMG_SIZE
-				* Camera.IMG_SCALE) + Window.MENU_X, camera.getWindowY() * Camera.IMG_SIZE
-				* Camera.IMG_SCALE);
+		Main.main.setSize(
+				(camera.getWindowX() * Camera.IMG_SIZE * Camera.IMG_SCALE)
+						+ Window.MENU_X, camera.getWindowY() * Camera.IMG_SIZE
+						* Camera.IMG_SCALE);
 		printMap();
 	}
 
@@ -142,6 +158,7 @@ public class Map {
 		this.misc = new Misc(level);
 		this.door = new Door(level);
 		this.pickUpItem = getPickUpItemsToUse(level);
+		this.chest = getChestsToUse(level);
 		this.topLayer = new TopLayer(level);
 		this.camera.setCamera();
 		fireMapChangeListener(INIT_MAP);
@@ -205,12 +222,13 @@ public class Map {
 			printLevel(ground);
 			printLevel(collision);
 			printLevel(collisionMisc);
+			printLevel(chest);
 			printLevel(misc);
 			printLevel(moveable);
 			printLevel(pickUpItem);
 			printCharacter(player);
 			for (NPC npc : npcs.getNpcs()) {
-				if (npc.getRoom() == this.location  && npc.isAlive())
+				if (npc.getRoom() == this.location && npc.isAlive())
 					printCharacter(npc);
 			}
 			printLevel(topLayer);
@@ -221,7 +239,7 @@ public class Map {
 		}
 	}
 
-	public void printCharacter(dungeonescape.player.Character player) {
+	public void printCharacter(dungeonescape.character.Character player) {
 		player_graphic = player.getCharacterView(
 				PlayerImg.PLAYER_MAP_SIZE_LARGE, 0);
 		add(player_graphic);
@@ -247,8 +265,14 @@ public class Map {
 		return items;
 	}
 
-	private void findAllNPC(int code) {
-		// TODO Finn alle npc-er
+	private Chests getChestsToUse(int level) {
+		for (Chests i : chests)
+			if (i.getLevelCode() == level)
+				return i;
+		Chests chest = new Chests(level);
+		chest.setLevelCode(level);
+		chests.add(chest);
+		return chest;
 	}
 
 	public void moveToNextRoom() {
@@ -263,10 +287,49 @@ public class Map {
 	}
 
 	public boolean isItem() {
-		int code = door.getCell(player.getCharacterX(), player.getCharacterY());
-		if (pickUpItem.isItem(code))
-			return true;
+		int code = pickUpItem.getCell(player.getCharacterX(),
+				player.getCharacterY());
+		if (pickUpItem.isItem(code)) {
+			return doPickup(code, 0, 0);
+		} else if (location == Levels.ROOMC) {
+			int new_try = pickUpItem.getCell(player.getCharacterX(),
+					player.getCharacterY() - 1);
+			if (pickUpItem.isItem(new_try)) {
+				return doPickup(new_try, 0, - 1);
+			}
+		}
 		return false;
+	}
+	
+	public boolean isChest() {
+		int code = chest.getCell(player.getCharacterX()+0,
+				player.getCharacterY()-1);
+		if (chest.isChest(code)) {
+			return openChest(code, 0, -1);
+		}
+		return false;
+	}
+
+	private boolean doPickup(int code, int x_change, int y_change) {
+		Items items = new Items();
+		for (Item i : items.getItems()) {
+			if (i.getType() == code) {
+				pickUpItem.removeCell(player.getCharacterX() + x_change,
+						player.getCharacterY() + y_change);
+				redrawViews();
+				player.getInventory().addItem(i);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean openChest(int code, int x_change, int y_change) {
+		chest.changeCell(player.getCharacterX() + x_change,
+				player.getCharacterY() + y_change, 5005);
+		redrawViews();
+		chest.openChest();
+		return true;
 	}
 
 	private void fireMapChangeListener(int state) {

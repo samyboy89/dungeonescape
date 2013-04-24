@@ -1,27 +1,30 @@
 package dungeonescape.menu;
 
 import java.awt.Color;
-import java.awt.Font;
+import java.util.ArrayList;
 
 import acm.graphics.GCanvas;
+import acm.graphics.GImage;
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
+import acm.graphics.GRect;
 import dungeonescape.Main;
+import dungeonescape.character.CharacterFunctions;
 import dungeonescape.character.Player;
+import dungeonescape.character.CharacterFunctions.PlayerStatsChangedListener;
 import dungeonescape.components.JProgressBarColoredExperience;
 import dungeonescape.components.JProgressBarColoredPlayer;
 import dungeonescape.helper.Window;
-import dungeonescape.map.Camera;
+import dungeonescape.items.Item;
 import dungeonescape.map.Map;
 import dungeonescape.map.Map.MapChangeListener;
 import dungeonescape.map.MiniMap;
-import dungeonescape.player.CharacterFunctions;
-import dungeonescape.player.CharacterFunctions.PlayerStatsChangedListener;
 
 public class RightMenu {
 
+	public InventoryGrid grid;
 	private Map map;
-	private Player player;
+	Player player;
 
 	JProgressBarColoredExperience exp;
 	GLabel xp_label;
@@ -44,6 +47,7 @@ public class RightMenu {
 		this.map = map;
 		this.player = map.player;
 		this.miniMap = new MiniMap(map, this);
+		this.grid = new InventoryGrid(this);
 		this.map.setMapChangeListener(new MapChangeListener() {
 
 			@Override
@@ -132,9 +136,13 @@ public class RightMenu {
 						case CharacterFunctions.CHANGE_HEALTH:
 							updateHealth();
 							break;
+						case CharacterFunctions.CHANGE_INVENTORY:
+							grid.updateInventoryGrid();
+							break;
 						}
 					}
 				});
+		grid.printPlayerInventory();
 	}
 
 	private void updateExperience() {
@@ -152,11 +160,8 @@ public class RightMenu {
 	private void updateLevel() {
 		player.setHealth(player.getMaxHealth());
 		lvl_label.setLabel("Lvl.: " + player.getLevel());
-		lvl_label.setLocation(Window.MENU_X - 20 - lvl_label.getWidth(), 300);
 	}
 
-	private void printPlayerInventory() {
 
-	}
 
 }

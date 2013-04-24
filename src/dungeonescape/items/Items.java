@@ -62,6 +62,10 @@ public class Items {
 		}
 		return null;
 	}
+	
+	public ArrayList<Item> getItems() {
+		return items;
+	}
 
 	public ArrayList<Item> getItems(int level) {
 		int type = getLevelType(level);

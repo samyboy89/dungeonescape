@@ -3,28 +3,27 @@ package dungeonescape.character;
 import dungeonescape.helper.Type;
 import dungeonescape.level.Door;
 import dungeonescape.map.Map;
-import dungeonescape.player.CharacterFunctions;
 
 public class Player extends CharacterFunctions {
 	
 	public Player() {
 		super();
-		setHealth(100);
-		setDamage(200);
+		setHealth(135);
+		setDamage(40);
 		getInventory().addItem(Type.hands_legendary());
 	}
 
 	public Player(Map map) {
 		setMap(map);
 		setCamera(map.camera);
-		setMove(new DoMove(this, map.collision, map.collisionMisc, map.moveable));
+		setMove(new DoMove(this, map));
 		this.setPlayer(map);
 	}
 	
 	public void setPlayer(Map map) {
 		setMap(map);
 		setCamera(map.camera);
-		setMove(new DoMove(this, map.collision, map.collisionMisc, map.moveable));
+		setMove(new DoMove(this, map));
 		int[] playersNewPosition = getPlayersNewPosition(map.door, map.location);
 		setCharacterX(playersNewPosition[0]);
 		setCharacterY(playersNewPosition[1]);

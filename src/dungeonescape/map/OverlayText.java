@@ -8,6 +8,7 @@ import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import dungeonescape.Main;
 import dungeonescape.helper.Levels;
+import dungeonescape.helper.Window;
 
 public class OverlayText {
 
@@ -64,6 +65,29 @@ public class OverlayText {
 						- (l.getWidth()) - 60, 60);
 		o = l;
 		map.add(o);
+	}
+	
+	public void printLevelRequirements(int required) {
+		if (timer != null)
+			timer.cancel();
+		doneShowing = false;
+		String level = "Required Lvl.: " + required;
+		GLabel l = new GLabel(level);
+		l.setColor(Color.WHITE);
+		l.setFont(Main.main.font.deriveFont(30f));
+		l.setLocation(896 - (l.getWidth()) - 60, Window.WINDOW_Y - 40);
+		final GObject o = l;
+		if (map != null) {
+			map.add(o);
+			timer = new Timer();
+			timer.schedule(new java.util.TimerTask() {
+				@Override
+				public void run() {
+					doneShowing = true;
+					map.gcanvas.remove(o);
+				}
+			}, 3 * SECONDS);
+		}
 	}
 
 	private String getLevelFromCharacter(int code) {

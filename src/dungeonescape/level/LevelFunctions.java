@@ -43,7 +43,8 @@ abstract class LevelFunctions implements Level {
 		int code = this.getCell(dx, dy);
 		String collision_folder = isLevel(code, Tile.collision, Tile.COLLISION_IMG_PATH);
 		String collisionmisc_folder = isLevel(code, Tile.collisionmisc, Tile.COLLISIONMISC_IMG_PATH);
-		if (!collision_folder.equals("") || !collisionmisc_folder.equals(""))
+		String chest_folder = isLevel(code, Tile.chests, Tile.CHESTS_IMG_PATH);
+		if (!collision_folder.equals("") || !collisionmisc_folder.equals("") || !chest_folder.equals(""))
 			return false;
 		return true;
 	}

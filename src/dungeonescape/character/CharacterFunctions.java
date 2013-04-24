@@ -1,16 +1,12 @@
-package dungeonescape.player;
+package dungeonescape.character;
 
 import java.util.ArrayList;
 
 import acm.graphics.GImage;
 import dungeonescape.Main;
 import dungeonescape.ai.NPC;
-import dungeonescape.character.Direction;
-import dungeonescape.character.DoMove;
-import dungeonescape.character.Inventory;
-import dungeonescape.character.Player;
-import dungeonescape.character.Stats;
 import dungeonescape.helper.PlayerImg;
+import dungeonescape.helper.Type;
 import dungeonescape.items.Item;
 import dungeonescape.map.Camera;
 import dungeonescape.map.Map;
@@ -45,7 +41,7 @@ public abstract class CharacterFunctions implements Character {
 
 	public CharacterFunctions() {
 		playerStatsChangedListeners = new ArrayList<CharacterFunctions.PlayerStatsChangedListener>();
-		setInventory(new Inventory());
+		setInventory(new Inventory(this));
 		setStats(new Stats(this, getInventory()));
 	}
 
@@ -156,34 +152,34 @@ public abstract class CharacterFunctions implements Character {
 
 	public int getCharacterState() {
 		if (gender == MALE) {
-			counter = (counter > 6 ? 0 : counter);
-			switch (counter) {
-			case 0:
-				return PlayerImg.BOY_NORMAL;
-			case 1:
-				return PlayerImg.BOY_ARMOR;
-			case 2:
-				return PlayerImg.KNIGHT;
-			case 3:
-				return PlayerImg.DARK_CAPE;
-			case 4:
-				return PlayerImg.WARRIOR_LIGHT;
-			case 5:
-				return PlayerImg.WARRIOR_MEDIUM;
-			case 6:
-				return PlayerImg.WARRIOR_HEAVY;
+			for (Item i : inventory.getItemsList()) {
+				if (i.isActive() && i.getParentType() == Type.CHEST) {
+					switch (i.getType()) {
+					case Type.CHEST_COMMON:
+						return PlayerImg.BOY_ARMOR;
+					case Type.CHEST_RARE:
+						return PlayerImg.WARRIOR_LIGHT;
+					case Type.CHEST_EPIC:
+						return PlayerImg.WARRIOR_MEDIUM;
+					case Type.CHEST_LEGENDARY:
+						return PlayerImg.WARRIOR_HEAVY;
+					}
+				}
 			}
 		} else if (gender == FEMALE) {
-			counter = (counter > 3 ? 0 : counter);
-			switch (counter) {
-			case 0:
-				return PlayerImg.GIRL_NORMAL;
-			case 1:
-				return PlayerImg.GIRL_ARMOR;
-			case 2:
-				return PlayerImg.KNIGHTESS;
-			case 3:
-				return PlayerImg.GIRL_HOUSE;
+			for (Item i : inventory.getItemsList()) {
+				if (i.isActive() && i.getParentType() == Type.CHEST) {
+					switch (i.getType()) {
+					case Type.CHEST_COMMON:
+						return PlayerImg.GIRL_ARMOR;
+					case Type.CHEST_RARE:
+						return PlayerImg.GIRL_ARMOR;
+					case Type.CHEST_EPIC:
+						return PlayerImg.KNIGHTESS;
+					case Type.CHEST_LEGENDARY:
+						return PlayerImg.KNIGHTESS;
+					}
+				}
 			}
 		}
 		return PlayerImg.BOY_NORMAL;

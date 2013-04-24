@@ -1,7 +1,5 @@
 package dungeonescape.ai;
 
-import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -17,13 +15,13 @@ import dungeonescape.ai.model.DijkstraAlgorithm;
 import dungeonescape.ai.model.Edge;
 import dungeonescape.ai.model.Graph;
 import dungeonescape.ai.model.Vertex;
+import dungeonescape.character.CharacterFunctions;
 import dungeonescape.character.Direction;
 import dungeonescape.character.DoMove;
 import dungeonescape.helper.NPC_const;
 import dungeonescape.helper.PlayerImg;
 import dungeonescape.map.Camera;
 import dungeonescape.map.Map;
-import dungeonescape.player.CharacterFunctions;
 
 public class NPC extends CharacterFunctions {
 	private int ID;
@@ -49,7 +47,7 @@ public class NPC extends CharacterFunctions {
 	public void initNPC(Map map) {
 		this.map = map;
 		setCamera(map.camera);
-		setMove(new DoMove(this, map.collision, map.collisionMisc, map.moveable));
+		setMove(new DoMove(this, map));
 	}
 	
 	private void createGraphFromMap() {

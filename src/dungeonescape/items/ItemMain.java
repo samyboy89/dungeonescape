@@ -1,8 +1,12 @@
 package dungeonescape.items;
 
 import acm.graphics.GObject;
+import dungeonescape.Main;
 import dungeonescape.character.Action;
+import dungeonescape.character.CharacterFunctions;
+import dungeonescape.helper.Tile;
 import dungeonescape.helper.Type;
+import dungeonescape.menu.GridItem;
 
 public abstract class ItemMain implements Item {
 
@@ -73,12 +77,9 @@ public abstract class ItemMain implements Item {
 		this.required = required;
 	}
 
-	public GObject getView() {
-		return this.view;
-	}
-
-	public void setView(GObject gobject) {
-		this.view = gobject;
+	public GridItem getView() {
+		return new GridItem(Tile.PICKUPITEMS_IMG_PATH + getType()
+				+ Tile.IMG_EXTENTION);
 	}
 
 	public Action getAction() {
@@ -90,7 +91,7 @@ public abstract class ItemMain implements Item {
 	}
 
 	public void doAction() {
-
+		// DO ACTION
 	}
 
 	public boolean isActive() {
@@ -98,7 +99,23 @@ public abstract class ItemMain implements Item {
 	}
 
 	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+		if (Main.main.player.getLevel() >= getRequired() && Main.main.getState() == Main.MAP) {
+			if (isActive) {
+				for (Item i : Main.main.player.getInventory().getItemsList()) {
+					if (i.getParentType() == getParentType()) {
+						i.setActive(false);
+					}
+				}
+			}
+			this.isActive = isActive;
+		} else {
+			if (Main.main.getState() == Main.MAP)
+				Main.main.map.overlayText.printLevelRequirements(getRequired());
+		}
+		Main.main.player.firePlayerChange(CharacterFunctions.CHANGE_INVENTORY);
+		if (getType() == Type.CHEST) {
+			Main.main.player.firePlayerChange(CharacterFunctions.CHANGE_IMAGE_STATE);
+		}
 	}
 
 	public String getMSS() {
@@ -134,83 +151,129 @@ public abstract class ItemMain implements Item {
 			case 2:
 				return "Value" + getValue();
 			}
-			case Type.SHIELD_RARE:
-			case Type.SHIELD_EPIC:
-			case Type.SHIELD_LEGENDARY:
-				switch (iter) {
-				case 1:
-					return "Protection: " + getProtection();
-				case 2:
-					return "Lvl Required: " + getRequired();
-				}
-			case Type.HEAD_COMMON:
-			case Type.HEAD_RARE:
-			case Type.HEAD_EPIC:
-			case Type.HEAD_LEGENDARY:
-				switch (iter) {
-				case 1:
-					return "Protection: " + getProtection();
-				case 2:
-					return "Lvl Required: " + getRequired();
-				}
-			case Type.CHEST_COMMON:
-			case Type.CHEST_RARE:
-			case Type.CHEST_EPIC:
-			case Type.CHEST_LEGENDARY:
-				switch (iter) {
-				case 1:
-					return "Protection: " + getProtection();
-				case 2:
-					return "Lvl Required: " + getRequired();
-				}
-			case Type.HANDS_RARE:
-			case Type.HANDS_EPIC:
-			case Type.HANDS_LEGENDARY:
-				switch (iter) {
-				case 1:
-					return "Protection: " + getProtection();
-				case 2:
-					return "Lvl Required: " + getRequired();
-				}
-			case Type.FEET_EPIC:
-			case Type.FEET_LEGENDARY:
-				switch (iter) {
-				case 1:
-					return "Protection: " + getProtection();
-				case 2:
-					return "Lvl Required: " + getRequired();
-				}
-			case Type.SWORD_COMMON:
-			case Type.SWORD_RARE:
-			case Type.SWORD_EPIC:
-			case Type.SWORD_LEGENDARY:
-				switch (iter) {
-				case 1:
-					return "Damage: " + getDPS();
-				case 2:
-					return "Lvl Required: " + getRequired();
-				}
-			case Type.STAFF_COMMON:
-			case Type.STAFF_RARE:
-			case Type.STAFF_EPIC:
-			case Type.STAFF_LEGENDARY:
-				switch (iter) {
-				case 1:
-					return "Damage: " + getDPS();
-				case 2:
-					return "Lvl Required: " + getRequired();
-				}
-			case Type.KEY_RARE:
-			case Type.KEY_EPIC:
-			case Type.KEY_LEGENDARY:
-				switch (iter) {
-				case 1:
-					return "";
-				case 2:
-					return "";
+		case Type.SHIELD_RARE:
+		case Type.SHIELD_EPIC:
+		case Type.SHIELD_LEGENDARY:
+			switch (iter) {
+			case 1:
+				return "Protection: " + getProtection();
+			case 2:
+				return "Lvl Required: " + getRequired();
+			}
+		case Type.HEAD_COMMON:
+		case Type.HEAD_RARE:
+		case Type.HEAD_EPIC:
+		case Type.HEAD_LEGENDARY:
+			switch (iter) {
+			case 1:
+				return "Protection: " + getProtection();
+			case 2:
+				return "Lvl Required: " + getRequired();
+			}
+		case Type.CHEST_COMMON:
+		case Type.CHEST_RARE:
+		case Type.CHEST_EPIC:
+		case Type.CHEST_LEGENDARY:
+			switch (iter) {
+			case 1:
+				return "Protection: " + getProtection();
+			case 2:
+				return "Lvl Required: " + getRequired();
+			}
+		case Type.HANDS_RARE:
+		case Type.HANDS_EPIC:
+		case Type.HANDS_LEGENDARY:
+			switch (iter) {
+			case 1:
+				return "Protection: " + getProtection();
+			case 2:
+				return "Lvl Required: " + getRequired();
+			}
+		case Type.FEET_EPIC:
+		case Type.FEET_LEGENDARY:
+			switch (iter) {
+			case 1:
+				return "Protection: " + getProtection();
+			case 2:
+				return "Lvl Required: " + getRequired();
+			}
+		case Type.SWORD_COMMON:
+		case Type.SWORD_RARE:
+		case Type.SWORD_EPIC:
+		case Type.SWORD_LEGENDARY:
+			switch (iter) {
+			case 1:
+				return "Damage: " + getDPS();
+			case 2:
+				return "Lvl Required: " + getRequired();
+			}
+		case Type.STAFF_COMMON:
+		case Type.STAFF_RARE:
+		case Type.STAFF_EPIC:
+		case Type.STAFF_LEGENDARY:
+			switch (iter) {
+			case 1:
+				return "Damage: " + getDPS();
+			case 2:
+				return "Lvl Required: " + getRequired();
+			}
+		case Type.KEY_RARE:
+		case Type.KEY_EPIC:
+		case Type.KEY_LEGENDARY:
+			switch (iter) {
+			case 1:
+				return "";
+			case 2:
+				return "";
 			}
 		}
 		return "";
 	}
 
+	public int getParentType() {
+		switch (getType()) {
+		case Type.POTION_RARE:
+		case Type.POTION_EPIC:
+		case Type.POTION_LEGENDARY:
+		case Type.POTION_ATTACK_SPEED:
+		case Type.POTION_PROTECTION:
+			return Type.POTION;
+		case Type.SHIELD_RARE:
+		case Type.SHIELD_EPIC:
+		case Type.SHIELD_LEGENDARY:
+			return Type.SHIELD;
+		case Type.HEAD_COMMON:
+		case Type.HEAD_RARE:
+		case Type.HEAD_EPIC:
+		case Type.HEAD_LEGENDARY:
+			return Type.HEAD;
+		case Type.CHEST_COMMON:
+		case Type.CHEST_RARE:
+		case Type.CHEST_EPIC:
+		case Type.CHEST_LEGENDARY:
+			return Type.CHEST;
+		case Type.HANDS_RARE:
+		case Type.HANDS_EPIC:
+		case Type.HANDS_LEGENDARY:
+			return Type.HANDS;
+		case Type.FEET_EPIC:
+		case Type.FEET_LEGENDARY:
+			return Type.FEET;
+		case Type.SWORD_COMMON:
+		case Type.SWORD_RARE:
+		case Type.SWORD_EPIC:
+		case Type.SWORD_LEGENDARY:
+		case Type.STAFF_COMMON:
+		case Type.STAFF_RARE:
+		case Type.STAFF_EPIC:
+		case Type.STAFF_LEGENDARY:
+			return Type.SWORD;
+			// return Type.STAFF;
+		case Type.KEY_RARE:
+		case Type.KEY_EPIC:
+		case Type.KEY_LEGENDARY:
+			return Type.KEY;
+		}
+		return -1;
+	}
 }

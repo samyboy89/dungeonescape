@@ -7,47 +7,73 @@ import dungeonescape.items.ItemRare;
 
 public final class Type {
 
+	public static final int POTION = 0;
+	
 	public static final int POTION_RARE = 9999;
 	public static final int POTION_EPIC = 9998;
 	public static final int POTION_LEGENDARY = 9997;
 	public static final int POTION_ATTACK_SPEED = 9996;
 	public static final int POTION_PROTECTION = 9995;
 
+	public static final int SHIELD = 1;
+	
 	public static final int SHIELD_RARE = 9989;
 	public static final int SHIELD_EPIC = 9988;
 	public static final int SHIELD_LEGENDARY = 9987;
 
+	public static final int HEAD = 2;
+	
 	public static final int HEAD_COMMON = 9979;
 	public static final int HEAD_RARE = 9978;
 	public static final int HEAD_EPIC = 9977;
 	public static final int HEAD_LEGENDARY = 9976;
 
+	public static final int CHEST = 3;
+	
 	public static final int CHEST_COMMON = 9969;
 	public static final int CHEST_RARE = 9968;
 	public static final int CHEST_EPIC = 9967;
 	public static final int CHEST_LEGENDARY = 9966;
 
+	public static final int HANDS = 4;
+	
 	public static final int HANDS_RARE = 9959;
 	public static final int HANDS_EPIC = 9958;
 	public static final int HANDS_LEGENDARY = 9957;
 
+	public static final int FEET = 5;
+	
 	public static final int FEET_EPIC = 9949;
 	public static final int FEET_LEGENDARY = 9948;
 
+	public static final int SWORD = 6;
+	
 	public static final int SWORD_COMMON = 9939;
 	public static final int SWORD_RARE = 9938;
 	public static final int SWORD_EPIC = 9937;
 	public static final int SWORD_LEGENDARY = 9936;
 
+	public static final int STAFF = 7;
+	
 	public static final int STAFF_COMMON = 9929;
 	public static final int STAFF_RARE = 9928;
 	public static final int STAFF_EPIC = 9927;
 	public static final int STAFF_LEGENDARY = 9926;
 
+	public static final int KEY = 8;
+	
 	public static final int KEY_RARE = 9919;
 	public static final int KEY_EPIC = 9918;
 	public static final int KEY_LEGENDARY = 9917;
+	
+	public static final int NO_ATTACK = 9916;
 
+	public static final ItemCommon noAttack() {
+		ItemCommon common = new ItemCommon();
+		common.setType(NO_ATTACK);
+		return common;
+	}
+	
 	// Potion
 	public static final ItemRare potion_heal_rare() {
 		ItemRare rare = new ItemRare();

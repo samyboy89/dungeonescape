@@ -2,8 +2,8 @@ package dungeonescape.items;
 
 import java.awt.Color;
 
-import acm.graphics.GObject;
 import dungeonescape.character.Action;
+import dungeonescape.menu.GridItem;
 
 public interface Item {
 
@@ -37,9 +37,7 @@ public interface Item {
 	
 	public void setRequired(int required);
 
-	public GObject getView();
-
-	public void setView(GObject gobject);
+	public GridItem getView();
 
 	public Action getAction();
 
@@ -47,11 +45,15 @@ public interface Item {
 	
 	public void doAction();
 
+	public void setActive(boolean active);
+	
 	public boolean isActive();
 
 	public String getMSS();
 	
 	public String getSTSS();
+	
+	public int getParentType();
 
 
 }

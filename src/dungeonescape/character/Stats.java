@@ -2,7 +2,7 @@ package dungeonescape.character;
 
 public class Stats {
 
-	private dungeonescape.player.Character character;
+	private dungeonescape.character.Character character;
 	private Inventory inventory;
 	private Experience exp;
 	
@@ -14,7 +14,7 @@ public class Stats {
 	private int damage;
 	private int protection;
 
-	public Stats(dungeonescape.player.Character character, Inventory inventory) {
+	public Stats(dungeonescape.character.Character character, Inventory inventory) {
 		this.character = character;
 		this.inventory = inventory;
 		this.exp = new Experience(character);;
