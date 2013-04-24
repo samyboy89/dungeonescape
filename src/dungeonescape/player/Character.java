@@ -68,6 +68,8 @@ public interface Character {
 	public int getGold();
 
 	public void setGold(int gold);
+
+	public int getMaxHealth();
 	
 	public int getHealth();
 

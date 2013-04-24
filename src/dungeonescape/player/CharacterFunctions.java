@@ -295,6 +295,10 @@ public abstract class CharacterFunctions implements Character {
 		stats.setGold(gold);
 	}
 
+	public int getMaxHealth() {
+		return 100 + getLevel() * 35;
+	}
+
 	public int getHealth() {
 		return stats.getHealth();
 	}

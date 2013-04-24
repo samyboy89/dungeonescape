@@ -36,9 +36,8 @@ public class Combat {
 	private Map map;
 	private Animations animations;
 
-	JProgressBarColoredPlayer playerHealth = new JProgressBarColoredPlayer(100,
-			100);
-	JProgressBarColoredNPC npcHealth = new JProgressBarColoredNPC(100, 100);
+	JProgressBarColoredPlayer playerHealth;
+	JProgressBarColoredNPC npcHealth;
 
 	private boolean canQuit = false;
 
@@ -268,12 +267,14 @@ public class Combat {
 	}
 
 	private void initializeHealthBars() {
+		playerHealth = new JProgressBarColoredPlayer(player.getMaxHealth(), player.getHealth());
 		playerHealth.setValue(player.getHealth());
 		playerHealth.setLocation(50, (getCamera().getWindowY()
 				* Camera.IMG_SIZE * Camera.IMG_SCALE) - 60);
 		playerHealth.setSize(98, 20);
 		gcanvas.add(playerHealth);
 
+		npcHealth = new JProgressBarColoredNPC(npc.getHealth(), npc.getHealth());
 		npcHealth.setValue(npc.getHealth());
 		npcHealth
 				.setLocation(
@@ -528,7 +529,7 @@ public class Combat {
 	}
 
 	private GCanvas getItemCard() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

@@ -1,10 +1,14 @@
 package dungeonescape.items;
 
+import java.awt.Color;
+
 import acm.graphics.GObject;
 import dungeonescape.character.Action;
 
 public interface Item {
 
+	public Color getBackground();
+	
 	public String getName();
 
 	public void setName(String name);
