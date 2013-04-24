@@ -7,6 +7,7 @@ import java.util.TimerTask;
 
 import acm.graphics.GCanvas;
 import acm.graphics.GImage;
+import acm.graphics.GLabel;
 import acm.graphics.GObject;
 import dungeonescape.Main;
 import dungeonescape.ai.NPC;
@@ -361,5 +362,15 @@ public class Map {
 
 	public static interface MapChangeListener {
 		void onChanged(int state);
+	}
+	
+	public void printVictory() {
+		GLabel gameover = new GLabel("VICTORY");
+		gameover.setFont(Main.main.font.deriveFont(140f));
+		gameover.setColor(Color.WHITE);
+		gameover.setLocation((Window.GAME_X / 2) - (gameover.getWidth() / 2) ,
+				(Window.WINDOW_Y / 2) - (gameover.getHeight() / 2));
+		Main.main.setState(-1);
+		gcanvas.add(gameover);
 	}
 }

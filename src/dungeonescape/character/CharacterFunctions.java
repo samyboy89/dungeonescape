@@ -20,6 +20,8 @@ public abstract class CharacterFunctions implements Character {
 	private Inventory inventory;
 	private Direction lastmove = Direction.SOUTH;
 
+	private int key_rounds = 0;
+	
 	private final int MALE = 0;
 	private final int FEMALE = 1;
 
@@ -385,6 +387,14 @@ public abstract class CharacterFunctions implements Character {
 
 	public void setMap(Map map) {
 		this.map = map;
+	}
+
+	public int getKeyRounds() {
+		return key_rounds;
+	}
+
+	public void setKeyRounds(int key_rounds) {
+		this.key_rounds = key_rounds;
 	}
 
 	public static interface PlayerStatsChangedListener {

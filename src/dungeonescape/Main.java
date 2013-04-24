@@ -31,7 +31,7 @@ import dungeonescape.menu.RightMenu;
 public class Main extends GraphicsProgram {
 
 	public static Main main;
-	private Game game;
+	// private Game game;
 	private GameMenu gameMenu;
 	public Player player;
 	public NPC npc;
@@ -56,7 +56,7 @@ public class Main extends GraphicsProgram {
 
 	@Override
 	public void init() {
-		// initWindow();
+		initWindow();
 		font = getFont("gamemenu/visitor.ttf");
 		setBackground(Color.BLACK);
 		main = this;
@@ -69,7 +69,7 @@ public class Main extends GraphicsProgram {
 	public void run() {
 		this.map = new Map(player);
 		this.menu = new RightMenu(map);
-		this.game = new Game(player, map);
+		// this.game = new Game(player, map);
 		this.gameMenu = new GameMenu(map);
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -107,6 +107,7 @@ public class Main extends GraphicsProgram {
 					break;
 				case KeyEvent.VK_R:
 					// map.restartCurrentLevel();
+					// map.printVictory();
 					break;
 				case KeyEvent.VK_SPACE:
 					map.moveToNextRoom();
