@@ -599,8 +599,11 @@ public class Combat {
 		if (npc.hasKey()) {
 			Items items = new Items();
 			for (Item i : items.getKeys()) {
-				if (i.getType() == npc.getKey())
+				System.out.println(i.getName());
+				if (i.getType() == npc.getKey()) {
+					System.out.println(i.getType());
 					player.getInventory().addKey(i);
+				}
 			}
 		}
 		

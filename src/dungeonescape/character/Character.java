@@ -100,4 +100,9 @@ public interface Character {
 	public int getLife();
 	
 	public void setLife(int life);
+
+	public int getKeyRounds();
+
+	public void setKeyRounds(int key_rounds);
+
 }
