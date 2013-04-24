@@ -20,5 +20,6 @@ public class Levels {
 	public static final int ROOMX = 9816;
 	public static final int ROOMY = 9817;
 	public static final int ROOM1 = 9830;
+	public static final int ROOM2 = 9840;
 	
 }
