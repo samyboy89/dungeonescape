@@ -62,7 +62,7 @@ public class Main extends GraphicsProgram {
 		this.map = new Map(player);
 		this.menu = new RightMenu(map);
 		this.game = new Game(player, map);
-		// this.gameMenu = new GameMenu(map);
+		this.gameMenu = new GameMenu(map);
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 
@@ -73,7 +73,7 @@ public class Main extends GraphicsProgram {
 
 			}
 		}, 500, 500);
-		getGCanvas().add(map.gcanvas);
+		getGCanvas().add(gameMenu.gcanvas);
 		addKeyListeners();
 		super.run();
 	}

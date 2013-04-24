@@ -3,6 +3,8 @@ package dungeonescape.combat;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import acm.graphics.GCanvas;
 import acm.graphics.GDimension;
@@ -111,7 +113,7 @@ public class Combat {
 		});
 		Main.main.getGCanvas().remove(Main.main.map.gcanvas);
 		Main.main.getGCanvas().add(gcanvas);
-		printViews();
+		printViews();		
 	}
 
 	// ************ //
@@ -308,6 +310,24 @@ public class Combat {
 						+ (label.getHeight() / 4));
 		add(attack);
 		add(label);
+		attack.addMouseListener( new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				swordAttack();
+			}
+		});
 	}
 
 	private void printCancelButton() {
