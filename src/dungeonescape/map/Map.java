@@ -289,6 +289,7 @@ public class Map {
 	}
 
 	public boolean isItem() {
+		try {
 		int code = pickUpItem.getCell(player.getCharacterX(),
 				player.getCharacterY());
 		if (pickUpItem.isItem(code)) {
@@ -299,6 +300,9 @@ public class Map {
 			if (pickUpItem.isItem(new_try)) {
 				return doPickup(new_try, 0, - 1);
 			}
+		}
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
 		}
 		return false;
 	}

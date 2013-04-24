@@ -22,7 +22,6 @@ import dungeonescape.character.Direction;
 import dungeonescape.character.Player;
 import dungeonescape.combat.Combat;
 import dungeonescape.helper.AePlayWave;
-import dungeonescape.helper.Game;
 import dungeonescape.helper.GameMenu;
 import dungeonescape.map.Map;
 import dungeonescape.menu.RightMenu;
@@ -47,6 +46,7 @@ public class Main extends GraphicsProgram {
 
 	private boolean dialogOpen = false;
 	private boolean isCombat = false;
+	public boolean isText = false;
 
 	private AePlayWave aw;
 
@@ -71,6 +71,8 @@ public class Main extends GraphicsProgram {
 		this.menu = new RightMenu(map);
 		// this.game = new Game(player, map);
 		this.gameMenu = new GameMenu(map);
+		aw = new AePlayWave("sounds/0001_world.wav");
+		aw.start();
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 
@@ -78,7 +80,6 @@ public class Main extends GraphicsProgram {
 			public void run() {
 				if (!getGCanvas().hasFocus())
 					getGCanvas().requestFocus();
-
 			}
 		}, 500, 500);
 		getGCanvas().add(gameMenu.gcanvas);
@@ -108,6 +109,7 @@ public class Main extends GraphicsProgram {
 				case KeyEvent.VK_R:
 					// map.restartCurrentLevel();
 					// map.printVictory();
+					// map.overlayText.printKeyRequirements();
 					break;
 				case KeyEvent.VK_SPACE:
 					map.moveToNextRoom();
@@ -124,8 +126,6 @@ public class Main extends GraphicsProgram {
 					// map.npcs.get(0).moveCloserToPlayer();
 					break;
 				case KeyEvent.VK_T:
-					aw = new AePlayWave("sounds/0001_world.wav");
-					aw.start();
 					break;
 				case KeyEvent.VK_Q:
 					// destroy();
@@ -147,7 +147,7 @@ public class Main extends GraphicsProgram {
 				}
 				if (isCombat) {
 					startCombat();
-				} else {
+				} else if (!isText) {
 					map.redrawViews();
 				}
 				break;

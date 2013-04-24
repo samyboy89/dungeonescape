@@ -35,11 +35,11 @@ public class Items {
 		items.add(Type.head_rare());
 		items.add(Type.head_legendary());
 		items.add(Type.head_epic());
-		items.add(Type.potion_attack_speed());
-		items.add(Type.potion_heal_epic());
-		items.add(Type.potion_heal_legendary());
-		items.add(Type.potion_heal_rare());
-		items.add(Type.potion_protection());
+//		items.add(Type.potion_attack_speed());
+//		items.add(Type.potion_heal_epic());
+//		items.add(Type.potion_heal_legendary());
+//		items.add(Type.potion_heal_rare());
+//		items.add(Type.potion_protection());
 		items.add(Type.shield_epic());
 		items.add(Type.shield_legendary());
 		items.add(Type.shield_rare());

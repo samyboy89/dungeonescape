@@ -3,6 +3,7 @@ package dungeonescape.map;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import acm.graphics.GLabel;
 import acm.graphics.GObject;
@@ -89,6 +90,15 @@ public class OverlayText {
 		if (map != null) {
 			map.add(o);
 		}
+		Main.main.isText = true;
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				Main.main.isText = false;
+			}
+		}, 300);
 	}
 
 	private String getLevelFromCharacter(int code) {

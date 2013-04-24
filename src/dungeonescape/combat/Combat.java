@@ -391,21 +391,14 @@ public class Combat {
 
 	private void printPotionButton() {
 		potionButtonCanvas = new GCanvas();
-		potionButtonCanvas.setSize(250, 60);
+		potionButtonCanvas.setSize(0, 0);
 		potionButtonCanvas.setLocation(200, (getCamera().getWindowY()
 				* Camera.IMG_SIZE * Camera.IMG_SCALE) - 90);
 		GImage cancel = new GImage("combat_back/0499.png");
-		cancel.setSize(250, 60);
+		cancel.setSize(0, 0);
 		cancel.setLocation(0, 0);
-		GLabel label = new GLabel("Use Potion (P)");
-		label.setFont(Main.main.font.deriveFont(20f));
-		label.setLocation(
-				cancel.getX() + (cancel.getWidth() / 2)
-						- (label.getWidth() / 2),
-				cancel.getY() + (cancel.getHeight() / 2)
-						+ (label.getHeight() / 4));
+		
 		potionButtonCanvas.add(cancel);
-		potionButtonCanvas.add(label);
 		potionButtonCanvas.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -599,9 +592,7 @@ public class Combat {
 		if (npc.hasKey()) {
 			Items items = new Items();
 			for (Item i : items.getKeys()) {
-				System.out.println(i.getName());
 				if (i.getType() == npc.getKey()) {
-					System.out.println(i.getType());
 					player.getInventory().addKey(i);
 				}
 			}
