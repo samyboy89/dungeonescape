@@ -16,6 +16,7 @@ import dungeonescape.character.Player;
 import dungeonescape.helper.Levels;
 import dungeonescape.helper.NPC_const;
 import dungeonescape.helper.PlayerImg;
+import dungeonescape.helper.Window;
 import dungeonescape.level.Collision;
 import dungeonescape.level.CollisionMisc;
 import dungeonescape.level.Door;
@@ -50,10 +51,10 @@ public class Map {
 	public Player player;
 	public NPC test;
 	public ArrayList<NPC> npcs;
-	
-	//GCANVAS
+
+	// GCANVAS
 	public GCanvas gcanvas = new GCanvas();
-	
+
 	// REMEMBER POSITION //
 	private ArrayList<Moveable> moveables;
 	private ArrayList<PickUpItems> pickUpItems;
@@ -71,9 +72,8 @@ public class Map {
 	public Timer timer;
 
 	public Map(Player player) {
-		this.gcanvas.setSize(896, 640);
-		Main.main.getGCanvas().add(gcanvas);
-		
+		this.gcanvas.setSize(Window.GAME_X, Window.WINDOW_Y);
+
 		this.player = player;
 		this.camera = new Camera(this);
 
@@ -85,8 +85,8 @@ public class Map {
 		this.overlayText = new OverlayText(this);
 
 		Main.main.setBackground(Color.BLACK);
-		Main.main.setSize(camera.getWindowX() * Camera.IMG_SIZE
-				* Camera.IMG_SCALE, camera.getWindowY() * Camera.IMG_SIZE
+		Main.main.setSize((camera.getWindowX() * Camera.IMG_SIZE
+				* Camera.IMG_SCALE) + Window.MENU_X, camera.getWindowY() * Camera.IMG_SIZE
 				* Camera.IMG_SCALE);
 		printMap();
 	}
@@ -94,6 +94,7 @@ public class Map {
 	public void add(GObject object) {
 		gcanvas.add(object);
 	}
+
 	public void removeAll() {
 		gcanvas.removeAll();
 	}
@@ -258,7 +259,7 @@ public class Map {
 	}
 
 	private void findAllNPC(int code) {
-
+		// TODO Finn alle npc-er
 	}
 
 	public void moveToNextRoom() {
@@ -271,7 +272,7 @@ public class Map {
 			setLevelCode(code);
 		}
 	}
-	
+
 	public boolean isItem() {
 		int code = door.getCell(player.getCharacterX(), player.getCharacterY());
 		if (pickUpItem.isItem(code))

@@ -21,6 +21,7 @@ import dungeonescape.components.JProgressBarColoredNPC;
 import dungeonescape.components.JProgressBarColoredPlayer;
 import dungeonescape.helper.PlayerImg;
 import dungeonescape.helper.Tile;
+import dungeonescape.helper.Window;
 import dungeonescape.items.Item;
 import dungeonescape.map.Camera;
 import dungeonescape.map.Map;
@@ -59,7 +60,7 @@ public class Combat {
 	private boolean debug = false;
 
 	public Combat(Player player, Map map, NPC npc) {
-		gcanvas.setSize(896, 640);
+		gcanvas.setSize(Window.GAME_X, Window.WINDOW_Y);
 
 		Main.main.setState(Main.COMBAT);
 		this.animations = new Animations(map);

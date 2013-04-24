@@ -21,6 +21,7 @@ import dungeonescape.character.Player;
 import dungeonescape.combat.Combat;
 import dungeonescape.helper.AePlayWave;
 import dungeonescape.helper.Game;
+import dungeonescape.helper.GameMenu;
 import dungeonescape.map.Map;
 import dungeonescape.menu.RightMenu;
 
@@ -29,6 +30,7 @@ public class Main extends GraphicsProgram {
 
 	public static Main main;
 	private Game game;
+	private GameMenu gameMenu;
 	public Player player;
 	public NPC npc;
 	public Map map;
@@ -38,22 +40,21 @@ public class Main extends GraphicsProgram {
 	public static final int MAP = 0;
 	public static final int COMBAT = 1;
 	public static final int MENU = 2;
-	private static int state = MAP;
+	public static final int GAMEMENU = 3;
+	private static int state = GAMEMENU;
 
 	private boolean isCombat = false;
-	
+
 	private AePlayWave aw;
 
 	@Override
 	public void init() {
-		initWindow();
+		// initWindow();
 		setBackground(Color.BLACK);
 		main = this;
 		this.player = new Player();
 		super.init();
 	}
-	
-	
 
 	@Oneway
 	@Override
@@ -61,9 +62,7 @@ public class Main extends GraphicsProgram {
 		this.map = new Map(player);
 		this.menu = new RightMenu(map);
 		this.game = new Game(player, map);
-		addKeyListeners();
-		super.run();
-
+		this.gameMenu = new GameMenu(map);
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 
@@ -74,6 +73,9 @@ public class Main extends GraphicsProgram {
 
 			}
 		}, 500, 500);
+		getGCanvas().add(gameMenu.gcanvas);
+		addKeyListeners();
+		super.run();
 	}
 
 	@Override
@@ -135,6 +137,10 @@ public class Main extends GraphicsProgram {
 			case COMBAT:
 				if (combat != null)
 					combat.onKey(key);
+				break;
+			case GAMEMENU:
+				if (gameMenu != null)
+					gameMenu.onKey(key);
 				break;
 			case MENU:
 				switch (key) {
@@ -202,7 +208,7 @@ public class Main extends GraphicsProgram {
 		window.setBackground(Color.black);
 		window.add(getGCanvas());
 	}
-	
+
 	public class Window extends JFrame {
 		Window() {
 			super();
@@ -214,10 +220,10 @@ public class Main extends GraphicsProgram {
 			this.setAlwaysOnTop(true);
 			this.setVisible(true);
 			addWindowListener(new WindowAdapter() {
-			    public void windowClosing(WindowEvent e) {
-			    	if (aw.isAlive())
-			    		aw.stop();
-			    }
+				public void windowClosing(WindowEvent e) {
+					if (aw.isAlive())
+						aw.stopMusic();
+				}
 			});
 		}
 	}

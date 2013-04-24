@@ -10,6 +10,7 @@ import dungeonescape.Main;
 import dungeonescape.character.Player;
 import dungeonescape.components.JProgressBarColoredExperience;
 import dungeonescape.components.JProgressBarColoredPlayer;
+import dungeonescape.helper.Window;
 import dungeonescape.map.Map;
 import dungeonescape.map.Map.MapChangeListener;
 import dungeonescape.map.MiniMap;
@@ -34,7 +35,7 @@ public class RightMenu {
 
 	public RightMenu(final Map map) {
 		this.gcanvas = new GCanvas();
-		this.gcanvas.setSize(400, 640);
+		this.gcanvas.setSize(Window.GAME_X, Window.WINDOW_Y);
 		this.gcanvas.setLocation(896, 0);
 		this.gcanvas.setBackground(Color.BLACK);
 		this.map = map;
@@ -65,20 +66,14 @@ public class RightMenu {
 				}
 			}
 		});
-		Main.main.setSize(Main.main.getWidth() + 400, Main.main.getHeight());
 		gcanvas.add(miniMap.gcanvas);
 		initializePlayerStats();
-		attachToMain();
 	}
 
 	public void add(GObject gobject) {
 		gcanvas.add(gobject);
 	}
 	
-	public void attachToMain() {
-		Main.main.getGCanvas().add(gcanvas);
-	}
-
 	public void printMiniMap() {
 		if (miniMap != null)
 			miniMap.printMiniMap();
