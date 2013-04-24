@@ -12,6 +12,7 @@ public class Player extends CharacterFunctions {
 		setLife(3);
 		setHealth(135);
 		setDamage(33);
+		getInventory().addKey(Type.key_epic());
 		getInventory().addItem(Type.hands_legendary());
 	}
 

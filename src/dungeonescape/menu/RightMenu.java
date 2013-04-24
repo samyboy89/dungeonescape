@@ -12,7 +12,9 @@ import dungeonescape.character.CharacterFunctions.PlayerStatsChangedListener;
 import dungeonescape.character.Player;
 import dungeonescape.components.JProgressBarColoredExperience;
 import dungeonescape.components.JProgressBarColoredPlayer;
+import dungeonescape.helper.Tile;
 import dungeonescape.helper.Window;
+import dungeonescape.items.Item;
 import dungeonescape.map.Map;
 import dungeonescape.map.Map.MapChangeListener;
 import dungeonescape.map.MiniMap;
@@ -32,7 +34,9 @@ public class RightMenu {
 
 	GLabel attack;
 	GLabel defence;
+	
 	GCanvas hearts;
+	GCanvas keys;
 	
 	public GCanvas gcanvas;
 
@@ -136,7 +140,7 @@ public class RightMenu {
 		hearts = new GCanvas();
 		hearts.setBackground(Color.BLACK);
 		hearts.setSize(18*player.getLife(), 15);
-		hearts.setLocation(320, 355);
+		hearts.setLocation(320, 345);
 		for (int i = 0; i < player.getLife(); i++) {
 			GImage heart = new GImage("player/heart.png");
 			heart.setSize(16, 16);
@@ -144,6 +148,20 @@ public class RightMenu {
 			hearts.add(heart);
 		}
 		gcanvas.add(hearts);
+
+		keys = new GCanvas();
+		keys.setBackground(Color.BLACK);
+		keys.setSize(18*player.getLife(), 15);
+		keys.setLocation(320, 370);
+		int counter = 0;
+		for (Item i : player.getInventory().getKeysList()) {
+			GImage key = new GImage(Tile.PICKUPITEMS_IMG_PATH + i.getType() + Tile.IMG_EXTENTION);
+			key.setSize(16, 16);
+			key.setLocation(counter*18, 0);
+			keys.add(key);
+			counter ++;
+		}
+		gcanvas.add(keys);
 		
 		this.player
 				.setPlayerStatsChangedListener(new PlayerStatsChangedListener() {
@@ -206,6 +224,16 @@ public class RightMenu {
 	}
 	
 	private void updateLife() {
+		hearts.removeAll();
+		for (int i = 0; i < player.getLife(); i++) {
+			GImage heart = new GImage("player/heart.png");
+			heart.setSize(16, 16);
+			heart.setLocation(i*18, 0);
+			hearts.add(heart);
+		}
+	}
+	
+	private void updateKeys() {
 		hearts.removeAll();
 		for (int i = 0; i < player.getLife(); i++) {
 			GImage heart = new GImage("player/heart.png");

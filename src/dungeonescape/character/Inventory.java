@@ -9,10 +9,12 @@ public class Inventory {
 
 	private dungeonescape.character.Character character;
 	private ArrayList<Item> items;
+	private ArrayList<Item> keys;
 	
 	public Inventory (dungeonescape.character.Character character) {
 		this.character = character;
 		this.items = new ArrayList<Item>();
+		this.keys = new ArrayList<Item>();
 	}
 
 	public ArrayList<Item> getItemsList(){
@@ -54,5 +56,34 @@ public class Inventory {
 		item.doAction();
 		character.firePlayerChange(CharacterFunctions.CHANGE_INVENTORY);
 	}
+	
+	public ArrayList<Item> getKeysList(){
+		return this.keys;
+	}
+	
+	public Item getKeys(int position) {
+		return this.keys.get(position);
+	}
+
+	public void addKey(Item item) {
+		this.keys.add(item);
+		character.firePlayerChange(CharacterFunctions.CHANGE_KEY);
+	}
+	
+	public void setKey(Item item, int position) {
+		this.keys.set(position, item);
+		character.firePlayerChange(CharacterFunctions.CHANGE_KEY);
+	}
+	
+	public void removeKey(Item item) {
+		this.keys.remove(item);
+		character.firePlayerChange(CharacterFunctions.CHANGE_KEY);
+	}
+	
+	public void removeKey(int position) {
+		this.keys.remove(position);
+		character.firePlayerChange(CharacterFunctions.CHANGE_KEY);
+	}
+	
 	
 }

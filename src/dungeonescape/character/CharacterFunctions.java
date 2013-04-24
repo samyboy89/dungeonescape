@@ -37,6 +37,7 @@ public abstract class CharacterFunctions implements Character {
 	public static final int CHANGE_INVENTORY = 4;
 	public static final int CHANGE_HEALTH = 5;
 	public static final int CHANGE_LIFE = 6;
+	public static final int CHANGE_KEY = 7;
 
 	private ArrayList<PlayerStatsChangedListener> playerStatsChangedListeners;
 
